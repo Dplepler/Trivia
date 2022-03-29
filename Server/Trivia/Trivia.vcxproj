@@ -138,6 +138,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="Server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="LoginRequestHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
