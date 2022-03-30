@@ -66,8 +66,10 @@ void Communicator::bindAndListen() {
 	sa.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
 
 	// Connects between the socket and the configuration (port and etc..)
-	if (bind(this->m_serverSocket, (struct sockaddr*) & sa, sizeof(sa)) == SOCKET_ERROR)
+	if (bind(this->m_serverSocket, (struct sockaddr*) & sa, sizeof(sa)) == SOCKET_ERROR) {
+		std::cout << WSAGetLastError();
 		throw std::exception(__FUNCTION__ " - bind");
+	}
 
 	// Start listening for incoming requests of clients
 	if (listen(this->m_serverSocket, SOMAXCONN) == SOCKET_ERROR)

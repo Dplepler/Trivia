@@ -11,7 +11,7 @@ public:
 private:
 
 	//IDatabase m_database;
-	Communicator m_communicator;
+	Communicator* m_communicator;
 	//RequestHandlerFactory m_handlerFactory;
 
 };
