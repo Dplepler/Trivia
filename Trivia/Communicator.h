@@ -1,9 +1,12 @@
 #pragma once
 #include <thread>
 #include <map>
-#include <WinSock2.h>
-#include <Windows.h>
+#include "Server.h"
+#include "Helper.h"
 #include "IRequestHandler.h"
+#include "LoginRequestHandler.h"
+
+#define START_MESSAGE "HELLO"
 
 
 class Communicator {
@@ -11,6 +14,7 @@ class Communicator {
 public:
 
 	Communicator();
+	~Communicator();
 
 	void startHandleRequests();
 
@@ -21,6 +25,7 @@ private:
 	//RequestHandleFactory& m_handlerFactory;
 
 	void bindAndListen();
+	SOCKET acceptClient();
 	void handleNewClient(SOCKET clientSock);
 
 };
