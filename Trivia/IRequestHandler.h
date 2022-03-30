@@ -5,20 +5,10 @@
 typedef std::vector<char> Buffer;
 typedef unsigned int RequestId;
 
-typedef struct REQUEST_RESULT_STRUCT {
+typedef struct REQUEST_RESULT_STRUCT RequestResult;
+typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
-	Buffer response;
-	IRequestHandler* newHandler;
 
-} RequestResult;
-
-typedef struct REQUEST_INFO_STRUCT {
-
-	RequestId id;
-	time_t time;
-	Buffer buffer;
-
-} RequestInfo;
 
 class IRequestHandler
 {
@@ -34,5 +24,17 @@ public:
 
 };
 
+struct REQUEST_RESULT_STRUCT {
 
+	Buffer response;
+	IRequestHandler* newHandler;
 
+};
+
+struct REQUEST_INFO_STRUCT {
+
+	RequestId id;
+	time_t time;
+	Buffer buffer;
+
+};

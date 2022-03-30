@@ -1,13 +1,16 @@
 #pragma once
-#include <thread>
-#include <map>
-#include "Server.h"
+
 #include "Helper.h"
-#include "IRequestHandler.h"
+#include <Windows.h>
+#include <thread>
+#include <exception>
+
 #include "LoginRequestHandler.h"
+#include <iostream>
 
 #define START_MESSAGE "HELLO"
 
+#define SERVER_PORT 8008
 
 class Communicator {
 
