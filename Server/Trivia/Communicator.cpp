@@ -47,13 +47,14 @@ void Communicator::startHandleRequests() {
 		
 		clientSocket = this->acceptClient();
 
-		// Insert new client
-		this->m_clients.insert(std::pair<SOCKET, IRequestHandler*>(clientSocket, new LoginRequestHandler()));	
+		/* Insert a client */
+		std::unique_lock<std::mutex> lock(this->m_clientLock);
+		this->m_clients.insert(std::pair<SOCKET, IRequestHandler*>(clientSocket, new LoginRequestHandler()));
+		lock.unlock();
 
 		/* Handle new client */
 		std::thread clientThread(&Communicator::handleNewClient, this, clientSocket);
 		clientThread.detach();		// Detach thread so it will run separately
-
 	}
 }
 
@@ -123,11 +124,21 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 	std::string clientMessage;
 
-	for (;;) {
+	try {
 
-		Helper::sendData(clientSock, START_MESSAGE);
+		for (;;) {
 
-		clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
-		std::cout << clientMessage << std::endl;
+			Helper::sendData(clientSock, START_MESSAGE);
+
+			clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
+			std::cout << clientMessage << std::endl;
+		}
 	}
+	catch (...) { 
+
+		std::unique_lock<std::mutex> lock(this->m_clientLock);
+		this->m_clients.erase(clientSock);
+		lock.unlock();
+	}
+	
 }

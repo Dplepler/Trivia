@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <thread>
 #include <exception>
+#include <mutex>
 
 #include "LoginRequestHandler.h"
 #include <iostream>
@@ -25,6 +26,8 @@ private:
 
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
+
+	std::mutex m_clientLock;
 
 	void bindAndListen();
 	void serverHandler();
