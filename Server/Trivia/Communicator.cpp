@@ -130,7 +130,7 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 			Helper::sendData(clientSock, START_MESSAGE);
 
-			clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
+			clientMessage = Helper::getStringPartFromSocket(clientSock, strlen(START_MESSAGE));
 			std::cout << clientMessage << std::endl;
 		}
 	}
