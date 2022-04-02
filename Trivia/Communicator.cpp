@@ -21,7 +21,6 @@ Communicator::~Communicator() {
 
 		/* Close client sockets */
 		for (auto& it : this->m_clients) {
-
 			closesocket(it.first);
 		}
 
@@ -36,6 +35,9 @@ void Communicator::startHandleRequests() {
 	this->bindAndListen();		// Initialize server and start listening
 
 	SOCKET clientSocket;
+
+	std::thread server(&Communicator::serverHandler, this);	// Deal with tasks in a seperate thread
+	server.detach();
 
 	/* Insert each client to our map and handle them separately */
 	for(;;) {
@@ -98,6 +100,21 @@ SOCKET Communicator::acceptClient() {
 }
 
 /*
+Handles server requests
+*/
+void Communicator::serverHandler() {
+	
+	/* Handle server requests, currently if EXIT is being requested we terminate the program */
+	for (;;) {
+
+		std::string data;
+		std::cin >> data;
+
+		if (data == "EXIT") { _exit(1); }
+	}
+}
+
+/*
 handleNewClient communicates with the client
 Input: Client socket
 */
@@ -109,9 +126,6 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 	for (;;) {
 
 		clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
-
-		if (clientMessage == "EXIT") { break; }
-
 		std::cout << clientMessage << std::endl;
 	}
 }

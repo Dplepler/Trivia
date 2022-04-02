@@ -28,6 +28,7 @@ private:
 	//RequestHandleFactory& m_handlerFactory;
 
 	void bindAndListen();
+	void serverHandler();
 	SOCKET acceptClient();
 	void handleNewClient(SOCKET clientSock);
 
