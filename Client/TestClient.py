@@ -1,6 +1,8 @@
 import socket
 
 
+
+CHUNK_SIZE = 1024
 # config
 IP_ADDR = '127.0.0.1'
 PORT = 8008
@@ -22,7 +24,7 @@ def main():
 
     # try/except for cases where the connection closes in the middle of the conversation
     try:
-        data = sock.recv(1024).decode()
+        data = sock.recv(CHUNK_SIZE).decode()
 
         # right now the protocol isn't supported, so instead the client only reads five bytes from the server 
         # and then returns Hello to the server if he happens to get Hello from the server as well.
