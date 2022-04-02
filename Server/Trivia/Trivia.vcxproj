@@ -156,7 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-<<<<<<< HEAD:Server/Trivia/Trivia.vcxproj
   <ItemGroup>
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IRequestHandler.h" />
@@ -168,8 +167,6 @@
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
   </ItemGroup>
-=======
->>>>>>> V1.0.1/SetupServer:Trivia/Trivia.vcxproj
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
