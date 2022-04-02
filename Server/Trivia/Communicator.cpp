@@ -21,6 +21,7 @@ Communicator::~Communicator() {
 
 		/* Close client sockets */
 		for (auto& it : this->m_clients) {
+			delete it.second;
 			closesocket(it.first);
 		}
 
@@ -110,7 +111,7 @@ void Communicator::serverHandler() {
 		std::string data;
 		std::cin >> data;
 
-		if (data == "EXIT") { _exit(1); }
+		if (data == "EXIT") { _exit(0); }
 	}
 }
 
@@ -120,10 +121,11 @@ Input: Client socket
 */
 void Communicator::handleNewClient(SOCKET clientSock) {
 
-	Helper::sendData(clientSock, START_MESSAGE);
 	std::string clientMessage;
 
 	for (;;) {
+
+		Helper::sendData(clientSock, START_MESSAGE);
 
 		clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
 		std::cout << clientMessage << std::endl;

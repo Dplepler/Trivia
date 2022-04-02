@@ -25,7 +25,6 @@ private:
 
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
-	//RequestHandleFactory& m_handlerFactory;
 
 	void bindAndListen();
 	void serverHandler();
