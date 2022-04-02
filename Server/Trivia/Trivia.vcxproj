@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -17,6 +17,25 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Communicator.cpp" />
+    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="LoginRequestHandler.cpp" />
+    <ClCompile Include="Response.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="WSAInitializer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Communicator.h" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="IRequestHandler.h" />
+    <ClInclude Include="LoginRequestHandler.h" />
+    <ClInclude Include="Response.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="WSAInitializer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -137,6 +156,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+<<<<<<< HEAD:Server/Trivia/Trivia.vcxproj
   <ItemGroup>
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IRequestHandler.h" />
@@ -148,6 +168,8 @@
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
   </ItemGroup>
+=======
+>>>>>>> V1.0.1/SetupServer:Trivia/Trivia.vcxproj
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
