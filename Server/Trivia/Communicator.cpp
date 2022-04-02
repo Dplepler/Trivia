@@ -103,15 +103,22 @@ Input: Client socket
 */
 void Communicator::handleNewClient(SOCKET clientSock) {
 
-	Helper::sendData(clientSock, START_MESSAGE);
+	
 	std::string clientMessage;
 
-	for (;;) {
+	try {
+		while (true) {
+			
+			Helper::sendData(clientSock, START_MESSAGE);
 
-		clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
+			clientMessage = Helper::getPartFromSocket(clientSock, strlen(START_MESSAGE));
 
-		if (clientMessage == "EXIT") { break; }
+			if (clientMessage == "EXIT") { break; }
 
-		std::cout << clientMessage << std::endl;
+			std::cout << clientMessage << std::endl;
+		}
+	}
+	catch (...) {
+		closesocket(clientSock);
 	}
 }
