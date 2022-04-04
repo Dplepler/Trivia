@@ -1,7 +1,7 @@
 # Trivia
 
-backend board: https://trello.com/b/Ai3WKl65/backend
-backend board: https://trello.com/b/tuJ9Gtmu/frontend
+backend board:  https://trello.com/b/Ai3WKl65/backend \
+frontend board: https://trello.com/b/tuJ9Gtmu/frontend
 
 ## Getting started
 
