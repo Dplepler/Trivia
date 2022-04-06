@@ -1,6 +1,14 @@
 #pragma once
 #include <iostream>
 
+enum class RESPONSE {
+
+	LOGIN,
+	SIGNUP,
+	ERROR,
+
+};
+
 typedef struct LOGIN_RESPONSE_STRUCT {
 
 	unsigned int status;
