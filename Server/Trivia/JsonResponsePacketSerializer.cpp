@@ -2,6 +2,11 @@
 
 using json = nlohmann::json;
 
+/*
+This instance of serializeResponse takes a login response and parses it into a buffer
+Input: Login response
+Output: Buffer containing response as a char vector
+*/
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 
 	json json;
@@ -15,6 +20,11 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 	buffer.insert(buffer.end(), json.dump().begin(), json.dump().end());
 }
 
+/*
+This instance of serializeResponse takes a sign up response and parses it into a buffer
+Input: Sign up response
+Output: Buffer containing response as a char vector
+*/
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse signupRes) {
 
 	json json;
@@ -28,6 +38,11 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse signupRes)
 	buffer.insert(buffer.end(), json.dump().begin(), json.dump().end());
 }
 
+/*
+This instance of serializeResponse takes an error response and parses it into a buffer
+Input: Error response
+Output: Buffer containing response as a char vector
+*/
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 
 	json json;
