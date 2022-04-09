@@ -22,6 +22,7 @@
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Response.cpp" />
     <ClCompile Include="Server.cpp" />
