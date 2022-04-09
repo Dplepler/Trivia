@@ -4,8 +4,10 @@
 using json = nlohmann::json;
 
 
-LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer jsonData) {
+LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer clientMsg) {
 	
+	Buffer jsonData(clientMsg.begin() + 5, clientMsg.end());
+
 	json j = json::parse(jsonData);
 
 	LoginRequest logReq{
@@ -17,7 +19,9 @@ LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer jsonD
 }
 
 
-SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer jsonData) {
+SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer clientMsg) {
+
+	Buffer jsonData(clientMsg.begin() + 5, clientMsg.end());
 
 	json j = json::parse(jsonData);
 
