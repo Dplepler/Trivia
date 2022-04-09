@@ -3,19 +3,8 @@
 
 
 #include "json.hpp"
-#include <vector>
-
-
-
-typedef struct RequestInfo {
-
-	int msgCode;
-
-	std::string timeOf;
-
-	std::vector<char> msgContent;
-
-};
+#include "IRequestHandler.h"
+#include <ctime>
 
 
 

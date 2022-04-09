@@ -10,6 +10,10 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 
 
+enum RequestCodes {LoginRequestCode, SignupRequestCode};
+
+
+
 class IRequestHandler
 {
 
@@ -18,8 +22,8 @@ public:
 	IRequestHandler() = default;
 	~IRequestHandler() = default;
 
-	virtual bool isRequestRelevant(RequestInfo info) const = 0;
-	virtual RequestResult handleRequest(RequestInfo info) = 0;
+	virtual bool isRequestRelevant(RequestInfo reqInfo) const = 0;
+	virtual RequestResult handleRequest(RequestInfo reqInfo) = 0;
 
 
 };
