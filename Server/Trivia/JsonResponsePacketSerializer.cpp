@@ -65,9 +65,7 @@ Input: Buffer, length to parse into buffer
 */
 void JsonResponsePacketSerializer::parseLength(Buffer& buffer, unsigned int length) {
 
-	std::string lengthBuff = std::to_string(length);
-
-	for (unsigned int i = 0; i < 4; i++) {
-		buffer.push_back(lengthBuff[i]);
+	for (int8_t i = SHIFT_MAX; i > 0; i -= BYTE_BITS) {
+		buffer.push_back(length >> i & BYTE);
 	}
 }
