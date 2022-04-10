@@ -9,14 +9,14 @@ public:
 	LoginRequestHandler() = default;
 	~LoginRequestHandler() = default;
 
-	bool isRequestRelevant(RequestInfo info) const override;
+	bool isRequestRelevant(RequestInfo reqInfo) const override;
 	RequestResult handleRequest(RequestInfo info) override;
 
 
 private:
 
-	RequestResult login(RequestInfo info);
-	RequestResult signup(RequestInfo info);
+	RequestResult login(RequestInfo reqInfo);
+	RequestResult signup(RequestInfo reqInfo);
 
 
 };
