@@ -2,7 +2,7 @@
 #include <vector>
 #include <ctime>
 
-typedef std::vector<char> Buffer;
+typedef std::vector<unsigned char> Buffer;
 typedef unsigned int RequestId;
 
 typedef struct REQUEST_RESULT_STRUCT RequestResult;
