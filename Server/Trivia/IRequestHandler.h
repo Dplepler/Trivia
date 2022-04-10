@@ -10,7 +10,7 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 
 
-enum RequestCodes {LoginRequestCode, SignupRequestCode};
+enum RequestCodes {SignupRequestCode = 101, LoginRequestCode};
 
 
 
@@ -27,6 +27,9 @@ public:
 
 
 };
+
+
+// result and info structs, used for info to give to handlers and results to return from handlers
 
 struct REQUEST_RESULT_STRUCT {
 

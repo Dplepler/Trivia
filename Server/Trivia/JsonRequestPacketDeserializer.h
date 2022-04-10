@@ -4,10 +4,10 @@
 
 #include "json.hpp"
 #include "IRequestHandler.h"
-#include <ctime>
 
 
 
+// request structs for every request info to deserialize from json
 
 typedef struct LoginRequest {
 
@@ -27,10 +27,11 @@ typedef struct SignupRequest {
 	std::string password;
 
 	std::string email;
-};
+} SignupRequest;
 
 
 
+// deserializer itself
 
 class JsonRequestPacketDeserializer {
 
