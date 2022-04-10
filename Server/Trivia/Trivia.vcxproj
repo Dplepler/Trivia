@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -23,6 +23,7 @@
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Response.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="IRequestHandler.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
+    <ClInclude Include="JsonRequestPacketDeserializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="Response.h" />
     <ClInclude Include="Server.h" />

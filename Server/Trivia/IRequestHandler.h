@@ -10,6 +10,10 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 
 
+enum RequestCodes {SignupRequestCode = 101, LoginRequestCode};
+
+
+
 class IRequestHandler
 {
 
@@ -18,11 +22,14 @@ public:
 	IRequestHandler() = default;
 	~IRequestHandler() = default;
 
-	virtual bool isRequestRelevant(RequestInfo info) const = 0;
-	virtual RequestResult handleRequest(RequestInfo info) = 0;
+	virtual bool isRequestRelevant(RequestInfo reqInfo) const = 0;
+	virtual RequestResult handleRequest(RequestInfo reqInfo) = 0;
 
 
 };
+
+
+// result and info structs, used for info to give to handlers and results to return from handlers
 
 struct REQUEST_RESULT_STRUCT {
 
