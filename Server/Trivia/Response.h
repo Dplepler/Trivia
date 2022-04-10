@@ -3,9 +3,9 @@
 
 enum class RESPONSE {
 
+	SIGNUP = 201,
 	LOGIN,
-	SIGNUP,
-	ERROR,
+	ERROR = 400,
 
 };
 

@@ -10,7 +10,7 @@ Output: Buffer containing response as a char vector
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 
 	json json;
-	Buffer buffer;
+	Buffer buffer; 
 
 	buffer.push_back((char)RESPONSE::LOGIN);
 	json["status"] = loginRes.status;
