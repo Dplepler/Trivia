@@ -31,7 +31,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse signupRes)
 	json json;
 	Buffer buffer;
 
-	buffer.push_back((char)RESPONSE::LOGIN);
+	buffer.push_back((char)RESPONSE::SIGNUP);
 	json["status"] = signupRes.status;
 
 	parseLength(buffer, json.size());
@@ -50,7 +50,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 	json json;
 	Buffer buffer;
 
-	buffer.push_back((char)RESPONSE::LOGIN);
+	buffer.push_back((char)RESPONSE::ERROR);
 	json["message"] = errorRes.message;
 
 	parseLength(buffer, json.size());
