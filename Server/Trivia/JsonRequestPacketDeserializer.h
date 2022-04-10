@@ -6,6 +6,9 @@
 #include "IRequestHandler.h"
 
 
+#define MSG_HEADER_LEN 5
+
+
 
 // request structs for every request info to deserialize from json
 

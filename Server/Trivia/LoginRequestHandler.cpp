@@ -5,10 +5,7 @@
 
 // checks that the request code is LoginRequestCode or SignupRequestCode, aka the request is revelevant to this handler
 bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const { 
-	if (reqInfo.id == LoginRequestCode || reqInfo.id == SignupRequestCode) {
-		return true;
-	}
-	return false;
+	return (reqInfo.id == LoginRequestCode || reqInfo.id == SignupRequestCode);
 }
 
 
