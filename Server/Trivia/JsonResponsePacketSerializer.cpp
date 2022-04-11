@@ -77,7 +77,7 @@ Input: Buffer, length to parse into buffer
 */
 void JsonResponsePacketSerializer::parseLength(Buffer& buffer, unsigned int length) {
 
-	for (int8_t i = SHIFT_MAX; i >= 0; i -= BYTE_BITS) {
+	for (int8_t i = MAX_SHIFT; i >= 0; i -= BYTE_BITS) {
 		buffer.push_back(length >> i & BYTE);
 	}
 }

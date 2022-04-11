@@ -3,12 +3,12 @@
 #include "JsonResponsePacketSerializer.h"
 #include "JsonRequestPacketDeserializer.h"
 
-typedef enum RESPONSE_CODES {
+typedef enum REQUEST_STATUS {
 
 	FAILURE,
 	SUCCESS
 
-} ResponseCode;
+} REQUEST_STATUS;
 
 
 class LoginRequestHandler : public IRequestHandler

@@ -2,6 +2,7 @@
 #include "json.hpp"
 #include "IRequestHandler.h"
 #include "Response.h"
+#include "Helper.h"
 
 
 /*
