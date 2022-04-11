@@ -90,12 +90,12 @@ def main():
         sock.send(fullMsg)
 
         msg = sock.recv(CHUNK_SIZE)
-        
-        # deserializes msg
-        msgData = json.loads(msg)
 
-        for(key, value) in msgData:
-            print("{}: {}".format(key, value))
+        # deserializes msg
+        msgData = json.loads(msg[5: ].decode('utf-8'))
+
+        for key in msgData:
+            print("{} -> {}".format(key, msgData[key]))
 
     
     except Exception:
@@ -108,3 +108,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
