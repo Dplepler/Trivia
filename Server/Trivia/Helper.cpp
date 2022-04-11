@@ -30,7 +30,32 @@ void Helper::send_update_message_to_client(const SOCKET sc, const string& file_c
 // returns the data as int
 int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
 {
-	return atoi(getPartFromSocket(sc, bytesNum, 0).c_str());
+	int value = 0;
+	
+	if (bytesNum == 0)
+	{
+		return 0;
+	}
+
+	char* data = new char[bytesNum + 1];
+
+	int res = recv(sc, data, bytesNum, 0);
+	
+	if (res == INVALID_SOCKET)
+	{
+		std::string s = "Error while recieving from socket: ";
+		s += std::to_string(sc);
+		throw std::exception(s.c_str());
+	}
+	
+	for (uint8_t i = 0; i < sizeof(unsigned int); i++) {
+
+		value |= (data[i] << (MAX_SHIFT - (i * BYTE_BITS)));
+	}
+
+	delete[] data;
+	return value;
+
 }
 
 // recieve data from socket according byteSize

@@ -2,11 +2,8 @@
 #include "json.hpp"
 #include "IRequestHandler.h"
 #include "Response.h"
+#include "Helper.h"
 
-#define BYTE 0xff
-#define BYTE_BITS 0x8
-
-#define SHIFT_MAX 24
 
 /*
 Helper class to serialize all types of responses

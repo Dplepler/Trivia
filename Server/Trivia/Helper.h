@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <WinSock2.h>
 
+#define MAX_SHIFT 24
+#define BYTE 0xff
+#define BYTE_BITS 8
 
 class Helper
 {

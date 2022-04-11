@@ -1,5 +1,15 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "JsonResponsePacketSerializer.h"
+#include "JsonRequestPacketDeserializer.h"
+
+typedef enum REQUEST_STATUS {
+
+	FAILURE,
+	SUCCESS
+
+} REQUEST_STATUS;
+
 
 class LoginRequestHandler : public IRequestHandler
 {
