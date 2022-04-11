@@ -1,8 +1,6 @@
 #include "LoginRequestHandler.h"
 
 
-
-
 // checks that the request code is LoginRequestCode or SignupRequestCode, aka the request is revelevant to this handler
 bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const { 
 	return (reqInfo.id == LoginRequestCode || reqInfo.id == SignupRequestCode);
@@ -11,10 +9,23 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const {
 
 
 RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) { 
-	// since login/signup logic and next handlers don't exist yet, temporary code for next missions to replace
-	Buffer buf;
-	buf.push_back((char)1);
-	RequestResult result{buf, nullptr};
+	
+	RequestResult result;
+	SignupRequest signupReq;
+	LoginRequest loginReq;
+	
+
+	if (reqInfo.id == SignupRequestCode) {
+
+		signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(reqInfo.buffer);
+		result.response = JsonResponsePacketSerializer::serializeResponse(SignupResponse{ SUCCESS });
+	}
+	else {
+
+		loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(reqInfo.buffer);
+		result.response = JsonResponsePacketSerializer::serializeResponse(LoginResponse{ SUCCESS });
+	}
+
 	return result;
 }
 

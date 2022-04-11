@@ -1,5 +1,15 @@
 #pragma once
 #include "IRequestHandler.h"
+#include "JsonResponsePacketSerializer.h"
+#include "JsonRequestPacketDeserializer.h"
+
+typedef enum RESPONSE_CODES {
+
+	FAILURE,
+	SUCCESS
+
+} ResponseCode;
+
 
 class LoginRequestHandler : public IRequestHandler
 {
