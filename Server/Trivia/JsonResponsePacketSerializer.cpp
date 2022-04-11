@@ -50,7 +50,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 	json json;
 	Buffer buffer;
 
-	buffer.push_back((char)RESPONSE::ERROR);
+	buffer.push_back((char)RESPONSE::ERROR_RES);
 	json["message"] = errorRes.message;
 
 	parseLength(buffer, json.size());
