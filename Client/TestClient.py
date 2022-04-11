@@ -1,8 +1,8 @@
 import socket
 import json
+from unittest import skip
 
 
-CHUNK_SIZE = 1024
 # config
 IP_ADDR = '127.0.0.1'
 PORT = 8008
@@ -11,8 +11,15 @@ PORT = 8008
 LOGIN_CODE = 102
 SIGNUP_CODE = 101
 
+# General constants
+
+CHUNK_SIZE = 1024
+LOGIN_OPTION = 1
+SIGNUP_OPTION = 2
+HEADER_LEN = 5
 
 
+# Gets Login info from the user(username, password) and serializes it to a json format string
 def createLoginData():
     username = input("Please enter username: ")
     password = input("Please enter password: ")
@@ -21,6 +28,7 @@ def createLoginData():
 
 
 
+# Gets Signup info from the user(username, password and email) and serializes it to a json format string
 def createSignupData():
     username = input("Please enter username: ")
     password = input("Please enter password: ")
@@ -43,17 +51,24 @@ def main():
         return
 
 
+    # getting user option (Login/Signup)
     print("Please enter wether to send login msg or signup msg:")
     print("login - 1")
     print("signup - 2")
     option = int(input("Enter option here: "))
-    while(option != 1) and (option != 2):
+    while(option != LOGIN_OPTION) and (option != SIGNUP_OPTION):
         print("Invalid option!\nplease enter option again")
-        option = input("Enter option here: ")
+        try:
+            option = input("Enter option here: ")
+        
+        except Exception:
+            skip
 
 
 
-    if option == 1:
+
+    # Getting the respective info from the user based on the option
+    if option == LOGIN_OPTION:
         jsonData = createLoginData()
         code = LOGIN_CODE
     
@@ -62,20 +77,25 @@ def main():
         code = SIGNUP_CODE
 
     
+    
     msgLen = len(jsonData)
-    print(msgLen)
 
 
-    fullMsg = (code).to_bytes(1, byteorder = "big") + (msgLen).to_bytes(4, byteorder = "big") + bytes(jsonData, 'utf-8')
+    # Builds the full, serialized message
+    fullMsg = (code).to_bytes(1, byteorder = "big") + (msgLen).to_bytes(HEADER_LEN - 1, byteorder = "big") + bytes(jsonData, 'utf-8')
 
     # try/except for cases where the connection closes in the middle of the conversation
     try:
         
         sock.send(fullMsg)
 
-        msg = sock.recv(1024)
+        msg = sock.recv(CHUNK_SIZE)
         
-        print(msg)
+        # deserializes msg
+        msgData = json.loads(msg)
+
+        for(key, value) in msgData:
+            print("{}: {}".format(key, value))
 
     
     except Exception:
@@ -83,9 +103,6 @@ def main():
     
     sock.close()
         
-
-
-
 
 
 
