@@ -21,7 +21,7 @@ Communicator::~Communicator() {
 
 		/* Close client sockets */
 		for (auto& it : this->m_clients) {
-			delete it.second;
+			if (it.second) { delete it.second; }
 			closesocket(it.first);
 		}
 
@@ -66,7 +66,7 @@ void Communicator::bindAndListen() {
 	struct sockaddr_in sa = { 0 };
 
 	sa.sin_port = htons(SERVER_PORT);	// port that server will listen for
-	sa.sin_family = AF_INET;	// must be AF_INET
+	sa.sin_family = AF_INET;			// must be AF_INET
 	sa.sin_addr.s_addr = INADDR_ANY;    // when there are few ip's for the machine. We will use always "INADDR_ANY"
 
 	// Connects between the socket and the configuration (port and etc..)
@@ -122,16 +122,37 @@ Input: Client socket
 */
 void Communicator::handleNewClient(SOCKET clientSock) {
 
-	std::string clientMessage;
+	std::string json;
+	std::string codeBuffer;
+	std::string lengthBuffer;
+	unsigned int length;
+	RequestInfo req;
+
+	RequestResult result;
 
 	try {
 
 		for (;;) {
 
-			Helper::sendData(clientSock, START_MESSAGE);
+			codeBuffer = Helper::getStringPartFromSocket(clientSock, 1);	// Get code
+			req.id = (RequestId)codeBuffer[0];
+			time(&req.time);
+			lengthBuffer = Helper::getStringPartFromSocket(clientSock, MSG_HEADER_LEN - 1);
+			std::memcpy(&length, lengthBuffer.c_str(), MSG_HEADER_LEN - 1);		// Get parsed length
 
-			clientMessage = Helper::getStringPartFromSocket(clientSock, strlen(START_MESSAGE));
-			std::cout << clientMessage << std::endl;
+			json = Helper::getStringPartFromSocket(clientSock, length);
+			req.buffer.insert(req.buffer.begin(), json.begin(), json.end());
+			
+
+			if (this->m_clients[clientSock]->isRequestRelevant(req)) {
+				result = this->m_clients[clientSock]->handleRequest(req);
+			}
+			else {
+				result.response = JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Irrelevent request" }));
+				result.newHandler = nullptr;
+			}
+				
+			Helper::sendData(clientSock, std::string(result.response.begin(), result.response.end()));
 		}
 	}
 	catch (...) { 
