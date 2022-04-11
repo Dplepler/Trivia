@@ -16,11 +16,11 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 	buffer.push_back((char)RESPONSE::LOGIN);
 	json["status"] = loginRes.status;
 
-	jsonString = json.dump();
+	jsonString = json.dump();	// It is crucial to not dump directly, we should put the json into a string first
 
-	parseLength(buffer, jsonString.size());
+	parseLength(buffer, jsonString.size());		// Insert length to buffer
 
-	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());	// Insert json contents to buffer
 
 	return buffer;
 }
@@ -62,12 +62,11 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 	buffer.push_back((char)RESPONSE::ERROR_RES);
 	json["message"] = errorRes.message;
 
-	
-	jsonString = json.dump();
+	jsonString = json.dump();	
 
-	parseLength(buffer, jsonString.size());
+	parseLength(buffer, jsonString.size());		
 
-	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());	
 
 	return buffer;
 }

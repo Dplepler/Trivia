@@ -137,8 +137,9 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 			time(&req.time);
 			length = Helper::getIntPartFromSocket(clientSock, MSG_HEADER_LEN - 1); // Get parsed length
 
+			/* Insert Json to buffer */
 			json = Helper::getStringPartFromSocket(clientSock, length);
-			req.buffer.insert(req.buffer.begin(), json.begin(), json.end());
+			req.buffer.insert(req.buffer.begin(), json.begin(), json.end());	
 
 			if (this->m_clients[clientSock]->isRequestRelevant(req)) {
 				result = this->m_clients[clientSock]->handleRequest(req);

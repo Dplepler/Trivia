@@ -48,10 +48,10 @@ int Helper::getIntPartFromSocket(const SOCKET sc, const int bytesNum)
 		throw std::exception(s.c_str());
 	}
 	
-	value = int((unsigned char)(data[0]) << 24 |
-		(unsigned char)(data[1]) << 16 |
-		(unsigned char)(data[2]) << 8 |
-		(unsigned char)(data[3]));
+	for (uint8_t i = 0; i < sizeof(unsigned int); i++) {
+
+		value |= (data[i] << (MAX_SHIFT - (i * BYTE_BITS)));
+	}
 
 	delete[] data;
 	return value;
