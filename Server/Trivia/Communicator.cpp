@@ -124,7 +124,6 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 	std::string json;
 	std::string codeBuffer;
-	std::string lengthBuffer;
 	unsigned int length;
 	RequestInfo req;
 
@@ -134,15 +133,12 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 		for (;;) {
 
-			codeBuffer = Helper::getStringPartFromSocket(clientSock, 1);	// Get code
-			req.id = (RequestId)codeBuffer[0];
+			req.id = Helper::getStringPartFromSocket(clientSock, 1)[0];	// Get code
 			time(&req.time);
-			lengthBuffer = Helper::getStringPartFromSocket(clientSock, MSG_HEADER_LEN - 1);
-			std::memcpy(&length, lengthBuffer.c_str(), MSG_HEADER_LEN - 1);		// Get parsed length
+			length = Helper::getIntPartFromSocket(clientSock, MSG_HEADER_LEN - 1); // Get parsed length
 
 			json = Helper::getStringPartFromSocket(clientSock, length);
 			req.buffer.insert(req.buffer.begin(), json.begin(), json.end());
-			
 
 			if (this->m_clients[clientSock]->isRequestRelevant(req)) {
 				result = this->m_clients[clientSock]->handleRequest(req);
@@ -151,7 +147,7 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 				result.response = JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Irrelevent request" }));
 				result.newHandler = nullptr;
 			}
-				
+
 			Helper::sendData(clientSock, std::string(result.response.begin(), result.response.end()));
 		}
 	}

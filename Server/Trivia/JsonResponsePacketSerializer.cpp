@@ -10,13 +10,17 @@ Output: Buffer containing response as a char vector
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 
 	json json;
+	std::string jsonString;
 	Buffer buffer; 
 
 	buffer.push_back((char)RESPONSE::LOGIN);
 	json["status"] = loginRes.status;
 
-	parseLength(buffer, json.size());
-	buffer.insert(buffer.end(), json.dump().begin(), json.dump().end());
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
 
 	return buffer;
 }
@@ -29,13 +33,17 @@ Output: Buffer containing response as a char vector
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse signupRes) {
 
 	json json;
+	std::string jsonString;
 	Buffer buffer;
 
 	buffer.push_back((char)RESPONSE::SIGNUP);
 	json["status"] = signupRes.status;
 
-	parseLength(buffer, json.size());
-	buffer.insert(buffer.end(), json.dump().begin(), json.dump().end());
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
 
 	return buffer;
 }
@@ -48,13 +56,18 @@ Output: Buffer containing response as a char vector
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 
 	json json;
+	std::string jsonString;
 	Buffer buffer;
 
 	buffer.push_back((char)RESPONSE::ERROR_RES);
 	json["message"] = errorRes.message;
 
-	parseLength(buffer, json.size());
-	buffer.insert(buffer.end(), json.dump().begin(), json.dump().end());
+	
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
 
 	return buffer;
 }
@@ -65,7 +78,7 @@ Input: Buffer, length to parse into buffer
 */
 void JsonResponsePacketSerializer::parseLength(Buffer& buffer, unsigned int length) {
 
-	for (int8_t i = SHIFT_MAX; i > 0; i -= BYTE_BITS) {
+	for (int8_t i = SHIFT_MAX; i >= 0; i -= BYTE_BITS) {
 		buffer.push_back(length >> i & BYTE);
 	}
 }

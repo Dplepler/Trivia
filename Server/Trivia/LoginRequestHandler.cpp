@@ -14,6 +14,8 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) {
 	SignupRequest signupReq;
 	LoginRequest loginReq;
 	
+	result.newHandler = nullptr;
+
 
 	if (reqInfo.id == SignupRequestCode) {
 

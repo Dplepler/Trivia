@@ -4,7 +4,7 @@
 #include "Response.h"
 
 #define BYTE 0xff
-#define BYTE_BITS 0x8
+#define BYTE_BITS 8
 
 #define SHIFT_MAX 24
 
