@@ -8,8 +8,8 @@ IP_ADDR = '127.0.0.1'
 PORT = 8008
 
 # msg codes
-LOGIN_CODE = 0
-SIGNUP_CODE = 1
+LOGIN_CODE = 102
+SIGNUP_CODE = 101
 
 
 
@@ -72,6 +72,10 @@ def main():
     try:
         
         sock.send(fullMsg)
+
+        msg = sock.recv(1024)
+        
+        print(msg)
 
     
     except Exception:
