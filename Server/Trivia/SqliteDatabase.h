@@ -28,12 +28,11 @@ public:
 
 	~SqliteDatabase();
 
+	void addNewUser(std::string newUsername, std::string newPassword, std::string newEmail) override;
 
 	bool doesUserExist(std::string username) const override;
 
 	bool doesPasswordMatch(std::string username, std::string password) const override;
-
-	void addNewUser(std::string newUsername, std::string newPassword, std::string newEmail) override;
 
 
 };
