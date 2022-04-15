@@ -6,7 +6,7 @@
 SqliteDatabase::SqliteDatabase() {
 
 	
-	int dbExists = _access(DB_NAME_SQLITE, 0);
+	int doesntExist = _access(DB_NAME_SQLITE, 0);
 
 	int res = sqlite3_open(DB_NAME_SQLITE, &db);
 	if (res != SQLITE_OK) {
@@ -15,7 +15,7 @@ SqliteDatabase::SqliteDatabase() {
 	}
 
 
-	if (dbExists != 0) {
+	if (doesntExist) {
 		setupDb();
 	}
 }
@@ -53,7 +53,7 @@ void SqliteDatabase::addNewUser(std::string newUsername, std::string newPassword
 	char* errMsg = nullptr;
 
 	// In cases where the user enters an epty string for any of the info, which should be considered invalid
-	if (newUsername == "" || newPassword == "" || newEmail == "") { return; }
+	if (newUsername.empty() || newPassword.empty() || newEmail.empty()) { return; }
 
 	int res = sqlite3_exec(db, insertQuery.c_str(), nullptr, nullptr, &errMsg);
 
