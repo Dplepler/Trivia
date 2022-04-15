@@ -3,11 +3,17 @@
 
 #include "IDatabase.h"
 #include "sqlite3.h"
+#include "JsonRequestPacketDeserializer.h"
 #include <iostream>
 #include <io.h>
 
 
 #define DB_NAME_SQLITE "TriviaDB.sqlite"
+
+
+
+int userCallback(void* data, int argc, char** argv, char** azColName);
+
 
 
 class SqliteDatabase : public IDatabase {
