@@ -14,6 +14,7 @@
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
     <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
@@ -30,5 +31,6 @@
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="LoggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
   </ItemGroup>
 </Project>
