@@ -1,12 +1,13 @@
 #include "LoginRequestHandler.h"
 
+LoginRequestHandler::LoginRequestHandler(IDatabase* db) {
+	this->m_handlerFactory = new RequestHandlerFactory(db);
+}
 
 // checks that the request code is LoginRequestCode or SignupRequestCode, aka the request is revelevant to this handler
 bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const { 
 	return (reqInfo.id == LoginRequestCode || reqInfo.id == SignupRequestCode);
 }
-
-
 
 RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) { 
 	
