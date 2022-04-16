@@ -13,6 +13,7 @@
     <ClCompile Include="WSAInitializer.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="SqliteDatabase.cpp" />
+    <ClCompile Include="RequestHandlerFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h" />
@@ -28,5 +29,6 @@
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="SqliteDatabase.h" />
     <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="RequestHandlerFactory.h" />
   </ItemGroup>
 </Project>

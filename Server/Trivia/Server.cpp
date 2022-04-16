@@ -1,11 +1,8 @@
 #include "Server.h"
 
-Server::Server() {
-
-	this->m_communicator = new Communicator();
-}
+Server::Server() : m_database(new SqliteDatabase()), m_handlerFactory(m_database), m_communicator(m_handlerFactory) { }
 
 void Server::run() {
 
-	this->m_communicator->startHandleRequests();
+	this->m_communicator.startHandleRequests();
 }
