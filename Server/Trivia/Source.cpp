@@ -8,7 +8,7 @@ int main() {
 	try {
 		
 		WSAInitializer wsaInit;
-		Server server = Server();
+		Server server;
 		server.run();
 	}
 	catch (std::exception& e) {
