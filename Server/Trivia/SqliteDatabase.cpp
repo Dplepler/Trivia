@@ -70,6 +70,8 @@ bool SqliteDatabase::doesUserExist(std::string username) const {
 	char* errMsg = nullptr;
 	SignupRequest userInfo { "", "", "" };
 
+	if (username.empty()) { return false; }
+
 	int res = sqlite3_exec(db, selectQuery.c_str(), userCallback, &userInfo, &errMsg);
 
 	if (res != SQLITE_OK) {
@@ -87,6 +89,9 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 	std::string selectQuery = "SELECT * FROM Users\nWHERE Username = '" + username + "';";
 	char* errMsg = nullptr;
 	SignupRequest userInfo{ "", "", "" };
+
+	if (username.empty()) { return false; }
+
 	int res = sqlite3_exec(db, selectQuery.c_str(), userCallback, &userInfo, &errMsg);
 
 	if (res != SQLITE_OK) {
