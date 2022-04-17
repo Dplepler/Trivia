@@ -6,6 +6,7 @@ LoginManager::LoginManager(IDatabase* db): m_database(db) { }
 
 
 
+// acceses db and inserts a new user record, thus creating an new account/user
 bool LoginManager::signup(std::string username, std::string password, std::string email) {
 	if (m_database->doesUserExist(username) || username.empty() || password.empty() || email.empty()) { return false; }
 	m_database->addNewUser(username, password, email);
@@ -14,6 +15,8 @@ bool LoginManager::signup(std::string username, std::string password, std::strin
 }
 
 
+
+// acceses db to validate login info of a user
 bool LoginManager::login(std::string username, std::string password) {
 	if (m_database->doesUserExist(username) && m_database->doesPasswordMatch(username, password)) {
 		m_loggedUsers.push_back(LoggedUser(username));
@@ -23,6 +26,8 @@ bool LoginManager::login(std::string username, std::string password) {
 }
 
 
+
+// removes a connected user out of the logged user vector by username, thus tops to track connection with im
 void LoginManager::logout(std::string username) {
 	bool foundUser = false;
 	if (!m_database->doesUserExist(username)) { return; }
