@@ -14,6 +14,8 @@ public:
 
 	std::string getUsername() const;
 
+	bool operator==(LoggedUser otherUser);
+
 
 private:
 

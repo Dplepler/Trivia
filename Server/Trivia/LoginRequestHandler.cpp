@@ -1,7 +1,8 @@
 #include "LoginRequestHandler.h"
 
-LoginRequestHandler::LoginRequestHandler(IDatabase* db) {
-	this->m_handlerFactory = new RequestHandlerFactory(db);
+LoginRequestHandler::LoginRequestHandler(IDatabase* db, RequestHandlerFactory* factory) {
+	this->m_handlerFactory = factory;
+	m_loginManager = m_handlerFactory->getLoginManager();
 }
 
 // checks that the request code is LoginRequestCode or SignupRequestCode, aka the request is revelevant to this handler
@@ -12,21 +13,15 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const {
 RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) { 
 	
 	RequestResult result;
-	SignupRequest signupReq;
-	LoginRequest loginReq;
 	
 	result.newHandler = nullptr;
 
 
 	if (reqInfo.id == SignupRequestCode) {
-
-		signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(reqInfo.buffer);
-		result.response = JsonResponsePacketSerializer::serializeResponse(SignupResponse{ SUCCESS });
+		result = signup(reqInfo);
 	}
 	else {
-
-		loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(reqInfo.buffer);
-		result.response = JsonResponsePacketSerializer::serializeResponse(LoginResponse{ SUCCESS });
+		result = login(reqInfo);
 	}
 
 	return result;
@@ -34,6 +29,27 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) {
 
 
 
-RequestResult LoginRequestHandler::login(RequestInfo reqInfo) { return RequestResult(); }
+RequestResult LoginRequestHandler::login(RequestInfo reqInfo) { 
+	LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(reqInfo.buffer);
+	SignupResponse res{ FAILURE };
+	IRequestHandler* newHandler = nullptr;
+	if (m_loginManager->login(loginReq.username, loginReq.password)) {
+		res.status = SUCCESS;
+		// should be changed in the future to menu handler or the matching handler 
+		newHandler = m_handlerFactory->createLoginRequestHandler();
+	}
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(res), newHandler };
+}
 
-RequestResult LoginRequestHandler::signup(RequestInfo reqInfo) { return RequestResult(); }
+
+RequestResult LoginRequestHandler::signup(RequestInfo reqInfo) { 
+	SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(reqInfo.buffer);
+	LoginResponse res{ FAILURE };
+	IRequestHandler* newHandler = nullptr;
+	if (m_loginManager->signup(signupReq.username, signupReq.password, signupReq.email)) {
+		res.status = SUCCESS;
+		// should be changed in the future to menu handler or the matching handler 
+		newHandler = m_handlerFactory->createLoginRequestHandler();
+	}
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(res), newHandler };
+}

@@ -142,11 +142,17 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 			req.buffer.insert(req.buffer.begin(), json.begin(), json.end());	
 
 			if (this->m_clients[clientSock]->isRequestRelevant(req)) {
-				result = this->m_clients[clientSock]->handleRequest(req);
+				result = this->m_clients[clientSock]->handleRequest(req); 
 			}
 			else {
 				result.response = JsonResponsePacketSerializer::serializeResponse(ErrorResponse({ "Irrelevent request" }));
 				result.newHandler = nullptr;
+			}
+
+			if (result.newHandler != nullptr) {
+				std::unique_lock<std::mutex> clientLock(m_clientLock);
+				delete m_clients[clientSock];
+				m_clients[clientSock] = result.newHandler;
 			}
 
 			Helper::sendData(clientSock, std::string(result.response.begin(), result.response.end()));
