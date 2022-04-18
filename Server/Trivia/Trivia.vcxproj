@@ -24,6 +24,8 @@
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
+    <ClCompile Include="LoggedUser.cpp" />
+    <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="RequestHandlerFactory.cpp" />
     <ClCompile Include="Response.cpp" />
@@ -41,6 +43,8 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="JsonRequestPacketDeserializer.h" />
+    <ClInclude Include="LoggedUser.h" />
+    <ClInclude Include="LoginManager.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Response.h" />
