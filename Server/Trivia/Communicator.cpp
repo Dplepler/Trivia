@@ -3,7 +3,7 @@
 /*
 Constructor to start a server socket
 */
-Communicator::Communicator() {
+Communicator::Communicator(RequestHandlerFactory& handlerFactory) : m_handlerFactory(handlerFactory) {
 
 	this->m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -49,7 +49,7 @@ void Communicator::startHandleRequests() {
 
 		/* Insert a client */
 		std::unique_lock<std::mutex> lock(this->m_clientLock);
-		this->m_clients.insert(std::pair<SOCKET, IRequestHandler*>(clientSocket, new LoginRequestHandler()));
+		this->m_clients.insert(std::pair<SOCKET, IRequestHandler*>(clientSocket, this->m_handlerFactory.createLoginRequestHandler()));
 		lock.unlock();
 
 		/* Handle new client */

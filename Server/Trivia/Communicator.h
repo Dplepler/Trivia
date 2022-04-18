@@ -20,7 +20,7 @@ class Communicator {
 
 public:
 
-	Communicator();
+	Communicator(RequestHandlerFactory& handlerFactory);
 	~Communicator();
 
 	void startHandleRequests();
@@ -29,6 +29,8 @@ private:
 
 	SOCKET m_serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
+
+	RequestHandlerFactory& m_handlerFactory;
 
 	std::mutex m_clientLock;
 
