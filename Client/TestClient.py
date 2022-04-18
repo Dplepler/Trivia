@@ -28,29 +28,25 @@ def createLoginData(username, password):
 
 
 # Gets Signup info from the user(username, password and email) and serializes it to a json format string
-def createSignupData():
-    username = input("Please enter username: ")
-    password = input("Please enter password: ")
-    email = input("Please enter email address: ")
+def createSignupData(username, password, email):
+   
     data = {"username" : username, "password" : password, "mail" : email}
     return json.dumps(data)
 
 
-def sendMessage(fullMsg):
+def sendMessage(sock, fullMsg):
 
     # try/except for cases where the connection closes in the middle of the conversation
     try:
         
         sock.send(fullMsg)
-
         msg = sock.recv(CHUNK_SIZE)
 
         # deserializes msg and return it
         return json.loads(msg[5: ].decode('utf-8'))
 
-    
     except Exception:
-        print("Connection with socket suddenly closed")
+        print("Server disconnected :(")
 
 
 def buildMessage(jsonData, msgLen, code):
@@ -76,61 +72,57 @@ def main():
         print("Server offline!")
         return
     
-
+    # TEST 1: Check if you can log in as an unregistered user
     print("Test 1: Entering an unregistered user")
        
     jsonData = createLoginData("Shmoolik", "Shm00l1k")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), LOGIN_CODE))
-    printServerMessage(serverMessage)
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), LOGIN_CODE))
+    printServerMessage(serverMsg)
     
+    # TEST 2: Try to sign up twice as the same username
     print("Test 2: Trying to sign up the same user twice")
    
-    jsonData = createSignupData("Nahum", "Takum")
-    sendMessage(buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
+    jsonData = createSignupData("Nahum", "Takum", "Nahi@walla.com")
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
+    printServerMessage(serverMsg)
     
-    jsonData = createSignupData("Nahum", "Takum")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
-    printServerMessage(serverMessage)
+    jsonData = createSignupData("Nahum", "Takum", "Nahi@walla.com")
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
+    printServerMessage(serverMsg)
 
-    
+    # TEST 3: Try to log in to a user that is already logged
     print("Test 3: Trying to log in logged user")
     
     jsonData = createLoginData("Nahum", "Takum")
-    sendMessage(buildMessage(jsonData, len(jsonData), LOGIN_CODE))
+    sendMessage(sock, buildMessage(jsonData, len(jsonData), LOGIN_CODE))
     
     jsonData = createLoginData("Nahum", "Takum")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), LOGIN_CODE))
-    printServerMessage(serverMessage)
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), LOGIN_CODE))
+    printServerMessage(serverMsg)
     
-    print("Test 4: entering 4 bad names")
-    
-    jsonData = createLoginData("", "123")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), LOGIN_CODE))
-    printServerMessage(serverMessage)
-    
-    jsonData = createLoginData("123", "")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), LOGIN_CODE))
-    printServerMessage(serverMessage)
-    
-    jsonData = createLoginData("123", "")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
-    printServerMessage(serverMessage)
+    # TEST 4: Try to enter illegal names
+    print("Test 4: entering bad names")
     
     jsonData = createLoginData("", "123")
-    serverMsg = sendMessage(buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
-    printServerMessage(serverMessage)
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), LOGIN_CODE))
+    printServerMessage(serverMsg)
     
-
-    # Getting the respective info from the user based on the option
-    if option == LOGIN_OPTION:
-        jsonData = createLoginData()
-        code = LOGIN_CODE
+    jsonData = createLoginData("123", "")
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), LOGIN_CODE))
+    printServerMessage(serverMsg)
     
-    else:
-        jsonData = createSignupData()
-        code = SIGNUP_CODE
-
-   
+    jsonData = createSignupData("123", "", "123@gmail.com")
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
+    printServerMessage(serverMsg)
+    
+    jsonData = createSignupData("", "123", "hi@gmail.com")
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
+    printServerMessage(serverMsg)
+    
+    jsonData = createSignupData("321", "123", "")
+    serverMsg = sendMessage(sock, buildMessage(jsonData, len(jsonData), SIGNUP_CODE))
+    printServerMessage(serverMsg)
+    
 
     
     sock.close()
@@ -140,4 +132,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
