@@ -10,7 +10,7 @@ LoginManager::LoginManager(IDatabase* db): m_database(db) { }
 bool LoginManager::signup(std::string username, std::string password, std::string email) {
 	// locks to avoid multiple threads accessing db/adding a user to loggedUser vector
 	std::unique_lock<std::mutex> loggedLock(m_loggedLock);
-	if (m_database->doesUserExist(username) || username.empty() || password.empty() || email.empty() && std::find(m_loggedUsers.begin(), m_loggedUsers.end(), username) == m_loggedUsers.end()) {
+	if (m_database->doesUserExist(username) || username.empty() || password.empty() || email.empty()) {
 		loggedLock.unlock();
 		return false; 
 	}
@@ -27,6 +27,8 @@ bool LoginManager::login(std::string username, std::string password) {
 	bool loggedInSuccessfuly = false;
 	// locks to avoid multiple threads accessing db/adding a user to loggedUser vector
 	std::unique_lock<std::mutex> loggedLock(m_loggedLock);
+	// besides checking that the loggin details are correct, checks that the username is not on the logged user vector
+	// to avoid cases where the user is logged on on two seperate devices, something that can cause errors if not handled
 	if (m_database->doesUserExist(username) && m_database->doesPasswordMatch(username, password) && std::find(m_loggedUsers.begin(), m_loggedUsers.end(), username) == m_loggedUsers.end()) {
 		m_loggedUsers.push_back(LoggedUser(username));
 		loggedInSuccessfuly = true;
