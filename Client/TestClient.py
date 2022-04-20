@@ -57,8 +57,13 @@ def buildMessage(jsonData, msgLen, code):
 
 def printServerMessage(msgData):
 
-    for key in msgData:
-        print("{} -> {}".format(key, msgData[key]))
+    try:
+    
+        for key in msgData:
+            print("{} -> {}".format(key, msgData[key]))
+            
+    except:
+        skip
 
 def main():
 

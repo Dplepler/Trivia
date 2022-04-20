@@ -133,6 +133,8 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 		for (;;) {
 
+			req.buffer.clear();
+
 			req.id = Helper::getStringPartFromSocket(clientSock, 1)[0];	// Get code
 			time(&req.time);
 			length = Helper::getIntPartFromSocket(clientSock, MSG_HEADER_LEN - 1); // Get parsed length
