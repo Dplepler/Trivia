@@ -123,6 +123,24 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 
 
 
+std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) {
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT * FROM Questions\nORDER BY RANDOM()\nLIMIT " + std::to_string(numOfQuestions) + ";";
+	std::list<Question> questions;
+
+
+	res = sqlite3_exec(db, selectQuery.c_str(), questionCallback, &questions, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return questions;
+}
+
+
+
+
 
 int userCallback(void* data, int argc, char** argv, char** azColName) {
 	for (int i = 0; i < argc; i++) {
@@ -137,6 +155,33 @@ int userCallback(void* data, int argc, char** argv, char** azColName) {
 		}
 	}
 
+	return 0;
+}
+
+
+
+
+int questionCallback(void* data, int argc, char** argv, char** azColName) {
+	Question curQuestion;
+	std::string correctAns = "";
+	for (int i = 0; i < argc; i++) {
+		if (std::string(azColName[i]) == "Question") {
+			curQuestion.question = argv[i];
+		}
+		else if (std::string(azColName[i]) == "CorrectAnswer") {
+			correctAns = argv[i];
+			curQuestion.answers.push_back(argv[i]);
+		}
+		else if (std::string(azColName[i]) == "Answer2" || std::string(azColName[i]) == "Answer3" || std::string(azColName[i]) == "Answer4") {
+			curQuestion.answers.push_back(argv[i]);
+		}
+	}
+	std::shuffle(curQuestion.answers.begin(), curQuestion.answers.end(), std::random_device());
+	curQuestion.correctIndex = 0;
+	for (int i = 0; i < curQuestion.answers.size(); i++) {
+		curQuestion.correctIndex = (curQuestion.answers[i] == correctAns ? i : curQuestion.correctIndex);
+	}
+	((std::list<Question>*)data)->push_back(curQuestion);
 	return 0;
 }
 
