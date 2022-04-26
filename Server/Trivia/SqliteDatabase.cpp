@@ -126,9 +126,9 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) {
 	int res = 0;
 	char* errMsg = nullptr;
+	// uses ORDER BY RANDOM() to get a random result for the answers every time, making the game more replayable
 	std::string selectQuery = "SELECT * FROM Questions\nORDER BY RANDOM()\nLIMIT " + std::to_string(numOfQuestions) + ";";
 	std::list<Question> questions;
-
 
 	res = sqlite3_exec(db, selectQuery.c_str(), questionCallback, &questions, &errMsg);
 	if (res != SQLITE_OK) {
@@ -161,6 +161,7 @@ int userCallback(void* data, int argc, char** argv, char** azColName) {
 
 
 
+// Gets the question info, randomizes the answer order and puts it in the list
 int questionCallback(void* data, int argc, char** argv, char** azColName) {
 	Question curQuestion;
 	std::string correctAns = "";
@@ -169,6 +170,7 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 			curQuestion.question = argv[i];
 		}
 		else if (std::string(azColName[i]) == "CorrectAnswer") {
+			// saves correct answer to get it's index later
 			correctAns = argv[i];
 			curQuestion.answers.push_back(argv[i]);
 		}
@@ -176,11 +178,15 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 			curQuestion.answers.push_back(argv[i]);
 		}
 	}
+
+	// randomizes the order of the answers to make the trivia game more replayable
 	std::shuffle(curQuestion.answers.begin(), curQuestion.answers.end(), std::random_device());
 	curQuestion.correctIndex = 0;
+
 	for (int i = 0; i < curQuestion.answers.size(); i++) {
 		curQuestion.correctIndex = (curQuestion.answers[i] == correctAns ? i : curQuestion.correctIndex);
 	}
+
 	((std::list<Question>*)data)->push_back(curQuestion);
 	return 0;
 }
