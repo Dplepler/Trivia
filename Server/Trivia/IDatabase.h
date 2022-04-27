@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <stdint.h>
 
 
 
@@ -11,7 +12,7 @@ struct Question {
 
 	std::string question;
 	std::vector<std::string> answers;
-	int correctIndex;
+	uint8_t correctIndex;
 };
 
 

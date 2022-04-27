@@ -183,7 +183,7 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 	std::shuffle(curQuestion.answers.begin(), curQuestion.answers.end(), std::random_device());
 	curQuestion.correctIndex = 0;
 
-	for (int i = 0; i < curQuestion.answers.size(); i++) {
+	for (uint8_t i = 0; i < curQuestion.answers.size(); i++) {
 		curQuestion.correctIndex = (curQuestion.answers[i] == correctAns ? i : curQuestion.correctIndex);
 	}
 
