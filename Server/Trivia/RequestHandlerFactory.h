@@ -2,6 +2,7 @@
 #include "SqliteDatabase.h"
 #include "LoginRequestHandler.h"
 #include "LoginManager.h"
+#include "RoomManager.h"
 
 class LoginRequestHandler;
 
@@ -18,12 +19,16 @@ public:
 
 	LoginManager* getLoginManager();
 
+	RoomManager* getRoomManager();
+
 	
 private:
 
 	IDatabase* m_database;
 
 	LoginManager* m_loginManager;
+
+	RoomManager* m_roomManager;
 
 
 };
