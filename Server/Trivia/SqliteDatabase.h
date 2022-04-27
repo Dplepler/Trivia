@@ -4,6 +4,7 @@
 #include "sqlite3.h"
 #include "JsonRequestPacketDeserializer.h"
 #include <iostream>
+#include <random>
 #include <io.h>
 
 
@@ -12,6 +13,7 @@
 
 
 int userCallback(void* data, int argc, char** argv, char** azColName);
+int questionCallback(void* data, int argc, char** argv, char** azColName);
 
 
 
@@ -38,6 +40,8 @@ public:
 	bool doesUserExist(std::string username) const override;
 
 	bool doesPasswordMatch(std::string username, std::string password) const override;
+
+	std::list<Question> getQuestions(int numOfQuestions);
 
 
 };
