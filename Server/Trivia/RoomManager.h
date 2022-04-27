@@ -5,6 +5,8 @@
 class RoomManager {
 
 public:
+
+	RoomManager() = default;
 	
 	void createRoom(LoggedUser user, RoomData data);
 	void deleteRoom(unsigned int id);

@@ -15,7 +15,7 @@ void Room::removeUser(LoggedUser user) {
 	}
 }
 
-std::vector<std::string> Room::getAllUsers() {
+std::vector<std::string> Room::getAllUsers() const {
 
 	size_t size = this->m_users.size();
 	std::vector<std::string> users;
@@ -25,4 +25,8 @@ std::vector<std::string> Room::getAllUsers() {
 	}
 
 	return users;
+}
+
+RoomData Room::getData() const {
+	return this->m_metadata;
 }
