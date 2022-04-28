@@ -43,7 +43,7 @@ object Communications {
                 res = input.readLine()
             }
         }
-        return (if(res == null) byteArrayOf() else res?.toByteArray()!!)
+        return (if(res == null) byteArrayOf(0) else res?.toByteArray()!!)
     }
 
 

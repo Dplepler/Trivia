@@ -26,7 +26,9 @@ data class LoginData(val username: String, val password: String)
 class LoginViewModel: ViewModel() {
 
     val comms: Communications = Communications
-    var successStatus by mutableStateOf(-3)
+    var successStatus = mutableStateOf(-3)
+    val username = mutableStateOf("")
+    val password = mutableStateOf("")
 
 
     init {
@@ -39,12 +41,12 @@ class LoginViewModel: ViewModel() {
 
     fun login() {
         viewModelScope.launch {
-            val data = Json.encodeToString(LoginData("Nahum", "Takum"))
+            val data = Json.encodeToString(LoginData(username.value, password.value))
             comms.sendMessage(comms.buildMessage(102, data))
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == 22) {
                 val res = String(buffer).substring(5)
-                successStatus = Json.decodeFromString<Status>(res).status
+                successStatus.value = Json.decodeFromString<Status>(res).status
             }
         }
     }
