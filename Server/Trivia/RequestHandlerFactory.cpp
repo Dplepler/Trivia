@@ -2,6 +2,7 @@
 
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) : m_database(db) { 
 	m_loginManager = new LoginManager(db);
+	m_roomManager = new RoomManager();
 }
 
 
@@ -17,5 +18,9 @@ LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() {
 
 LoginManager* RequestHandlerFactory::getLoginManager() {
 	return m_loginManager;
+}
+
+RoomManager* RequestHandlerFactory::getRoomManager() {
+	return m_roomManager;
 }
 

@@ -10,17 +10,6 @@
 
 class LoginManager {
 
-
-private:
-
-	IDatabase* m_database;
-
-	std::vector<LoggedUser> m_loggedUsers;
-
-	std::mutex m_loggedLock;
-
-
-
 public:
 
 
@@ -32,6 +21,12 @@ public:
 
 	void logout(std::string username);
 
+private:
 
+	IDatabase* m_database;
+
+	std::vector<LoggedUser> m_loggedUsers;
+
+	std::mutex m_loggedLock;
 
 };
