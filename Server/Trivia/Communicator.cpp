@@ -157,6 +157,9 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 				m_clients[clientSock] = result.newHandler;
 			}
 
+			// adds \n to make sure that it is readable by all readlines from clients (python and Android)
+			result.response.push_back('\n');
+
 			Helper::sendData(clientSock, std::string(result.response.begin(), result.response.end()));
 		}
 	}

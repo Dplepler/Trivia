@@ -84,7 +84,8 @@ std::string Helper::getPartFromSocket(const SOCKET sc, const int bytesNum)
 // send data to socket
 // this is private function
 void Helper::sendData(const SOCKET sc, const std::string message)
-{
+{	
+
 	const char* data = message.c_str();
 
 	if (send(sc, data, message.size(), 0) == INVALID_SOCKET)

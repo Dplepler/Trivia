@@ -31,7 +31,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) {
 
 RequestResult LoginRequestHandler::login(RequestInfo reqInfo) { 
 	LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(reqInfo.buffer);
-	SignupResponse res{ FAILURE };
+	LoginResponse res{ FAILURE };
 	IRequestHandler* newHandler = nullptr;
 	if (m_loginManager->login(loginReq.username, loginReq.password)) {
 		res.status = SUCCESS;
@@ -44,7 +44,7 @@ RequestResult LoginRequestHandler::login(RequestInfo reqInfo) {
 
 RequestResult LoginRequestHandler::signup(RequestInfo reqInfo) { 
 	SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(reqInfo.buffer);
-	LoginResponse res{ FAILURE };
+	SignupResponse res{ FAILURE };
 	IRequestHandler* newHandler = nullptr;
 	if (m_loginManager->signup(signupReq.username, signupReq.password, signupReq.email)) {
 		res.status = SUCCESS;
