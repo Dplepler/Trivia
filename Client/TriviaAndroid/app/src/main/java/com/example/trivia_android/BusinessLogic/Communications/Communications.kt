@@ -13,8 +13,8 @@ import java.net.URISyntaxException
 
 object Communications {
 
-    const val addr = "10.0.2.2"
-    const val port = 8008
+    private const val addr = "10.0.2.2"
+    private const val port = 8008
 
     private lateinit var mSocket: Socket
     private lateinit var input: BufferedReader
