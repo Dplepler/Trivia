@@ -2,10 +2,12 @@ package com.example.trivia_android.BusinessLogic.Communications
 
 
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.*
 import java.net.Socket
+import java.net.SocketAddress
 import java.net.URISyntaxException
 
 
@@ -21,16 +23,27 @@ object Communications {
 
     suspend fun connectSocket() {
         withContext(Dispatchers.IO) {
-            mSocket = Socket(addr, port)
-            input = BufferedReader(InputStreamReader(mSocket.inputStream))
-            output = mSocket.getOutputStream()
+            try {
+                mSocket = Socket(addr, port)
+                input = BufferedReader(InputStreamReader(mSocket.inputStream))
+                output = mSocket.getOutputStream()
+            } catch (ex: Throwable) {
+
+            }
         }
     }
 
 
     suspend fun sendMessage(buffer: ByteArray) {
-        withContext(Dispatchers.IO) {
-            output.write(buffer)
+        try {
+            withContext(Dispatchers.IO) {
+                output.write(buffer)
+            }
+        } catch (ex: Throwable) {
+            kotlin.runCatching {
+                mSocket.close()
+                connectSocket()
+            }
         }
     }
 
@@ -38,9 +51,16 @@ object Communications {
 
     suspend fun readMessage(): ByteArray {
         var res: String? = null
-        withContext(Dispatchers.IO) {
+        try {
+            withContext(Dispatchers.IO) {
+                kotlin.runCatching {
+                    res = input.readLine()
+                }
+            }
+        } catch(ex: Throwable) {
             kotlin.runCatching {
-                res = input.readLine()
+                mSocket.close()
+                connectSocket()
             }
         }
         return (if(res == null) byteArrayOf(0) else res?.toByteArray()!!)

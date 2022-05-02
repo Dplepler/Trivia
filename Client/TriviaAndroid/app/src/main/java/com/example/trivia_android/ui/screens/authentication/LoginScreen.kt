@@ -11,8 +11,11 @@ import androidx.compose.material.icons.filled.AppRegistration
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.trivia_android.ui.SharedComponents.SharpTextField
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 
@@ -29,6 +32,7 @@ fun LoginScreenContent(
 
         topBar = { TopAppBar(
             backgroundColor = MaterialTheme.colors.primarySurface,
+            modifier = modifier.clip(RoundedCornerShape(bottomStart = 4.dp, bottomEnd = 4.dp))
             ) {
             Text(
                 "Login",
@@ -38,7 +42,10 @@ fun LoginScreenContent(
         }},
 
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(
+                onClick = { /*TODO*/ },
+                backgroundColor = MaterialTheme.colors.primaryVariant
+            ) {
                 Row(modifier = modifier.padding(8.dp)) {
                     Icon(Icons.Filled.AppRegistration, contentDescription = "Signup Icon")
                     Text("Sign up")
@@ -48,26 +55,22 @@ fun LoginScreenContent(
     ) {
         Column(modifier = modifier.fillMaxSize()) {
 
-            TextField(
-                value = usernameText.value,
-                label = { Text("Username") },
-                onValueChange = { usernameText.value = it },
-                shape = RoundedCornerShape(0),
+            SharpTextField(
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 150.dp)
+                    .padding(top = 150.dp),
+                stringState = usernameText,
+                label = "Username"
             )
 
 
 
-            TextField(
-                value = passwordText.value,
-                label = { Text("Password") },
-                onValueChange = { passwordText.value = it },
-                shape = RoundedCornerShape(0),
+            SharpTextField(
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 40.dp)
+                    .padding(top = 40.dp),
+                stringState = passwordText,
+                label = "Password"
             )
 
 
