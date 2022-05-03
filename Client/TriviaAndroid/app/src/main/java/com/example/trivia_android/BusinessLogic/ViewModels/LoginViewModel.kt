@@ -43,7 +43,7 @@ class LoginViewModel: ViewModel() {
     fun login() {
         viewModelScope.launch {
             val data = Json.encodeToString(LoginData(username.value, password.value))
-            comms.sendMessage(comms.buildMessage(102, data))
+            comms.sendMessage(comms.buildMessage(12, data))
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == 22) {
                 val res = String(buffer).substring(5)
