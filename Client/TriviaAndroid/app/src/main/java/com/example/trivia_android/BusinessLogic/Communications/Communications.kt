@@ -11,10 +11,29 @@ import java.net.SocketAddress
 import java.net.URISyntaxException
 
 
+
+enum class RequestCodes(val code: Int) {
+    Signup(11),
+    Login(12)
+}
+
+
+enum class ResponseCodes(val code: Int) {
+    Signup(21),
+    Login(22),
+    error(40)
+}
+
+
+
+
 object Communications {
 
     private const val addr = "10.0.2.2"
     private const val port = 8008
+    private const val shiftStart = 24
+    private const val shiftOffset = 8
+    const val headerLen = 5
 
     private lateinit var mSocket: Socket
     private lateinit var input: BufferedReader
@@ -71,7 +90,7 @@ object Communications {
     // Builds a message in the protocol format
     fun buildMessage(code: Byte, data: String): ByteArray {
         val arr = byteArrayOf(code, 0, 0, 0, 0) + data.toByteArray()
-        for (i in 0..3) arr[1 + i] = (data.length shr (24 - i*8)).toByte()
+        for (i in 0..3) arr[1 + i] = (data.length shr (shiftStart - i* shiftOffset)).toByte()
         return arr
     }
 

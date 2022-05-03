@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivia_android.BusinessLogic.Communications.Communications
+import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
+import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
@@ -46,11 +48,11 @@ class LoginViewModel: ViewModel() {
     fun login() {
         viewModelScope.launch {
             val data = Json.encodeToString(LoginData(username.value, password.value))
-            comms.sendMessage(comms.buildMessage(12, data))
+            comms.sendMessage(comms.buildMessage(RequestCodes.Login.code.toByte(), data))
             val buffer = comms.readMessage()
             // checks that the response is relevant and not an error
-            if(buffer[0].toInt() == 22) {
-                val res = String(buffer).substring(5)
+            if(buffer[0].toInt() == ResponseCodes.Login.code) {
+                val res = String(buffer).substring(comms.headerLen)
                 successStatus.value = Json.decodeFromString<Status>(res).status
             }
         }
@@ -62,11 +64,11 @@ class LoginViewModel: ViewModel() {
     fun signup() {
         viewModelScope.launch {
             val data = Json.encodeToString(SignupData(username.value, password.value, email.value))
-            comms.sendMessage(comms.buildMessage(11, data))
+            comms.sendMessage(comms.buildMessage(RequestCodes.Signup.code.toByte(), data))
             val buffer = comms.readMessage()
             // checks that the response is relevant and not an error
-            if(buffer[0].toInt() == 21) {
-                val res = String(buffer).substring(5)
+            if(buffer[0].toInt() == ResponseCodes.Signup.code) {
+                val res = String(buffer).substring(comms.headerLen)
                 successStatus.value = Json.decodeFromString<Status>(res).status
             }
         }
