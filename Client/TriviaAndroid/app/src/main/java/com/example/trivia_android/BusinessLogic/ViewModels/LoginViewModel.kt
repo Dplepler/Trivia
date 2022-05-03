@@ -48,11 +48,13 @@ class LoginViewModel: ViewModel() {
             val data = Json.encodeToString(LoginData(username.value, password.value))
             comms.sendMessage(comms.buildMessage(12, data))
             val buffer = comms.readMessage()
+            // checks that the response is relevant and not an error
             if(buffer[0].toInt() == 22) {
                 val res = String(buffer).substring(5)
                 successStatus.value = Json.decodeFromString<Status>(res).status
             }
         }
+        clearTexts()
     }
 
 
@@ -62,13 +64,22 @@ class LoginViewModel: ViewModel() {
             val data = Json.encodeToString(SignupData(username.value, password.value, email.value))
             comms.sendMessage(comms.buildMessage(11, data))
             val buffer = comms.readMessage()
+            // checks that the response is relevant and not an error
             if(buffer[0].toInt() == 21) {
                 val res = String(buffer).substring(5)
                 successStatus.value = Json.decodeFromString<Status>(res).status
             }
         }
+        clearTexts()
     }
 
+
+    // clears text after login/signup to make it easier to reenter a username or a password
+    private fun clearTexts() {
+        username.value = ""
+        password.value = ""
+        email.value = ""
+    }
 
 
 

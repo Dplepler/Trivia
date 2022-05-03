@@ -46,6 +46,7 @@ fun SignupScreenContent(
             )
         }},
 
+
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { onClickSwitch() },
@@ -70,7 +71,6 @@ fun SignupScreenContent(
             )
 
 
-
             SharpTextField(
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
@@ -81,8 +81,6 @@ fun SignupScreenContent(
             )
 
 
-
-
             SharpTextField(
                 modifier = modifier
                     .align(Alignment.CenterHorizontally)
@@ -91,7 +89,6 @@ fun SignupScreenContent(
                 stringState = emailText,
                 label = "email"
             )
-
 
 
             Button(
@@ -132,10 +129,6 @@ fun SignupScreenContent(
     }
 
 }
-
-
-
-
 
 
 

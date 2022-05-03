@@ -41,6 +41,7 @@ object Communications {
             }
         } catch (ex: Throwable) {
             kotlin.runCatching {
+                // error case, tries to close the socket and reconnect
                 mSocket.close()
                 connectSocket()
             }
@@ -58,6 +59,7 @@ object Communications {
             }
         } catch(ex: Throwable) {
             kotlin.runCatching {
+                // error case, tries to close the socket and reconnect
                 mSocket.close()
                 connectSocket()
             }
@@ -66,6 +68,7 @@ object Communications {
     }
 
 
+    // Builds a message in the protocol format
     fun buildMessage(code: Byte, data: String): ByteArray {
         val arr = byteArrayOf(code, 0, 0, 0, 0) + data.toByteArray()
         for (i in 0..3) arr[1 + i] = (data.length shr (24 - i*8)).toByte()

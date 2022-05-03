@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 
+
+// General text field composable
 @Composable
 fun SharpTextField(
     modifier: Modifier = Modifier,

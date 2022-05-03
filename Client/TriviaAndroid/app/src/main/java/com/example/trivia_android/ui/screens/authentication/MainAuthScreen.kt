@@ -8,12 +8,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.trivia_android.BusinessLogic.ViewModels.LoginViewModel
 
 
+
+
+/*
+Main Auth Screen is responsible for handling the authentication UI.
+Thus it serves as a wrapper function to pack both login and signup and the navigation between them.
+*/
 @Composable
 fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel()) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
+        // sets the starting screen as the Login screen
         startDestination = "Login",
     ) {
 
