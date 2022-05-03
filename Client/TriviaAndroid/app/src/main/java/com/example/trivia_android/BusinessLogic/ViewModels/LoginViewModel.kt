@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivia_android.BusinessLogic.Communications.Communications
+import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
+import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
@@ -21,6 +23,8 @@ import kotlinx.serialization.json.Json
 data class Status(val status: Int)
 @Serializable
 data class LoginData(val username: String, val password: String)
+@Serializable
+data class SignupData(val username: String, val password: String, val mail: String)
 
 
 
@@ -30,6 +34,7 @@ class LoginViewModel: ViewModel() {
     var successStatus = mutableStateOf(-3)
     val username = mutableStateOf("")
     val password = mutableStateOf("")
+    val email = mutableStateOf("")
 
 
     init {
@@ -43,14 +48,41 @@ class LoginViewModel: ViewModel() {
     fun login() {
         viewModelScope.launch {
             val data = Json.encodeToString(LoginData(username.value, password.value))
-            comms.sendMessage(comms.buildMessage(12, data))
+            comms.sendMessage(comms.buildMessage(RequestCodes.Login.code.toByte(), data))
             val buffer = comms.readMessage()
-            if(buffer[0].toInt() == 22) {
-                val res = String(buffer).substring(5)
+            // checks that the response is relevant and not an error
+            if(buffer[0].toInt() == ResponseCodes.Login.code) {
+                val res = String(buffer).substring(comms.headerLen)
                 successStatus.value = Json.decodeFromString<Status>(res).status
             }
         }
+        clearTexts()
     }
+
+
+
+    fun signup() {
+        viewModelScope.launch {
+            val data = Json.encodeToString(SignupData(username.value, password.value, email.value))
+            comms.sendMessage(comms.buildMessage(RequestCodes.Signup.code.toByte(), data))
+            val buffer = comms.readMessage()
+            // checks that the response is relevant and not an error
+            if(buffer[0].toInt() == ResponseCodes.Signup.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                successStatus.value = Json.decodeFromString<Status>(res).status
+            }
+        }
+        clearTexts()
+    }
+
+
+    // clears text after login/signup to make it easier to reenter a username or a password
+    private fun clearTexts() {
+        username.value = ""
+        password.value = ""
+        email.value = ""
+    }
+
 
 
 }
