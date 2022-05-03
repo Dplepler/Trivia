@@ -12,7 +12,7 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 enum RequestCodes {
 
-	SignupRequestCode = 101, 
+	SignupRequestCode = 11, 
 	LoginRequestCode
 };
 
