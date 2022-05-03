@@ -21,6 +21,8 @@ import kotlinx.serialization.json.Json
 data class Status(val status: Int)
 @Serializable
 data class LoginData(val username: String, val password: String)
+@Serializable
+data class SignupData(val username: String, val password: String, val mail: String)
 
 
 
@@ -30,6 +32,7 @@ class LoginViewModel: ViewModel() {
     var successStatus = mutableStateOf(-3)
     val username = mutableStateOf("")
     val password = mutableStateOf("")
+    val email = mutableStateOf("")
 
 
     init {
@@ -51,6 +54,22 @@ class LoginViewModel: ViewModel() {
             }
         }
     }
+
+
+
+    fun signup() {
+        viewModelScope.launch {
+            val data = Json.encodeToString(SignupData(username.value, password.value, email.value))
+            comms.sendMessage(comms.buildMessage(11, data))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == 21) {
+                val res = String(buffer).substring(5)
+                successStatus.value = Json.decodeFromString<Status>(res).status
+            }
+        }
+    }
+
+
 
 
 }

@@ -53,9 +53,8 @@ object Communications {
         var res: String? = null
         try {
             withContext(Dispatchers.IO) {
-                kotlin.runCatching {
-                    res = input.readLine()
-                }
+                res = input.readLine()
+                Log.i("success", res!!)
             }
         } catch(ex: Throwable) {
             kotlin.runCatching {

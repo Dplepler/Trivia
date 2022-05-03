@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivia_android.BusinessLogic.ViewModels.LoginViewModel
 import com.example.trivia_android.ui.screens.authentication.LoginScreenContent
+import com.example.trivia_android.ui.screens.authentication.MainAuthScreen
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,13 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val viewModel: LoginViewModel = viewModel()
-                    LoginScreenContent(
-                        usernameText = viewModel.username,
-                        passwordText = viewModel.password,
-                        onClickLogin = { viewModel.login() },
-                        status = viewModel.successStatus
-                    )
+                    MainAuthScreen()
                 }
             }
         }
