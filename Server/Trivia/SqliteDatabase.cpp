@@ -62,7 +62,7 @@ void SqliteDatabase::setupDb() {
 
 
 
-	createQuery = "CREATE TABLE Stats (\nUsername TEXT NOT NULL UNIQUE,\ncorrectAnswers INTEGER NOT NULL,\nTotalAnswers INTEGER NOT NULL,\nAverageAnswerTime REAL NOT NULL,\nTotalGames INTEGER NOT NULL,\nFOREIGN KEY(Username) REFERENCES Users(Username)\n);";
+	createQuery = "CREATE TABLE Stats (\nUsername TEXT NOT NULL UNIQUE,\nCorrectAnswers INTEGER NOT NULL,\nTotalAnswers INTEGER NOT NULL,\nAverageAnswerTime REAL NOT NULL,\nTotalGames INTEGER NOT NULL,\nFOREIGN KEY(Username) REFERENCES Users(Username)\n);";
 	queryRes = sqlite3_exec(db, createQuery.c_str(), nullptr, nullptr, &errMsg);
 
 	if (queryRes != SQLITE_OK) {
@@ -152,22 +152,66 @@ std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) const{
 
 
 float SqliteDatabase::getPlayerAverageAnswerTime(std::string username) const {
-	return 0.0;
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT AverageAnswerTime FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "AverageAnswerTime";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return userStat.second;
 }
 
 
 int SqliteDatabase::getNumOfCorrectAnswers(std::string username) const {
-	return 0;
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT CorrectAnswers FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "CorrectAnswers";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return ((int)userStat.second);
 }
 
 
 int SqliteDatabase::getNumOfTotalAnswers(std::string username) const {
-	return 0;
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT TotalAnswers FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "TotalAnswers";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return ((int)userStat.second);
 }
 
 
 int SqliteDatabase::getNumOfPlayerGames(std::string username) const {
-	return 0;
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT TotalGames FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "TotalGames";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return ((int)userStat.second);
 }
 
 
@@ -226,6 +270,18 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 	((std::list<Question>*)data)->push_back(curQuestion);
 	return 0;
 }
+
+
+
+int statsCallback(void* data, int argc, char** argv, char** azColName) {
+	for (int i = 0; i < argc; i++) {
+		if (std::string(azColName[i]) == ((std::pair<std::string, float>*)data)->first) {
+			((std::pair<std::string, float>*)data)->second = std::stof(std::string(argv[i]));
+		}
+	}
+	return 0;
+}
+
 
 
 
