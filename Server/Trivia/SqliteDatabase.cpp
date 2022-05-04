@@ -60,6 +60,18 @@ void SqliteDatabase::setupDb() {
 		_exit(1);
 	}
 
+
+
+	createQuery = "CREATE TABLE Stats (\nUsername TEXT NOT NULL UNIQUE,\nCorrectAnswers INTEGER NOT NULL,\nTotalAnswers INTEGER NOT NULL,\nAverageAnswerTime REAL NOT NULL,\nTotalGames INTEGER NOT NULL,\nFOREIGN KEY(Username) REFERENCES Users(Username)\n);";
+	queryRes = sqlite3_exec(db, createQuery.c_str(), nullptr, nullptr, &errMsg);
+
+	if (queryRes != SQLITE_OK) {
+		std::cout << "here" << std::endl;
+		std::cerr << "An error has occured: " << errMsg << std::endl;
+		_exit(1);
+	}
+
+
 }
 
 
@@ -123,7 +135,7 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 
 
 
-std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) {
+std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) const{
 	int res = 0;
 	char* errMsg = nullptr;
 	// uses ORDER BY RANDOM() to get a random result for the answers every time, making the game more replayable
@@ -138,6 +150,84 @@ std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) {
 	return questions;
 }
 
+
+float SqliteDatabase::getPlayerAverageAnswerTime(std::string username) const {
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT AverageAnswerTime FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "AverageAnswerTime";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return userStat.second;
+}
+
+
+int SqliteDatabase::getNumOfCorrectAnswers(std::string username) const {
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT CorrectAnswers FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "CorrectAnswers";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return ((int)userStat.second);
+}
+
+
+int SqliteDatabase::getNumOfTotalAnswers(std::string username) const {
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT TotalAnswers FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "TotalAnswers";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return ((int)userStat.second);
+}
+
+
+int SqliteDatabase::getNumOfPlayerGames(std::string username) const {
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT TotalGames FROM Stats\nWHERE Username = '" + username + "';";
+	std::pair<std::string, float> userStat;
+	userStat.first = "TotalGames";
+
+	res = sqlite3_exec(db, selectQuery.c_str(), statsCallback, &userStat, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return ((int)userStat.second);
+}
+
+
+std::vector<std::string> SqliteDatabase::getAllUsernames() const {
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT Username FROM Users\nORDER BY Username ASC;";
+	std::vector<std::string> names;
+
+	res = sqlite3_exec(db, selectQuery.c_str(), nameCallback, &names, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return names;
+}
 
 
 
@@ -188,6 +278,35 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 	}
 
 	((std::list<Question>*)data)->push_back(curQuestion);
+	return 0;
+}
+
+
+/*
+Passes in an std::pair of string and float as data, to make the callback more flexible and usable for all stats.
+The string is the name of the stat to get, e.g. TotalAnswers of a user, and the float is the data to retrieve.
+Uses float since all the data types here are int/float, making for an easy conversion when it's am int, 
+and avoids loss of data when it's a float.
+*/
+int statsCallback(void* data, int argc, char** argv, char** azColName) {
+	for (int i = 0; i < argc; i++) {
+		if (std::string(azColName[i]) == ((std::pair<std::string, float>*)data)->first) {
+			((std::pair<std::string, float>*)data)->second = std::stof(std::string(argv[i]));
+		}
+	}
+	return 0;
+}
+
+
+// enters the current username got to the passed in vector of usernames (string)
+int nameCallback(void* data, int argc, char** argv, char** azColName) {
+	std::string username = "";
+	for (int i = 0; i < argc; i++) {
+		if (std::string(azColName[i]) == "Username") {
+			username = argv[i];
+		}
+	}
+	((std::vector<std::string>*)data)->push_back(username);
 	return 0;
 }
 
