@@ -282,7 +282,12 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 }
 
 
-
+/*
+Passes in an std::pair of string and float as data, to make the callback more flexible and usable for all stats.
+The string is the name of the stat to get, e.g. TotalAnswers of a user, and the float is the data to retrieve.
+Uses float since all the data types here are int/float, making for an easy conversion when it's am int, 
+and avoids loss of data when it's a float.
+*/
 int statsCallback(void* data, int argc, char** argv, char** azColName) {
 	for (int i = 0; i < argc; i++) {
 		if (std::string(azColName[i]) == ((std::pair<std::string, float>*)data)->first) {
@@ -293,7 +298,7 @@ int statsCallback(void* data, int argc, char** argv, char** azColName) {
 }
 
 
-
+// enters the current username got to the passed in vector of usernames (string)
 int nameCallback(void* data, int argc, char** argv, char** azColName) {
 	std::string username = "";
 	for (int i = 0; i < argc; i++) {
