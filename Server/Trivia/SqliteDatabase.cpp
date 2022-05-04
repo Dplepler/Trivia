@@ -60,6 +60,18 @@ void SqliteDatabase::setupDb() {
 		_exit(1);
 	}
 
+
+
+	createQuery = "CREATE TABLE Stats (\nUsername TEXT NOT NULL UNIQUE,\ncorrectAnswers INTEGER NOT NULL,\nTotalAnswers INTEGER NOT NULL,\nAverageAnswerTime REAL NOT NULL,\nTotalGames INTEGER NOT NULL,\nFOREIGN KEY(Username) REFERENCES Users(Username)\n);";
+	queryRes = sqlite3_exec(db, createQuery.c_str(), nullptr, nullptr, &errMsg);
+
+	if (queryRes != SQLITE_OK) {
+		std::cout << "here" << std::endl;
+		std::cerr << "An error has occured: " << errMsg << std::endl;
+		_exit(1);
+	}
+
+
 }
 
 
@@ -123,7 +135,7 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 
 
 
-std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) {
+std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) const{
 	int res = 0;
 	char* errMsg = nullptr;
 	// uses ORDER BY RANDOM() to get a random result for the answers every time, making the game more replayable
@@ -138,6 +150,30 @@ std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) {
 	return questions;
 }
 
+
+float SqliteDatabase::getPlayerAverageAnswerTime(std::string username) const {
+	return 0.0;
+}
+
+
+int SqliteDatabase::getNumOfCorrectAnswers(std::string username) const {
+	return 0;
+}
+
+
+int SqliteDatabase::getNumOfTotalAnswers(std::string username) const {
+	return 0;
+}
+
+
+int SqliteDatabase::getNumOfPlayerGames(std::string username) const {
+	return 0;
+}
+
+
+std::vector<std::string> SqliteDatabase::getAllUsernames() const {
+	return std::vector<std::string> { "Not implemented" };
+}
 
 
 
