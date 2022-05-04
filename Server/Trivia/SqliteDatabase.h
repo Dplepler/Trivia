@@ -15,6 +15,7 @@
 int userCallback(void* data, int argc, char** argv, char** azColName);
 int questionCallback(void* data, int argc, char** argv, char** azColName);
 int statsCallback(void* data, int argc, char** argv, char** azColName);
+int nameCallback(void* data, int argc, char** argv, char** azColName);
 
 
 

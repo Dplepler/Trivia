@@ -216,7 +216,17 @@ int SqliteDatabase::getNumOfPlayerGames(std::string username) const {
 
 
 std::vector<std::string> SqliteDatabase::getAllUsernames() const {
-	return std::vector<std::string> { "Not implemented" };
+	int res = 0;
+	char* errMsg = nullptr;
+	std::string selectQuery = "SELECT Username FROM Users\nORDER BY Username ASC;";
+	std::vector<std::string> names;
+
+	res = sqlite3_exec(db, selectQuery.c_str(), nameCallback, &names, &errMsg);
+	if (res != SQLITE_OK) {
+		std::cerr << "Error could not select questions" << std::endl;
+	}
+
+	return names;
 }
 
 
@@ -282,6 +292,18 @@ int statsCallback(void* data, int argc, char** argv, char** azColName) {
 	return 0;
 }
 
+
+
+int nameCallback(void* data, int argc, char** argv, char** azColName) {
+	std::string username = "";
+	for (int i = 0; i < argc; i++) {
+		if (std::string(azColName[i]) == "Username") {
+			username = argv[i];
+		}
+	}
+	((std::vector<std::string>*)data)->push_back(username);
+	return 0;
+}
 
 
 
