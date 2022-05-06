@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivia_android.BusinessLogic.ViewModels.LoginViewModel
 import com.example.trivia_android.ui.screens.authentication.LoginScreenContent
 import com.example.trivia_android.ui.screens.authentication.MainAuthScreen
+import com.example.trivia_android.ui.screens.home.MainMenu
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainAuthScreen()
+                    MainMenu()
                 }
             }
         }

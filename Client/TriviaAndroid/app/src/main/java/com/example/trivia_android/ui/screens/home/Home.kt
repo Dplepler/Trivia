@@ -7,6 +7,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -23,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import com.example.trivia_android.R
 
@@ -45,10 +47,10 @@ fun RoomCard(
     ) {
 
 
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column() {
 
 
-            Row(modifier = Modifier.padding(top = 24.dp, bottom = 36 .dp)) {
+            Row(modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)) {
 
                 Image(
                     roomImage,
@@ -93,13 +95,24 @@ fun RoomCard(
 
 
 @Composable
-fun HomeScreenContent(modifier: Modifier = Modifier) {
+fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    onClickCreate: () -> Unit = { },
+    onClickJoin: () -> Unit = { }
+) {
 
 
-    Column(modifier = modifier.padding(16.dp)) {
+    ConstraintLayout(modifier = modifier.padding(16.dp)) {
+
+        val (createRoom, joinRoom) = createRefs()
 
         RoomCard(
-            Modifier.padding(16.dp).align(CenterHorizontally),
+            Modifier.padding(16.dp).constrainAs(createRoom) {
+                top.linkTo(parent.top, margin = 4.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(joinRoom.top, margin = 16.dp)
+            },
             "Create\nRoom",
             "Create a new game room!",
             painterResource(
@@ -111,12 +124,17 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 }
             ),
             Icons.Filled.Add,
-            MaterialTheme.colors.primary
+            MaterialTheme.colors.primary,
+            onClickCreate
         )
 
 
         RoomCard(
-            Modifier.align(CenterHorizontally),
+            Modifier.constrainAs(joinRoom) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom, margin = 4.dp)
+            },
             "Join\nRoom",
             "Join an existing game room!",
             painterResource(
@@ -128,7 +146,8 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
                 }
             ),
             Icons.Filled.ArrowForward,
-            MaterialTheme.colors.secondary
+            MaterialTheme.colors.secondary,
+            onClickJoin
         )
         
 
