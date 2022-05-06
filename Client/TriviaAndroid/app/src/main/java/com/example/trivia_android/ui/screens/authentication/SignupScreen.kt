@@ -30,8 +30,11 @@ fun SignupScreenContent(
     emailText: MutableState<String>,
     onClickSignup: () -> Unit = { },
     onClickSwitch: () -> Unit = { },
+    onSuccessSignup: () -> Unit = { },
     status: MutableState<Int> = mutableStateOf(0)
 ) {
+
+    if(status.value == 1) { onSuccessSignup() }
 
     Scaffold(
 
@@ -115,15 +118,6 @@ fun SignupScreenContent(
                     )
                 )
             }
-
-
-            Text(
-                "cur status is: ${status.value}",
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 16.dp)
-            )
-
 
         }
     }

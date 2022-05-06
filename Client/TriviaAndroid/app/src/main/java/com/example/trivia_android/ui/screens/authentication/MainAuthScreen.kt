@@ -1,5 +1,6 @@
 package com.example.trivia_android.ui.screens.authentication
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -15,7 +16,7 @@ Main Auth Screen is responsible for handling the authentication UI.
 Thus it serves as a wrapper function to pack both login and signup and the navigation between them.
 */
 @Composable
-fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel()) {
+fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel(), onLogin: () -> Unit = {  }) {
     val navController = rememberNavController()
 
     NavHost(
@@ -31,6 +32,7 @@ fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel()) {
                 passwordText = loginViewModel.password,
                 onClickLogin = { loginViewModel.login() },
                 onClickSwitch = { navController.navigate("Signup") },
+                onSuccessLogin = { onLogin() },
                 status = loginViewModel.successStatus
             )
         }
@@ -43,6 +45,7 @@ fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel()) {
                 emailText = loginViewModel.email,
                 onClickSignup = { loginViewModel.signup() },
                 onClickSwitch = { navController.navigate("Login") },
+                onSuccessSignup = { onLogin() },
                 status = loginViewModel.successStatus
             )
         }

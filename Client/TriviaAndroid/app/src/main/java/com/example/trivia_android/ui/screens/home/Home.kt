@@ -50,7 +50,7 @@ fun RoomCard(
         Column() {
 
 
-            Row(modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)) {
+            Row(modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)) {
 
                 Image(
                     roomImage,
@@ -102,14 +102,15 @@ fun HomeScreenContent(
 ) {
 
 
-    ConstraintLayout(modifier = modifier.padding(16.dp)) {
+    ConstraintLayout(modifier = modifier.padding(8.dp)) {
 
         val (createRoom, joinRoom) = createRefs()
 
         RoomCard(
-            Modifier.padding(16.dp).constrainAs(createRoom) {
+            Modifier.padding(16.dp)
+                .constrainAs(createRoom) {
                 top.linkTo(parent.top, margin = 4.dp)
-                start.linkTo(parent.start)
+                start.linkTo(parent.start, margin = 32.dp)
                 end.linkTo(parent.end)
                 bottom.linkTo(joinRoom.top, margin = 16.dp)
             },
@@ -130,8 +131,9 @@ fun HomeScreenContent(
 
 
         RoomCard(
-            Modifier.constrainAs(joinRoom) {
-                start.linkTo(parent.start)
+            Modifier
+                .constrainAs(joinRoom) {
+                start.linkTo(parent.start, margin = 36.dp)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom, margin = 4.dp)
             },
