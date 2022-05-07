@@ -26,8 +26,11 @@ fun LoginScreenContent(
     passwordText: MutableState<String>,
     onClickLogin: () -> Unit = { },
     onClickSwitch: () -> Unit = { },
+    onSuccessLogin: () -> Unit = { },
     status: MutableState<Int> = mutableStateOf(0)
 ) {
+
+    if(status.value == 1) { onSuccessLogin() }
 
     Scaffold(
 
@@ -93,14 +96,6 @@ fun LoginScreenContent(
                     )
                 )
             }
-
-
-            Text(
-                "cur status is: ${status.value}",
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 16.dp)
-            )
 
 
         }

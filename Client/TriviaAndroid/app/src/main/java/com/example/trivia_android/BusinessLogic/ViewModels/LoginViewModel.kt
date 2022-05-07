@@ -31,7 +31,7 @@ data class SignupData(val username: String, val password: String, val mail: Stri
 class LoginViewModel: ViewModel() {
 
     val comms: Communications = Communications
-    var successStatus = mutableStateOf(-3)
+    var successStatus = mutableStateOf(0)
     val username = mutableStateOf("")
     val password = mutableStateOf("")
     val email = mutableStateOf("")
