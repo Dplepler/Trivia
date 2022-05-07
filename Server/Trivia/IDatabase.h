@@ -30,5 +30,13 @@ public:
 
 	virtual std::list<Question> getQuestions(int numOfQuestions) = 0;
 
+	virtual float getPlayerAverageAnswerTime(std::string) const = 0;
+
+	virtual int getNumOfCorrectAnswers(std::string) const = 0;
+
+	virtual int getNumOfTotalAnswers(std::string) const = 0;
+
+	virtual int getNumOfPlayerGames(std::string) const = 0;
+
 
 };

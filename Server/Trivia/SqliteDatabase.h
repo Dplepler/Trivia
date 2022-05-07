@@ -43,5 +43,12 @@ public:
 
 	std::list<Question> getQuestions(int numOfQuestions);
 
+	float getPlayerAverageAnswerTime(std::string) const override;
+
+	int getNumOfCorrectAnswers(std::string) const override;
+
+	int getNumOfTotalAnswers(std::string) const override;
+
+	int getNumOfPlayerGames(std::string) const override;
 
 };

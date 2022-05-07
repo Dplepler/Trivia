@@ -191,6 +191,13 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 	return 0;
 }
 
+float SqliteDatabase::getPlayerAverageAnswerTime(std::string) const { return 0.0; }
+
+int SqliteDatabase::getNumOfCorrectAnswers(std::string) const { return 0; }
+
+int SqliteDatabase::getNumOfTotalAnswers(std::string) const { return 0; }
+
+int SqliteDatabase::getNumOfPlayerGames(std::string) const { return 0; }
 
 
 

@@ -52,6 +52,9 @@
     <ClCompile Include="RoomManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="StatisticsManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -106,6 +109,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="RoomManager.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
