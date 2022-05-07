@@ -40,5 +40,13 @@ public:
 
 	virtual std::vector<std::string> getAllUsernames() const = 0;
 
+	virtual float getPlayerAverageAnswerTime(std::string) const = 0;
+
+	virtual int getNumOfCorrectAnswers(std::string) const = 0;
+
+	virtual int getNumOfTotalAnswers(std::string) const = 0;
+
+	virtual int getNumOfPlayerGames(std::string) const = 0;
+
 
 };

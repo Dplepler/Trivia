@@ -55,5 +55,12 @@ public:
 
 	std::vector<std::string> getAllUsernames() const override;
 
+	float getPlayerAverageAnswerTime(std::string) const override;
+
+	int getNumOfCorrectAnswers(std::string) const override;
+
+	int getNumOfTotalAnswers(std::string) const override;
+
+	int getNumOfPlayerGames(std::string) const override;
 
 };
