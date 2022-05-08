@@ -1,6 +1,9 @@
 #pragma once
 #include "SqliteDatabase.h"
 
+#define SCORE_MULTIPLIER 10000
+#define TOP_PLAYERS_AMOUNT 5
+
 class StatisticsManager {
 
 public:
@@ -14,5 +17,8 @@ public:
 private:
 
 	IDatabase* m_database;
+
+	std::string getHighestScoreName(std::vector<std::string> usernames);
+	unsigned int calcScore(std::string name);
 
 };
