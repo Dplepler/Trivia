@@ -7,11 +7,16 @@ LoginRequestHandler::LoginRequestHandler(IDatabase* db, RequestHandlerFactory* f
 
 // checks that the request code is LoginRequestCode or SignupRequestCode, aka the request is revelevant to this handler
 bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const { 
-	return (reqInfo.id == LoginRequestCode || reqInfo.id == SignupRequestCode);
+	return (reqInfo.id == LOGIN_REQUEST_CODE || reqInfo.id == SIGNUP_REQUEST_CODE);
 }
 
 RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) { 
-	return reqInfo.id == SignupRequestCode ? signup(reqInfo) : login(reqInfo);
+
+	switch (reqInfo.id) {
+		case SIGNUP_REQUEST_CODE: return signup(reqInfo);
+		case LOGIN_REQUEST_CODE:  return login(reqInfo);
+		default: return RequestResult();
+	}
 }
 
 
