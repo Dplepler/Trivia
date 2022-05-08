@@ -3,7 +3,7 @@
 StatisticsManager::StatisticsManager(IDatabase* database) : m_database(database) { }
 
 unsigned int StatisticsManager::calcScore(std::string name) {
- return (this->m_database->getNumOfCorrectAnswers(name) / this->m_database->getNumOfTotalAnswers(name)) * 10000 / this->m_database->getPlayerAverageAnswerTime(name);
+ return (this->m_database->getNumOfCorrectAnswers(name) / this->m_database->getNumOfTotalAnswers(name)) * SCORE_MULTIPLIER / this->m_database->getPlayerAverageAnswerTime(name);
 }
 
 std::string StatisticsManager::getHighestScoreName(std::vector<std::string> usernames) {
