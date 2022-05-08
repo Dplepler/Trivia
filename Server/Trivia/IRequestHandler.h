@@ -12,8 +12,15 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 enum RequestCodes {
 
-	SignupRequestCode = 11, 
-	LoginRequestCode
+	SIGNUP_REQUEST_CODE = 11, 
+	LOGIN_REQUEST_CODE,
+	CREATE_ROOM_CODE,
+	GET_ROOM_CODE,
+	GET_ROOM_PLAYERS_CODE,
+	JOIN_ROOM_CODE,
+	GET_STATISTICS_CODE,
+	LOGOUT_REQUEST_CODE
+	
 };
 
 
