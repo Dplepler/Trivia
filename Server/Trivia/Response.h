@@ -1,13 +1,22 @@
 #pragma once
 #include <iostream>
+#include "Room.h"
 
 enum class RESPONSE {
 
 	SIGNUP = 21,
 	LOGIN,
+	LOGOUT,
+	ROOMS,
+	PLAYERS,
+	HIGH_SCORE,
+	STATS,
+	JOIN,
+	CREATE,
+	
 	ERROR_RES = 40,
 
-};
+}; 
 
 typedef struct LOGIN_RESPONSE_STRUCT {
 
@@ -45,7 +54,7 @@ typedef struct GET_HIGH_SCORE_RESPONSE_STRUCT {
 	unsigned int status;
 	std::vector<std::string> statistics;
 
-} GetHighScoreResponseStruct;
+} GetHighScoreResponse;
 
 typedef struct GET_PERSONAL_STATS_RESPONSE_STRUCT {
 
@@ -54,6 +63,17 @@ typedef struct GET_PERSONAL_STATS_RESPONSE_STRUCT {
 
 } GetPersonalStatsResponse;
 
+typedef struct JOIN_ROOM_RESPONSE_STRUCT {
+
+	unsigned int status;
+
+} JoinRoomResponse;
+
+typedef struct CREATE_ROOM_RESPONSE_STRUCT {
+
+	unsigned int status;
+
+} CreateRoomResponse;
 
 
 typedef struct ERROR_RESPONSE_STRUCT {
