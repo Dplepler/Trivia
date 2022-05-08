@@ -11,20 +11,7 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const {
 }
 
 RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) { 
-	
-	RequestResult result;
-	
-	result.newHandler = nullptr;
-
-
-	if (reqInfo.id == SignupRequestCode) {
-		result = signup(reqInfo);
-	}
-	else {
-		result = login(reqInfo);
-	}
-
-	return result;
+	return reqInfo.id == SignupRequestCode ? signup(reqInfo) : login(reqInfo);
 }
 
 
