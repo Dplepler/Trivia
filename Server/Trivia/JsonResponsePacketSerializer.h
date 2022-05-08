@@ -16,6 +16,12 @@ public:
 	static Buffer serializeResponse(ErrorResponse errorRes);
 	static Buffer serializeResponse(LoginResponse loginRes);
 	static Buffer serializeResponse(SignupResponse signupRes);
+	/*static Buffer serializeResponse(LogoutResponse);
+	static Buffer serializeResponse(SignupResponse signupRes);
+	static Buffer serializeResponse(SignupResponse signupRes);
+	static Buffer serializeResponse(SignupResponse signupRes);
+	static Buffer serializeResponse(SignupResponse signupRes);
+	static Buffer serializeResponse(SignupResponse signupRes);*/
 
 private:
 
