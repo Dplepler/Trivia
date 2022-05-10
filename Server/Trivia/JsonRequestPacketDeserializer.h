@@ -30,7 +30,39 @@ typedef struct SignupRequest {
 	std::string password;
 
 	std::string email;
+
 } SignupRequest;
+
+
+typedef struct GetPlayersInRoomRequest {
+
+	unsigned int roomId;
+
+} GetPlayersInRoomRequest;
+
+
+typedef struct JoinRoomRequest {
+
+	unsigned int roomId;
+
+} JoinRoomRequest;
+
+
+
+
+typedef struct CreateRoomRequest {
+
+	std::string roomName;
+
+	unsigned int maxUsers;
+
+	unsigned int questionCount;
+
+	unsigned int answerTimeout;
+
+
+} CreateRoomRequest;
+
 
 
 
@@ -45,6 +77,12 @@ public:
 	static LoginRequest deserializeLoginRequest(Buffer clientMsg);
 
 	static SignupRequest deserializeSignupRequest(Buffer clientMsg);
+
+	static GetPlayersInRoomRequest deserializeGetPlayersRequest(Buffer clientMsg);
+
+	static JoinRoomRequest deserializeJoinRoomRequest(Buffer clientMsg);
+
+	static CreateRoomRequest deserializeCreateRoomRequest(Buffer clientMsg);
 
 
 };
