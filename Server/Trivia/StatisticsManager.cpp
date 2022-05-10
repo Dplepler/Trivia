@@ -29,7 +29,7 @@ std::vector<std::string> StatisticsManager::getHighScore() {
 	std::string username;
 	std::vector<std::string> topPlayers;
 
-	std::vector<std::string> allUsernames = this->m_database->getAllUsernames();;
+	std::vector<std::string> allUsernames = this->m_database->getAllUsernames();
 
 	for (uint8_t i = 0; i < TOP_PLAYERS_AMOUNT; i++) {
 		username = this->getHighestScoreName(allUsernames);

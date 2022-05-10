@@ -18,5 +18,6 @@ public:
 private:
 
 	std::map<unsigned int, Room> m_rooms;
+	std::mutex m_roomLock;
 
 };
