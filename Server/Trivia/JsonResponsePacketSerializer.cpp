@@ -163,6 +163,25 @@ Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse create
 	return buffer;
 }
 
+Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse statsResponse) {
+
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::STATS);
+	json["status"] = statsResponse.status;
+	json["statistics"] = statsResponse.statistics;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
 Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse highScoreRes) {
 
 	Buffer buffer;
