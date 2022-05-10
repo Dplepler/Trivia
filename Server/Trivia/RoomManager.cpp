@@ -2,14 +2,10 @@
 
 void RoomManager::createRoom(LoggedUser user, RoomData data) {
 
-	std::unique_lock<std::mutex> lock(this->m_roomLock);
-	unsigned int id = this->m_rooms.size() ? this->m_rooms.end()->first + 1 : 0;	// Set new id
-
 	/* Insert a new room */
 	std::vector<LoggedUser> users;
 	users.push_back(user);
-	this->m_rooms.insert(std::pair<unsigned int, Room>(id, Room(data, users)));
-	lock.unlock();
+	this->m_rooms.insert(std::pair<unsigned int, Room>(data.id, Room(data, users)));	
 }
 
 void RoomManager::deleteRoom(unsigned int id) {

@@ -21,12 +21,12 @@ public:
 
 	void logout(std::string username);
 
+	std::vector<LoggedUser> getUsers() const;
+
 private:
 
 	IDatabase* m_database;
 
 	std::vector<LoggedUser> m_loggedUsers;
-
-	std::mutex m_loggedLock;
 
 };

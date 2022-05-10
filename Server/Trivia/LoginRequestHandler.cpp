@@ -24,24 +24,35 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) {
 RequestResult LoginRequestHandler::login(RequestInfo reqInfo) { 
 	LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(reqInfo.buffer);
 	LoginResponse res{ FAILURE };
-	IRequestHandler* newHandler = nullptr;
+	MenuRequestHandler* newHandler = nullptr;
+
+	// locks to avoid multiple threads accessing db/adding a user to loggedUser vector
+	std::unique_lock<std::mutex> loggedLock(m_loggedLock);
+
 	if (m_loginManager->login(loginReq.username, loginReq.password)) {
 		res.status = SUCCESS;
-		// should be changed in the future to menu handler or the matching handler 
-		newHandler = m_handlerFactory->createLoginRequestHandler();
+		newHandler = this->m_handlerFactory->createMenuRequestHandler(m_loginManager->getUsers().back());
 	}
-	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(res), newHandler };
+
+	loggedLock.unlock();
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(res), (IRequestHandler*)newHandler };
 }
 
 
 RequestResult LoginRequestHandler::signup(RequestInfo reqInfo) { 
 	SignupRequest signupReq = JsonRequestPacketDeserializer::deserializeSignupRequest(reqInfo.buffer);
 	SignupResponse res{ FAILURE };
-	IRequestHandler* newHandler = nullptr;
+	MenuRequestHandler* newHandler = nullptr;
+
+	// locks to avoid multiple threads accessing db/adding a user to loggedUser vector
+	std::unique_lock<std::mutex> loggedLock(m_loggedLock);
+
 	if (m_loginManager->signup(signupReq.username, signupReq.password, signupReq.email)) {
 		res.status = SUCCESS;
-		// should be changed in the future to menu handler or the matching handler 
-		newHandler = m_handlerFactory->createLoginRequestHandler();
+	
+		newHandler = this->m_handlerFactory->createMenuRequestHandler(m_loginManager->getUsers().back());
 	}
-	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(res), newHandler };
+
+	loggedLock.unlock();
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(res), (IRequestHandler*)newHandler };
 }
