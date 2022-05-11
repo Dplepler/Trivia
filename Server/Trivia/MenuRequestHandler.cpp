@@ -37,15 +37,24 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 
   this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, true});
 
+  lock.unlock();
   return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{1}), this};
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
-  return RequestResult();
+  return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{1, this->m_factory.getRoomManager()->getRooms()}), this};
 }
 
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
-  return RequestResult();
+  
+  GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(info.buffer);
+
+  try {
+    return {JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse{this->m_roomManager->getRoom(request.roomId).getAllUsers()}), this};
+  }
+  catch (...) {
+    std::cerr << "Error occured while getting players in room";
+  }
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {

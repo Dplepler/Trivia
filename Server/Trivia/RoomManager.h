@@ -13,6 +13,7 @@ public:
 	unsigned int getRoomState(unsigned int id);
 
 	std::vector<RoomData> getRooms();
+	Room getRoom(unsigned int id);
 
 private:
 

@@ -25,6 +25,10 @@ unsigned int RoomManager::getRoomState(unsigned int id) {
 	}
 }
 
+Room RoomManager::getRooms(unsigned int id) {	
+	return this->m_rooms.at(id);
+}
+
 std::vector<RoomData> RoomManager::getRooms() {
 	
 	std::vector<RoomData> rooms;
