@@ -29,4 +29,6 @@ private:
 
 	std::vector<LoggedUser> m_loggedUsers;
 
+	std::mutex m_lock;
+
 };

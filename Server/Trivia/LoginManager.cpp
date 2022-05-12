@@ -12,9 +12,13 @@ bool LoginManager::signup(std::string username, std::string password, std::strin
 	if (m_database->doesUserExist(username) || username.empty() || password.empty() || email.empty()) {
 		return false; 
 	}
+	// locks to avoid multiple threads accessing db/adding a user to loggedUser vector
+	std::unique_lock<std::mutex> lock(m_lock);
+
 	m_database->addNewUser(username, password, email);
 	m_loggedUsers.push_back(LoggedUser(username));
 
+	lock.unlock();
 	return true;
 }
 
@@ -23,6 +27,9 @@ bool LoginManager::signup(std::string username, std::string password, std::strin
 // acceses db to validate login info of a user
 bool LoginManager::login(std::string username, std::string password) {
 	bool loggedInSuccessfuly = false;
+
+	// locks to avoid multiple threads accessing db/adding a user to loggedUser vector
+	std::unique_lock<std::mutex> lock(m_lock);
 	
 	// besides checking that the login details are correct, checks that the username is not on the logged user vector
 	// to avoid cases where the user is logged on on two seperate devices, something that can cause errors if not handled
@@ -30,6 +37,8 @@ bool LoginManager::login(std::string username, std::string password) {
 		m_loggedUsers.push_back(LoggedUser(username));
 		loggedInSuccessfuly = true;
 	}
+
+	lock.unlock();
 	return loggedInSuccessfuly;
 }
 
@@ -41,6 +50,7 @@ std::vector<LoggedUser> LoginManager::getUsers() const {
 // removes a connected user out of the logged user vector by username, thus tops to track connection with im
 void LoginManager::logout(std::string username) {
 	bool foundUser = false;
+	std::unique_lock<std::mutex> lock(m_lock);
 
 	if (!m_database->doesUserExist(username)) { 
 		return; 
@@ -51,4 +61,6 @@ void LoginManager::logout(std::string username) {
 			foundUser = true;
 		}
 	}
+
+	lock.unlock();
 }

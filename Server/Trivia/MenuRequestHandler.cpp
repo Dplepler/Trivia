@@ -35,12 +35,10 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info) {
 RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.buffer);
 
-	std::unique_lock<std::mutex> lock(menuLock);
 	unsigned int id = this->m_roomManager->getRooms().size() ? this->m_roomManager->getRooms().end()->id + 1 : 0;	// Set new id
 
 	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, true});
 
-	lock.unlock();
 	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{REQUEST_STATUS::SUCCESS}), this};
 }
 
