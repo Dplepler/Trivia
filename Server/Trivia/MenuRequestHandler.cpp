@@ -38,11 +38,11 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
   this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, true});
 
   lock.unlock();
-  return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{1}), this};
+  return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{REQUEST_STATUS::SUCCESS}), this};
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
-  return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{1, this->m_factory.getRoomManager()->getRooms()}), this};
+  return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{REQUEST_STATUS::SUCCESS, this->m_factory.getRoomManager()->getRooms()}), this};
 }
 
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
@@ -52,24 +52,52 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
   try {
     return {JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse{this->m_roomManager->getRoom(request.roomId).getAllUsers()}), this};
   }
-  catch (...) {
+  catch(...) {
     std::cerr << "Error occured while getting players in room";
   }
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {
-  return RequestResult();
+  JoinRoomRequest request = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
+
+  try {
+    this->m_roomManager->getRoom(request.roomId).addUser(this->m_user);
+    return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), this};
+  }
+  catch(...) {
+    std::cerr << "Error occured while joining room";
+  }
 }
 
 RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info) {
-  return RequestResult();
+  
+  try {
+    return { JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse
+        {REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getUserStatistics(this->m_user.getUsername())}), this };
+  }
+  catch (...) {
+    std::cerr << "Error while getting personal statistics";
+  }
 }
 
 RequestResult MenuRequestHandler::getHighScore(RequestInfo info) {
-  return RequestResult();
+
+  try {
+    return {JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse
+      {REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getHighScore()}), this};
+  }
+  catch (...) {
+    std::cerr << "Error while getting high scores";
+  }
+  
 }
 
 RequestResult MenuRequestHandler::signout(RequestInfo info) {
-  return RequestResult();
+  try {
+    return {JsonResponsePacketSerializer::serializeResponse(LogoutResponse{REQUEST_STATUS::SUCCESS}), this->m_factory.createLoginRequestHandler()};
+  }
+  catch (...) {
+    std::cerr << "Error logging out";
+  }
 }
 

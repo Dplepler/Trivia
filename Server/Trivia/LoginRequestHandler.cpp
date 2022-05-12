@@ -19,8 +19,6 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) {
 	}
 }
 
-
-
 RequestResult LoginRequestHandler::login(RequestInfo reqInfo) { 
 	LoginRequest loginReq = JsonRequestPacketDeserializer::deserializeLoginRequest(reqInfo.buffer);
 	LoginResponse res{ FAILURE };
