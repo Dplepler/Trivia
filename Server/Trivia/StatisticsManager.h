@@ -19,6 +19,6 @@ private:
 	IDatabase* m_database;
 
 	std::string getHighestScoreName(std::vector<std::string> usernames);
-	unsigned int calcScore(std::string name);
+	float calcScore(std::string name);
 
 };

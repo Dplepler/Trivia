@@ -12,8 +12,10 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo info) const {
       || info.id == GET_ROOM_PLAYERS_CODE 
       || info.id == JOIN_ROOM_CODE 
       || info.id == GET_STATISTICS_CODE 
+      || info.id == GET_HIGH_SCORE_CODE
       || info.id == LOGOUT_REQUEST_CODE;
  }
+
 
 RequestResult MenuRequestHandler::handleRequest(RequestInfo info) { 
 
@@ -94,7 +96,8 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info) {
 
 RequestResult MenuRequestHandler::signout(RequestInfo info) {
   try {
-    return {JsonResponsePacketSerializer::serializeResponse(LogoutResponse{REQUEST_STATUS::SUCCESS}), this->m_factory.createLoginRequestHandler()};
+      m_factory.getLoginManager()->logout(m_user.getUsername());
+      return {JsonResponsePacketSerializer::serializeResponse(LogoutResponse{REQUEST_STATUS::SUCCESS}), this->m_factory.createLoginRequestHandler()};
   }
   catch (...) {
     std::cerr << "Error logging out";

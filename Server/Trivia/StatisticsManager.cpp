@@ -2,14 +2,15 @@
 
 StatisticsManager::StatisticsManager(IDatabase* database) : m_database(database) { }
 
-unsigned int StatisticsManager::calcScore(std::string name) {
- return (this->m_database->getNumOfCorrectAnswers(name) / this->m_database->getNumOfTotalAnswers(name)) * SCORE_MULTIPLIER / this->m_database->getPlayerAverageAnswerTime(name);
+float StatisticsManager::calcScore(std::string name) {
+ return ((float)this->m_database->getNumOfCorrectAnswers(name) / (float)this->m_database->getNumOfTotalAnswers(name)) * SCORE_MULTIPLIER / this->m_database->getPlayerAverageAnswerTime(name);
 }
+
 
 std::string StatisticsManager::getHighestScoreName(std::vector<std::string> usernames) {
 	
-	unsigned int maxScore = 0;
-	unsigned int score = 0;
+	float maxScore = 0;
+	float score = 0;
 	std::string username = "";
 	size_t usernameAmount = usernames.size();
 
