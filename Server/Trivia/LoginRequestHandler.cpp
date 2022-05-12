@@ -13,8 +13,8 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo reqInfo) const {
 RequestResult LoginRequestHandler::handleRequest(RequestInfo reqInfo) { 
 
 	switch (reqInfo.id) {
-		case SIGNUP_REQUEST_CODE: return signup(reqInfo);
-		case LOGIN_REQUEST_CODE:  return login(reqInfo);
+		case SIGNUP_REQUEST_CODE:	return signup(reqInfo);
+		case LOGIN_REQUEST_CODE:	return login(reqInfo);
 		default: return RequestResult();
 	}
 }
