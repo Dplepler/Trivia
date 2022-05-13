@@ -30,5 +30,6 @@ private:
 	
 	RoomData m_metadata;
 	std::vector<LoggedUser> m_users;
+	//std::mutex m_lock;
 
 };

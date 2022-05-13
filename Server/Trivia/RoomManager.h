@@ -13,11 +13,10 @@ public:
 	unsigned int getRoomState(unsigned int id);
 
 	std::vector<RoomData> getRooms();
-
+	Room getRoom(unsigned int id);
 
 private:
 
 	std::map<unsigned int, Room> m_rooms;
 	std::mutex m_roomLock;
-
 };

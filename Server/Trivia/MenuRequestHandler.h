@@ -5,20 +5,23 @@
 #include "StatisticsManager.h"
 #include "RequestHandlerFactory.h"
 
+class RequestHandlerFactory;
+
 class MenuRequestHandler : IRequestHandler {
 
 public:
 
-	MenuRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager& room, StatisticsManager& statistics);
+	MenuRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager);
 	bool isRequestRelevant(RequestInfo info) const;
 	RequestResult handleRequest(RequestInfo info);
 
 private:
 
 	LoggedUser m_user;
-	RoomManager& m_roomManager;
-	StatisticsManager& m_statisticsManager;
+	RoomManager* m_roomManager;
 	RequestHandlerFactory& m_factory;
+
+	std::mutex menuLock;
 
 	RequestResult signout(RequestInfo info);
 	RequestResult getRooms(RequestInfo info);
