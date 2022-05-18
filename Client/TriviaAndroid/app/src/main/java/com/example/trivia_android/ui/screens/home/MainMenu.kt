@@ -37,7 +37,7 @@ fun MainMenu(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewM
 
         topBar = { MainMenuTopBar(homeViewModel.curScreen) },
 
-        bottomBar = { MainMenuBotBar(homeViewModel.curScreen) }
+        bottomBar = { MainMenuBotBar(homeViewModel.curScreen) },
 
     ) {
         NavHost(

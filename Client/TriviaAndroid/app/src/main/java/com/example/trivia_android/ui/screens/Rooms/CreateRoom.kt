@@ -1,17 +1,16 @@
 package com.example.trivia_android.ui.screens.Rooms
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -78,6 +77,59 @@ fun InfoDropDown(
 
 
 
+
+@Composable
+fun CreateRoom(
+    modifier: Modifier = Modifier,
+    roomName: MutableState<String>
+) {
+    Scaffold(
+        topBar = { TopAppBar(
+            backgroundColor = MaterialTheme.colors.primarySurface,
+            modifier = modifier.clip(RoundedCornerShape(bottomStart = 4.dp, bottomEnd = 4.dp))
+        ) {
+            Text("Create a room!", style = MaterialTheme.typography.subtitle2)
+        } }
+    ) {
+
+        Column {
+
+            Text(
+                "Room Name: ",
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(top = 28.dp, bottom = 4.dp)
+            )
+
+            SharpTextField(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                stringState = roomName,
+                label = "Name"
+            )
+
+
+            Text(
+                "Room Info: ",
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp, bottom = 4.dp)
+            )
+
+
+            
+
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
 @Composable
 @Preview
 fun InfoPreview() {
@@ -109,4 +161,16 @@ fun InfoPreview() {
 
     }
 
+}
+
+
+@Composable
+@Preview
+fun CreateScreenPreview() {
+
+    val sugoma = remember { mutableStateOf("") }
+
+    TriviaAndroidTheme {
+        CreateRoom(roomName = sugoma)
+    }
 }
