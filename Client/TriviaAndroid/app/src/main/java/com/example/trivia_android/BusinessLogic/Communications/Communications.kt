@@ -5,6 +5,7 @@ package com.example.trivia_android.BusinessLogic.Communications
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 import java.io.*
 import java.net.Socket
 import java.net.SocketAddress
@@ -12,15 +13,22 @@ import java.net.URISyntaxException
 
 
 
+
+@Serializable
+data class Status(val status: Int)
+
+
 enum class RequestCodes(val code: Int) {
     Signup(11),
-    Login(12)
+    Login(12),
+    CreateRoom(13)
 }
 
 
 enum class ResponseCodes(val code: Int) {
     Signup(21),
     Login(22),
+    CreateRoom(29),
     error(40)
 }
 

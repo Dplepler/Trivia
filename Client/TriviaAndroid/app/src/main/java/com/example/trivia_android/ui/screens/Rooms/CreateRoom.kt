@@ -1,10 +1,14 @@
 package com.example.trivia_android.ui.screens.Rooms
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
@@ -78,18 +82,45 @@ fun InfoDropDown(
 
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CreateRoom(
     modifier: Modifier = Modifier,
-    roomName: MutableState<String>
+    roomName: MutableState<String>,
+    playerVal: MutableState<String>,
+    ansTimeVal: MutableState<String>,
+    onClickSubmit: () -> Unit = { }
 ) {
+
+    val enabled = !roomName.value.isEmpty() && !playerVal.value.isEmpty() && !ansTimeVal.value.isEmpty()
+
     Scaffold(
         topBar = { TopAppBar(
             backgroundColor = MaterialTheme.colors.primarySurface,
             modifier = modifier.clip(RoundedCornerShape(bottomStart = 4.dp, bottomEnd = 4.dp))
         ) {
             Text("Create a room!", style = MaterialTheme.typography.subtitle2)
-        } }
+        } },
+        
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { if(enabled) { onClickSubmit() } },
+                backgroundColor = MaterialTheme.colors.primary
+            ) {
+
+                Row(modifier = Modifier.padding(8.dp)) {
+                    Icon(Icons.Filled.Add, null)
+
+                    AnimatedVisibility(visible = enabled) {
+                        Text(
+                            "Create",
+                            modifier = Modifier.align(Alignment.CenterVertically))
+                    }
+                }
+
+            }
+        }
+        
     ) {
 
         Column {
@@ -101,7 +132,9 @@ fun CreateRoom(
             )
 
             SharpTextField(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
                 stringState = roomName,
                 label = "Name"
             )
@@ -115,7 +148,23 @@ fun CreateRoom(
                     .padding(top = 16.dp, bottom = 4.dp)
             )
 
+            Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
+                InfoDropDown(
+                    modifier = Modifier.padding(end = 8.dp),
+                    label = "Players",
+                    chosenValue = playerVal,
+                    options = (1..30).toList()
+                )
+
+
+                InfoDropDown(
+                    modifier = Modifier,
+                    label = "Time",
+                    chosenValue = ansTimeVal,
+                    options = (10..180 step(10)).toList()
+                )
+            }
             
 
         }
@@ -156,7 +205,6 @@ fun InfoPreview() {
                 options = (10..180 step(10)).toList()
             )
 
-
         }
 
     }
@@ -169,8 +217,15 @@ fun InfoPreview() {
 fun CreateScreenPreview() {
 
     val sugoma = remember { mutableStateOf("") }
+    val sugoma2 = remember { mutableStateOf("") }
+    val sugoma3 = remember { mutableStateOf("") }
 
     TriviaAndroidTheme {
-        CreateRoom(roomName = sugoma)
+        CreateRoom(
+            roomName = sugoma,
+            playerVal = sugoma2,
+            ansTimeVal = sugoma3,
+            onClickSubmit = { Log.i("Create:", "Button Clicked") }
+        )
     }
 }
