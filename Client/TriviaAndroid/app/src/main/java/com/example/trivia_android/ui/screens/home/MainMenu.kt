@@ -29,7 +29,11 @@ import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 
 @Composable
-fun MainMenu(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewModel()) {
+fun MainMenu(
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = viewModel(),
+    onClickCreate: () -> Unit = { }
+) {
 
     val navController = rememberNavController()
 
@@ -45,7 +49,7 @@ fun MainMenu(modifier: Modifier = Modifier, homeViewModel: HomeViewModel = viewM
             startDestination = "Home"
         ) {
             composable("Home") {
-                HomeScreenContent()
+                HomeScreenContent(onClickCreate = onClickCreate)
             }
         }
     }

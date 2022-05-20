@@ -43,6 +43,7 @@ fun RoomCard(
 
     Card(
         modifier = modifier,
+        elevation = 4.dp
 
     ) {
 

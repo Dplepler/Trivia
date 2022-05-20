@@ -19,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.trivia_android.BusinessLogic.ViewModels.LoginViewModel
+import com.example.trivia_android.BusinessLogic.ViewModels.RoomsViewModel
+import com.example.trivia_android.ui.screens.Rooms.CreateRoom
 import com.example.trivia_android.ui.screens.authentication.LoginScreenContent
 import com.example.trivia_android.ui.screens.authentication.MainAuthScreen
 import com.example.trivia_android.ui.screens.home.MainMenu
@@ -33,16 +35,30 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background.copy(0.8f)
                 ) {
                     val mainNavController = rememberNavController()
                     NavHost(navController = mainNavController, startDestination = "Auth") {
+
                         composable("Auth") {
                             MainAuthScreen(onLogin = { mainNavController.navigate("MainMenu") })
                         }
 
+
                         composable("MainMenu") {
-                            MainMenu()
+                            MainMenu(onClickCreate = { mainNavController.navigate("Rooms") })
+                        }
+
+                        composable("Rooms") {
+
+                            val roomViewModel: RoomsViewModel = viewModel()
+
+                            CreateRoom(
+                                roomName = roomViewModel.roomName,
+                                playerVal = roomViewModel.playerAmount,
+                                ansTimeVal = roomViewModel.ansTime,
+                                onClickSubmit = { roomViewModel.createRoom() },
+                                successStatus = roomViewModel.responseStatus
+                            )
                         }
 
                     }

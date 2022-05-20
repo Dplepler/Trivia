@@ -1,6 +1,7 @@
 package com.example.trivia_android.ui.screens.Rooms
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -89,10 +91,12 @@ fun CreateRoom(
     roomName: MutableState<String>,
     playerVal: MutableState<String>,
     ansTimeVal: MutableState<String>,
-    onClickSubmit: () -> Unit = { }
+    onClickSubmit: () -> Unit = { },
+    successStatus: Int = 0
 ) {
 
     val enabled = !roomName.value.isEmpty() && !playerVal.value.isEmpty() && !ansTimeVal.value.isEmpty()
+    val curContext = LocalContext.current
 
     Scaffold(
         topBar = { TopAppBar(
@@ -104,7 +108,10 @@ fun CreateRoom(
         
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { if(enabled) { onClickSubmit() } },
+                onClick = {
+                    if(enabled) { onClickSubmit() }
+                    else
+                    { Toast.makeText(curContext, "Please enter room info!", Toast.LENGTH_LONG).show() } },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
 
@@ -114,7 +121,8 @@ fun CreateRoom(
                     AnimatedVisibility(visible = enabled) {
                         Text(
                             "Create",
-                            modifier = Modifier.align(Alignment.CenterVertically))
+                            modifier = Modifier.align(Alignment.CenterVertically)
+                        )
                     }
                 }
 
@@ -165,7 +173,10 @@ fun CreateRoom(
                     options = (10..180 step(10)).toList()
                 )
             }
-            
+
+
+            Text("Cur status is: $successStatus", modifier = Modifier.align(Alignment.CenterHorizontally).padding(4.dp))
+
 
         }
 

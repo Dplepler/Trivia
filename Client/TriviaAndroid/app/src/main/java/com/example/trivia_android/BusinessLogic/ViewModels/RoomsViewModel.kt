@@ -1,6 +1,8 @@
 package com.example.trivia_android.BusinessLogic.ViewModels
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trivia_android.BusinessLogic.Communications.Communications
@@ -17,6 +19,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class RoomInfo(val roomName: String, val maxUsers: Int, val questionCount: Int, val answerTimeout: Float)
 
+
 class RoomsViewModel: ViewModel() {
 
     val comms = Communications
@@ -27,7 +30,9 @@ class RoomsViewModel: ViewModel() {
 
     val roomName = mutableStateOf("")
 
-    val responseStatus = mutableStateOf(-3)
+    private var _responseStatus by mutableStateOf(-3)
+    val responseStatus
+        get() = _responseStatus
 
 
     fun createRoom() {
@@ -45,7 +50,7 @@ class RoomsViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.CreateRoom.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                responseStatus.value = Json.decodeFromString<Status>(res).status
+                _responseStatus = Json.decodeFromString<Status>(res).status
             }
         }
     }
