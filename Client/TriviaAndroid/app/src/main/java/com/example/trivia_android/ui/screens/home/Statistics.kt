@@ -7,11 +7,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TaskAlt
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
@@ -24,46 +26,51 @@ fun StatCard(
     statIcon: ImageVector
 ) {
 
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(modifier = modifier, elevation = 8.dp) {
 
         Row() {
             Icon(
                 statIcon,
                 "Statistic's icon",
                 modifier = Modifier
-                    .size(20.dp)
+                    .size(45.dp)
                     .align(Alignment.CenterVertically)
                     .padding(start = 3.dp)
             )
 
-            Column() {
+            Column(modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth().padding(end = 8.dp)) {
                 Text(
                     text = value.toString(),
                     modifier = Modifier
-                        .padding(12.dp)
                         .align(Alignment.CenterHorizontally),
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.h4
                 )
                 Text(
                     text = name,
                     modifier = Modifier
-                        .padding(start = 20.dp)
+
                         .align(Alignment.CenterHorizontally),
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.h5
                 )
             }
-
-
-
         }
-
     }
 }
 
 @Composable
 @Preview
-fun statCardPreview() {
+fun StatisticsScreenInit() {
+
+
     TriviaAndroidTheme() {
-        StatCard(value = 10000.0f, name = "Hello", statIcon = Icons.Filled.TaskAlt)
+        Column() {
+            StatCard(value = 0f, name = "Games played", statIcon = Icons.Filled.QuestionAnswer,
+                modifier = Modifier.padding(8.dp))
+            StatCard(value = 0f, name = "Average answer time", statIcon = Icons.Filled.Timer,
+                modifier = Modifier.padding(8.dp))
+            StatCard(value = 0f, name = "Total answers", statIcon = Icons.Filled.ModeEdit,
+                modifier = Modifier.padding(8.dp))
+        }
+
     }
 }
