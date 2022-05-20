@@ -13,7 +13,6 @@ import java.net.URISyntaxException
 
 
 
-
 @Serializable
 data class Status(val status: Int)
 
@@ -101,8 +100,5 @@ object Communications {
         for (i in 0..3) arr[1 + i] = (data.length shr (shiftStart - i* shiftOffset)).toByte()
         return arr
     }
-
-
-
 
 }

@@ -40,7 +40,10 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = mainNavController, startDestination = "Auth") {
 
                         composable("Auth") {
-                            MainAuthScreen(onLogin = { mainNavController.navigate("MainMenu") })
+                            MainAuthScreen(onLogin = { mainNavController.navigate("MainMenu") {
+                                popUpTo("Auth") { inclusive = true }
+                            }
+                            })
                         }
 
 
