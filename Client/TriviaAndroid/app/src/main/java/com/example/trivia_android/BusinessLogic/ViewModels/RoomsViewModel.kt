@@ -35,6 +35,10 @@ class RoomsViewModel: ViewModel() {
         get() = _responseStatus
 
 
+    private val _playerList = mutableListOf<String>("Gal", "David")
+
+
+
     fun createRoom() {
         if(roomName.value.isEmpty() && playerAmount.value.isEmpty() && ansTime.value.isEmpty()) return
         viewModelScope.launch {
@@ -54,6 +58,12 @@ class RoomsViewModel: ViewModel() {
             }
         }
     }
+
+
+    fun onNavigate() {
+        _responseStatus = -3
+    }
+
 
 
 }
