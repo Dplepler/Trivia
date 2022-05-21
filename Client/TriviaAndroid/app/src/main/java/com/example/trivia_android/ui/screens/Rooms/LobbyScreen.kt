@@ -110,7 +110,7 @@ fun LobbyScreen(
 
             ) {
 
-                Text("Start Game")
+                Text("Start Game", modifier = Modifier.padding(4.dp))
 
             }
         }
@@ -175,27 +175,15 @@ fun InfoField(
         Text(
             "${field}:",
             style = MaterialTheme.typography.caption,
-            fontSize = 32.sp,
+            fontSize = 30.sp,
             modifier = Modifier.padding(5.dp)
         )
 
         Text(
             value,
-            style = MaterialTheme.typography.body1.copy(
-                background = Color.Transparent,
-                color = Color.White
-            ),
-            fontSize = 32.sp,
+            style = MaterialTheme.typography.body1,
+            fontSize = 30.sp,
             modifier = Modifier
-                .background(
-                    brush = Brush.horizontalGradient(
-                        colors =
-                        listOf(
-                            MaterialTheme.colors.primary,
-                            MaterialTheme.colors.secondary
-                        )
-                    )
-                )
                 .align(Alignment.CenterHorizontally)
         )
     }

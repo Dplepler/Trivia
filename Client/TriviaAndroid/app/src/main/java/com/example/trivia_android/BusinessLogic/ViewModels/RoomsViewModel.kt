@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.trivia_android.BusinessLogic.Communications.Communications
 import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
 import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
@@ -30,16 +31,14 @@ class RoomsViewModel: ViewModel() {
 
     val roomName = mutableStateOf("")
 
-    private var _responseStatus by mutableStateOf(-3)
-    val responseStatus
-        get() = _responseStatus
-
 
     private val _playerList = mutableListOf<String>("Gal", "David")
+    val playerList
+        get() = _playerList
 
 
 
-    fun createRoom() {
+    fun createRoom(navController: NavController) {
         if(roomName.value.isEmpty() && playerAmount.value.isEmpty() && ansTime.value.isEmpty()) return
         viewModelScope.launch {
             val data = Json.encodeToString(
@@ -54,16 +53,10 @@ class RoomsViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.CreateRoom.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                _responseStatus = Json.decodeFromString<Status>(res).status
+                if(Json.decodeFromString<Status>(res).status == 1) { navController.navigate("LobbyScreen") }
             }
         }
     }
-
-
-    fun onNavigate() {
-        _responseStatus = -3
-    }
-
 
 
 }

@@ -92,11 +92,12 @@ fun CreateRoom(
     playerVal: MutableState<String>,
     ansTimeVal: MutableState<String>,
     onClickSubmit: () -> Unit = { },
-    successStatus: Int = 0
+    onSuccessCreate: () -> Unit = { },
 ) {
 
     val enabled = !roomName.value.isEmpty() && !playerVal.value.isEmpty() && !ansTimeVal.value.isEmpty()
     val curContext = LocalContext.current
+
 
     Scaffold(
         topBar = { TopAppBar(
@@ -173,10 +174,6 @@ fun CreateRoom(
                     options = (10..180 step(10)).toList()
                 )
             }
-
-
-            Text("Cur status is: $successStatus", modifier = Modifier.align(Alignment.CenterHorizontally).padding(4.dp))
-
 
         }
 
