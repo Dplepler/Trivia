@@ -28,7 +28,8 @@ public:
 private:
 
 	static void parseLength(Buffer& buffer, unsigned int length);
-	static std::string parseRoomDataVec(std::vector<RoomData> vec);
+	static std::string parseRoomNameVec(std::vector<RoomData> vec);
+	static std::string parseRoomIdVec(std::vector<RoomData> vec);
 	static std::string parseStringVec(std::vector<std::string> vec);
 
 };
