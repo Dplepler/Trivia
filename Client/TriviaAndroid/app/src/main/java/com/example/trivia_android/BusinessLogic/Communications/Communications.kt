@@ -14,14 +14,16 @@ import java.net.URISyntaxException
 
 enum class RequestCodes(val code: Int) {
     Signup(11),
-    Login(12)
+    Login(12),
+    Stats(17)
 }
 
 
 enum class ResponseCodes(val code: Int) {
     Signup(21),
     Login(22),
-    error(40)
+    Error(40),
+    Stats(27)
 }
 
 
