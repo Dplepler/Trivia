@@ -17,8 +17,14 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
+
 @Serializable
 data class RoomInfo(val roomName: String, val maxUsers: Int, val questionCount: Int, val answerTimeout: Float)
+
+
+@Serializable
+data class RoomList(val status: Int, val names: List<String>, val ids: List<Int>)
+
 
 
 class RoomsViewModel: ViewModel() {
@@ -30,6 +36,9 @@ class RoomsViewModel: ViewModel() {
     val ansTime = mutableStateOf("")
 
     val roomName = mutableStateOf("")
+
+    lateinit var list: RoomList
+
 
 
     private val _playerList = mutableListOf<String>("Gal", "David")
@@ -57,6 +66,8 @@ class RoomsViewModel: ViewModel() {
             }
         }
     }
+
+
 
 
 }

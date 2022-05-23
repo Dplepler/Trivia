@@ -20,7 +20,8 @@ data class Status(val status: Int)
 enum class RequestCodes(val code: Int) {
     Signup(11),
     Login(12),
-    Stats(17)
+    Stats(17),
+    CreateRoom(13)
 }
 
 
@@ -28,7 +29,8 @@ enum class ResponseCodes(val code: Int) {
     Signup(21),
     Login(22),
     Error(40),
-    Stats(27)
+    Stats(27),
+    CreateRoom(13)
 }
 
 
