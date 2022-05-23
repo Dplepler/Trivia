@@ -5,11 +5,16 @@ package com.example.trivia_android.BusinessLogic.Communications
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 import java.io.*
 import java.net.Socket
 import java.net.SocketAddress
 import java.net.URISyntaxException
 
+
+
+@Serializable
+data class Status(val status: Int)
 
 
 enum class RequestCodes(val code: Int) {
@@ -31,7 +36,7 @@ enum class ResponseCodes(val code: Int) {
 
 object Communications {
 
-    private const val addr = "10.0.2.2"
+    private const val addr = "192.168.1.233"
     private const val port = 8008
     private const val shiftStart = 24
     private const val shiftOffset = 8
@@ -95,8 +100,5 @@ object Communications {
         for (i in 0..3) arr[1 + i] = (data.length shr (shiftStart - i* shiftOffset)).toByte()
         return arr
     }
-
-
-
 
 }
