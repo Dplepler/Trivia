@@ -39,7 +39,7 @@ class RoomsViewModel: ViewModel() {
 
 
     fun createRoom(navController: NavController) {
-        if(roomName.value.isEmpty() && playerAmount.value.isEmpty() && ansTime.value.isEmpty()) return
+        if(roomName.value.isEmpty() || playerAmount.value.isEmpty() || ansTime.value.isEmpty()) return
         viewModelScope.launch {
             val data = Json.encodeToString(
                 RoomInfo(
