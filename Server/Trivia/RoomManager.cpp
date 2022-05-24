@@ -31,8 +31,16 @@ unsigned int RoomManager::getRoomState(unsigned int id) {
 }
 
 Room RoomManager::getRoom(unsigned int id) {	
-	return this->m_rooms.at(id);
+	return this->m_rooms[id];
 }
+
+
+void RoomManager::addUser(unsigned int id, LoggedUser newUser) {
+	std::unique_lock<std::mutex> lock(this->m_roomLock);
+	m_rooms[id].addUser(newUser);
+	lock.unlock();
+}
+
 
 std::vector<RoomData> RoomManager::getRooms() {
 	

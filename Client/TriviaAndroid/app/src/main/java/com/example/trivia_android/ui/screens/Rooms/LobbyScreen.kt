@@ -152,7 +152,7 @@ fun LobbyScreen(
         LaunchedEffect(Unit) {
             while (true) {
                 onRefresh()
-                delay(60000)
+                delay(3000)
             }
         }
 

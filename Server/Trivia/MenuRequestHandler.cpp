@@ -62,7 +62,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {
 	JoinRoomRequest request = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
 
 	try {
-		this->m_roomManager->getRoom(request.roomId).addUser(this->m_user);
+		this->m_roomManager->addUser(request.roomId, m_user);
 		return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), nullptr};
 	}
 	catch(...) {

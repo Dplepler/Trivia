@@ -36,7 +36,8 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
                 playerAmount = roomsViewModel.playerAmount.value,
                 ansTime = roomsViewModel.ansTime.value,
                 questionAmount = "10",
-                playerList = roomsViewModel.playerList
+                playerList = roomsViewModel.playerList,
+                onRefresh = { roomsViewModel.getUserList() }
             )
         }
 

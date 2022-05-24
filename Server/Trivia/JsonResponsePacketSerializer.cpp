@@ -117,7 +117,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse
 	json json;
 
 	buffer.push_back((char)RESPONSE::PLAYERS);
-	json["players"] = parseStringVec(getPlayersRes.players);
+	json["players"] = getPlayersRes.players;
 
 	jsonString = json.dump();
 

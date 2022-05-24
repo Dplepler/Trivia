@@ -56,7 +56,7 @@ fun MainMenu(
                     onClickCreate = onClickCreate,
                     onClickJoin = { roomsViewModel.getRoomList() },
                     onClickRoom = { roomsViewModel.joinRoom(it) { onClickRoom() } },
-                    roomList = roomsViewModel.list.value
+                    roomList = roomsViewModel.roomList.value
                 )
             }
         }

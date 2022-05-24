@@ -2,6 +2,7 @@ package com.example.trivia_android.BusinessLogic.ViewModels
 
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,9 @@ data class RoomList(val status: Int = 0, val names: List<String> = listOf(), val
 @Serializable
 data class GetRoomDetails(val roomId: Int)
 
+@Serializable
+data class PlayerList(val players: MutableList<String>)
+
 
 class RoomsViewModel: ViewModel() {
 
@@ -39,13 +43,15 @@ class RoomsViewModel: ViewModel() {
 
     val roomName = mutableStateOf("")
 
-    private var _list = mutableStateOf(RoomList())
-    val list
-        get() = _list
+    private var id: Int = 0
+
+    private var _roomList = mutableStateOf(RoomList())
+    val roomList
+        get() = _roomList
 
 
 
-    private val _playerList = mutableListOf<String>("Gal", "David")
+    private var _playerList = mutableStateListOf<String>()
     val playerList
         get() = _playerList
 
@@ -80,7 +86,10 @@ class RoomsViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.JoinRoom.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                if(Json.decodeFromString<Status>(res).status == 1) { onSuccess() }
+                if(Json.decodeFromString<Status>(res).status == 1) {
+                    id = roomId
+                    onSuccess()
+                }
             }
         }
     }
@@ -90,14 +99,26 @@ class RoomsViewModel: ViewModel() {
 
     fun getRoomList() {
         viewModelScope.launch {
-
             comms.sendMessage(comms.buildMessage(RequestCodes.GetRooms.code.toByte(), ""))
-
             val buffer = comms.readMessage()
-
             if(buffer[0].toInt() == ResponseCodes.GetRooms.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                list.value = Json.decodeFromString(res)
+                _roomList.value = Json.decodeFromString(res)
+            }
+        }
+    }
+
+
+    fun getUserList() {
+        val data = Json.encodeToString(GetRoomDetails(id))
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomPlayers.code.toByte(), data))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.GetRoomPlayers.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                val list = Json.decodeFromString<PlayerList>(res)
+                _playerList.clear()
+                _playerList.addAll(list.players)
             }
         }
     }
