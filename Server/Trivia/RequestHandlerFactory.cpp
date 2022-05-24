@@ -1,5 +1,6 @@
 #include "RequestHandlerFactory.h"
 
+
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) : m_database(db) { 
 	m_loginManager = new LoginManager(db);
 	m_roomManager = new RoomManager();

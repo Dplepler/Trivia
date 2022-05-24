@@ -66,8 +66,6 @@ fun StatCard(
 }
 
 @Composable
-<<<<<<< Updated upstream
-=======
 fun StatScreenContent(
     stats: Stats = Stats()
 ) {
@@ -93,7 +91,6 @@ fun StatScreenContent(
 }
 
 @Composable
->>>>>>> Stashed changes
 @Preview
 fun StatisticsScreenInit() {
 

@@ -5,9 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.trivia_android.BusinessLogic.Communications.Communications
-<<<<<<< Updated upstream
-=======
 import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
 import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
 import kotlinx.coroutines.launch
@@ -15,7 +14,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
->>>>>>> Stashed changes
 
 @Serializable
 data class Stats(
@@ -29,9 +27,6 @@ enum class StatIndex(val index: Int) {
     correctAns(1),
     totalAns(2),
     avgTime(3)
-
-<<<<<<< Updated upstream
-=======
 }
 
 class HomeViewModel: ViewModel() {
@@ -54,5 +49,4 @@ class HomeViewModel: ViewModel() {
             }
         }
     }
->>>>>>> Stashed changes
 }
