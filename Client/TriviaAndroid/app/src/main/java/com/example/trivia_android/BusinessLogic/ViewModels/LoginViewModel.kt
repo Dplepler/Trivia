@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivia_android.BusinessLogic.Communications.Communications
 import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
 import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
+import com.example.trivia_android.BusinessLogic.Communications.Status
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
@@ -19,8 +20,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
-@Serializable
-data class Status(val status: Int)
 @Serializable
 data class LoginData(val username: String, val password: String)
 @Serializable

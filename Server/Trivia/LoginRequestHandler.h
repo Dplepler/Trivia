@@ -36,6 +36,8 @@ private:
 
 	LoginManager* m_loginManager;
 
+	std::mutex m_loggedLock;
+
 	RequestResult login(RequestInfo reqInfo);
 	RequestResult signup(RequestInfo reqInfo);
 
