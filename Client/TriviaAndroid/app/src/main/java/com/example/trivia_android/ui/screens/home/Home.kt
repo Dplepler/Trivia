@@ -106,6 +106,7 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onClickCreate: () -> Unit = { },
     onClickJoin: () -> Unit = { },
+    onClickRoom: (Int) -> Unit = { },
     roomList: RoomList
 ) {
 
@@ -160,14 +161,14 @@ fun HomeScreenContent(
             ),
             Icons.Filled.ArrowForward,
             MaterialTheme.colors.secondary,
-            onButtonClick = { expanded = true }
+            onButtonClick = {
+                expanded = true
+                onClickJoin()
+            }
         )
 
 
         AnimatedVisibility(expanded) {
-
-            onClickJoin()
-
             Dialog(onDismissRequest = { expanded = false }) {
                 JoinRoomContent(
                     modifier = Modifier.constrainAs(popup) {
@@ -177,6 +178,7 @@ fun HomeScreenContent(
                     },
                     roomList = roomList,
                     onDismissRequest = { expanded = false },
+                    onClickRoom = onClickRoom,
                     popupWidth = 299.dp,
                     popupHeight = 479.dp
                 )

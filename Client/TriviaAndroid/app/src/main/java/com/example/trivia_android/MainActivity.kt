@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.trivia_android.BusinessLogic.ViewModels.LoginViewModel
 import com.example.trivia_android.BusinessLogic.ViewModels.RoomsViewModel
 import com.example.trivia_android.ui.screens.Rooms.CreateRoom
@@ -49,12 +51,18 @@ class MainActivity : ComponentActivity() {
 
 
                         composable("MainMenu") {
-                            MainMenu(onClickCreate = { mainNavController.navigate("Rooms") })
+                            MainMenu(
+                                onClickCreate = { mainNavController.navigate("Rooms/true") },
+                                onClickRoom = { mainNavController.navigate("Rooms/false") }
+                            )
                         }
 
-                        composable("Rooms") {
+                        composable(
+                            "Rooms/{createOrJoin}",
+                            arguments = listOf(navArgument("createOrJoin") { type = NavType.BoolType })
+                        ) {
 
-                            MainRoomScreen(createOrJoin = true)
+                            MainRoomScreen(createOrJoin = it.arguments!!.getBoolean("createOrJoin"))
                         }
 
                     }

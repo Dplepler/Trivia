@@ -34,7 +34,8 @@ fun MainMenu(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
     roomsViewModel: RoomsViewModel = viewModel(),
-    onClickCreate: () -> Unit = { }
+    onClickCreate: () -> Unit = { },
+    onClickRoom: () -> Unit = { }
 ) {
 
     val navController = rememberNavController()
@@ -54,6 +55,7 @@ fun MainMenu(
                 HomeScreenContent(
                     onClickCreate = onClickCreate,
                     onClickJoin = { roomsViewModel.getRoomList() },
+                    onClickRoom = { roomsViewModel.joinRoom(it) { onClickRoom() } },
                     roomList = roomsViewModel.list.value
                 )
             }

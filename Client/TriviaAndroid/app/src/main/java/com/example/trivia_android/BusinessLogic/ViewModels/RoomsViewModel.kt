@@ -22,10 +22,11 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class RoomInfo(val roomName: String, val maxUsers: Int, val questionCount: Int, val answerTimeout: Float)
 
-
 @Serializable
 data class RoomList(val status: Int = 0, val names: List<String> = listOf(), val ids: List<Int> = listOf())
 
+@Serializable
+data class GetRoomDetails(val roomId: Int)
 
 
 class RoomsViewModel: ViewModel() {
@@ -38,7 +39,9 @@ class RoomsViewModel: ViewModel() {
 
     val roomName = mutableStateOf("")
 
-    val list = mutableStateOf(RoomList())
+    private var _list = mutableStateOf(RoomList())
+    val list
+        get() = _list
 
 
 
@@ -67,6 +70,22 @@ class RoomsViewModel: ViewModel() {
             }
         }
     }
+
+
+
+    fun joinRoom(roomId: Int, onSuccess: () -> Unit) {
+        val data = Json.encodeToString(GetRoomDetails(roomId))
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.JoinRoom.code.toByte(), data))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.JoinRoom.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccess() }
+            }
+        }
+    }
+
+
 
 
     fun getRoomList() {

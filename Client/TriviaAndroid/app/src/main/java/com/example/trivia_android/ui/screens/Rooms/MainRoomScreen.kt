@@ -15,7 +15,7 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
 
     val roomNavController = rememberNavController()
 
-    NavHost(navController = roomNavController, startDestination = if(createOrJoin) "CreateRoom" else "JoinRoom") {
+    NavHost(navController = roomNavController, startDestination = if(createOrJoin) "CreateRoom" else "LobbyScreen") {
 
 
         composable("CreateRoom") {
