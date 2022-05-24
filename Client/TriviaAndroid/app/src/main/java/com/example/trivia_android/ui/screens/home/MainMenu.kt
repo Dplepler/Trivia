@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.trivia_android.BusinessLogic.ViewModels.HomeViewModel
+import com.example.trivia_android.BusinessLogic.ViewModels.RoomsViewModel
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 
@@ -32,6 +33,7 @@ import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 fun MainMenu(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
+    roomsViewModel: RoomsViewModel = viewModel(),
     onClickCreate: () -> Unit = { }
 ) {
 

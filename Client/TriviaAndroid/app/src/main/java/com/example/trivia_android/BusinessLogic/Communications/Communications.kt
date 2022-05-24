@@ -30,7 +30,7 @@ enum class ResponseCodes(val code: Int) {
     Login(22),
     Error(40),
     Stats(27),
-    CreateRoom(13)
+    CreateRoom(29)
 }
 
 

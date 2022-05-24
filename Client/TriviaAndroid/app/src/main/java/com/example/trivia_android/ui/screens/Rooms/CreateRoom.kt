@@ -112,7 +112,7 @@ fun CreateRoom(
                 onClick = {
                     if(enabled) { onClickSubmit() }
                     else
-                    { Toast.makeText(curContext, "Please enter room info!", Toast.LENGTH_LONG).show() } },
+                    { Toast.makeText(curContext, "enter room info!", Toast.LENGTH_LONG).show() } },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
 

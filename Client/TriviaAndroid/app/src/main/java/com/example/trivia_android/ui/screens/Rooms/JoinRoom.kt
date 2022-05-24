@@ -1,6 +1,10 @@
 package com.example.trivia_android.ui.screens.Rooms
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.graphics.Paint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,90 +24,101 @@ import androidx.compose.ui.unit.dp
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun JoinRoomContent(
-    roomNames: MutableList<String>,
+    modifier: Modifier = Modifier,
+    roomNames: List<String>,
     onDismissRequest: () -> Unit = { },
     onClickRoom: (Int) -> Unit = { },
     popupWidth: Dp,
     popupHeight: Dp
 ) {
 
-    Box (
-        Modifier
-            .size(popupWidth, popupHeight)
-            .background(Color.White, MaterialTheme.shapes.large)
-    ) {
-
-        Column(modifier = Modifier.fillMaxWidth()) {
-
-            Text(
-                "Pick a room:",
-                style = MaterialTheme.typography.overline,
-                modifier = Modifier.padding(8.dp)
-            )
 
 
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                thickness = 1.dp
-            )
+    AnimatedVisibility(true) {
+        Box(
+            modifier
+                .size(popupWidth, popupHeight)
+                .background(MaterialTheme.colors.background, MaterialTheme.shapes.large)
+        ) {
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+
+                Text(
+                    "Pick a room:",
+                    style = MaterialTheme.typography.overline,
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.padding(8.dp)
+                )
 
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.9f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                itemsIndexed(roomNames) { index: Int, name: String ->
-
-                    Text(
-                        name,
-                        style = MaterialTheme.typography.body1.copy(
-                            textAlign = TextAlign.Center
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                            .clickable { onClickRoom(index) },
-                    )
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                    thickness = 1.dp
+                )
 
 
-                    if(index != roomNames.lastIndex) {
-                        Divider(
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.9f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    itemsIndexed(roomNames) { index: Int, name: String ->
+
+                        Text(
+                            name,
+                            style = MaterialTheme.typography.body1.copy(
+                                textAlign = TextAlign.Center
+                            ),
+                            color = MaterialTheme.colors.onBackground,
                             modifier = Modifier
-                                .fillMaxWidth(0.95f),
-                            thickness = 1.dp
+                                .fillMaxWidth()
+                                .padding(4.dp)
+                                .clickable { onClickRoom(index) }
                         )
+
+
+                        if (index != roomNames.lastIndex) {
+                            Divider(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.95f),
+                                thickness = 1.dp
+                            )
+                        }
+
                     }
+
+                }
+
+
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                    thickness = 1.dp
+                )
+
+
+                IconButton(onClick = { onDismissRequest() }) {
+
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        null,
+                        tint = MaterialTheme.colors.onBackground
+                    )
 
                 }
 
             }
 
-
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                thickness = 1.dp
-            )
-
-
-            IconButton(onClick = { onDismissRequest() }) {
-
-                Icon(Icons.Filled.ArrowBack, null)
-
-            }
-
         }
-
     }
-
 }
 
 
@@ -113,6 +128,10 @@ fun JoinRoomContent(
 
 @Composable
 @Preview
+@Preview(
+    name = "Popup dark preview",
+    uiMode = UI_MODE_NIGHT_YES
+)
 fun PopupPreview() {
     TriviaAndroidTheme {
 

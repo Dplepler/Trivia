@@ -47,7 +47,7 @@ class RoomsViewModel: ViewModel() {
 
 
 
-    fun createRoom(navController: NavController) {
+    fun createRoom(onSuccess: () -> Unit) {
         if(roomName.value.isEmpty() || playerAmount.value.isEmpty() || ansTime.value.isEmpty()) return
         viewModelScope.launch {
             val data = Json.encodeToString(
@@ -62,7 +62,7 @@ class RoomsViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.CreateRoom.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                if(Json.decodeFromString<Status>(res).status == 1) { navController.navigate("LobbyScreen") }
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccess() }
             }
         }
     }

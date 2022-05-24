@@ -24,10 +24,7 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
                 roomName = roomsViewModel.roomName,
                 playerVal = roomsViewModel.playerAmount,
                 ansTimeVal = roomsViewModel.ansTime,
-                onClickSubmit = { roomsViewModel.createRoom(roomNavController) },
-                onSuccessCreate = {
-                    roomNavController.navigate("LobbyScreen")
-                },
+                onClickSubmit = { roomsViewModel.createRoom() { roomNavController.navigate("LobbyScreen") } },
             )
         }
 

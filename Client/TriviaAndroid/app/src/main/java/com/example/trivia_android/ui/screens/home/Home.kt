@@ -4,6 +4,8 @@ package com.example.trivia_android.ui.screens.home
 
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -12,7 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -24,9 +26,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Popup
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import com.example.trivia_android.R
+import com.example.trivia_android.ui.screens.Rooms.JoinRoomContent
 
 
 @Composable
@@ -38,7 +43,6 @@ fun RoomCard(
     buttonIcon: ImageVector,
     buttonColor: Color,
     onButtonClick: () -> Unit = { }
-
     ) {
 
     Card(
@@ -95,26 +99,29 @@ fun RoomCard(
 
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onClickCreate: () -> Unit = { },
-    onClickJoin: () -> Unit = { }
 ) {
+
+    var expanded by remember { mutableStateOf(false) }
 
 
     ConstraintLayout(modifier = modifier.padding(8.dp)) {
 
-        val (createRoom, joinRoom) = createRefs()
+        val (createRoom, joinRoom, popup) = createRefs()
 
         RoomCard(
-            Modifier.padding(16.dp)
+            Modifier
+                .padding(16.dp)
                 .constrainAs(createRoom) {
-                top.linkTo(parent.top, margin = 4.dp)
-                start.linkTo(parent.start, margin = 32.dp)
-                end.linkTo(parent.end)
-                bottom.linkTo(joinRoom.top, margin = 16.dp)
-            },
+                    top.linkTo(parent.top, margin = 4.dp)
+                    start.linkTo(parent.start, margin = 32.dp)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(joinRoom.top, margin = 16.dp)
+                },
             "Create\nRoom",
             "Create a new game room!",
             painterResource(
@@ -150,11 +157,28 @@ fun HomeScreenContent(
             ),
             Icons.Filled.ArrowForward,
             MaterialTheme.colors.secondary,
-            onClickJoin
+            onButtonClick = { expanded = true }
         )
-        
+
+
+        AnimatedVisibility(expanded) {
+            Dialog(onDismissRequest = { expanded = false }) {
+                JoinRoomContent(
+                    modifier = Modifier.constrainAs(popup) {
+                        start.linkTo(parent.start, margin = 72.dp)
+                        top.linkTo(parent.top, margin = 36.dp)
+                        bottom.linkTo(parent.bottom, margin = 36.dp)
+                    },
+                    roomNames = listOf("Gal", "Sugoma", "Hahaha"),
+                    onDismissRequest = { expanded = false },
+                    popupWidth = 299.dp,
+                    popupHeight = 479.dp
+                )
+            }
+        }
 
     }
+
 
 
 }
