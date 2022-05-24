@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Popup
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.trivia_android.BusinessLogic.ViewModels.RoomList
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import com.example.trivia_android.R
 import com.example.trivia_android.ui.screens.Rooms.JoinRoomContent
@@ -104,6 +105,8 @@ fun RoomCard(
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onClickCreate: () -> Unit = { },
+    onClickJoin: () -> Unit = { },
+    roomList: RoomList
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -162,6 +165,9 @@ fun HomeScreenContent(
 
 
         AnimatedVisibility(expanded) {
+
+            onClickJoin()
+
             Dialog(onDismissRequest = { expanded = false }) {
                 JoinRoomContent(
                     modifier = Modifier.constrainAs(popup) {
@@ -169,7 +175,7 @@ fun HomeScreenContent(
                         top.linkTo(parent.top, margin = 36.dp)
                         bottom.linkTo(parent.bottom, margin = 36.dp)
                     },
-                    roomNames = listOf("Gal", "Sugoma", "Hahaha"),
+                    roomList = roomList,
                     onDismissRequest = { expanded = false },
                     popupWidth = 299.dp,
                     popupHeight = 479.dp
@@ -178,9 +184,6 @@ fun HomeScreenContent(
         }
 
     }
-
-
-
 }
 
 
@@ -232,7 +235,7 @@ fun HomeScreenPreview() {
 
 
         Surface {
-            HomeScreenContent()
+            HomeScreenContent(roomList = RoomList())
         }
     }
 }

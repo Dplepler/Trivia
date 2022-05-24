@@ -1,5 +1,6 @@
 package com.example.trivia_android.BusinessLogic.ViewModels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,7 +24,7 @@ data class RoomInfo(val roomName: String, val maxUsers: Int, val questionCount: 
 
 
 @Serializable
-data class RoomList(val status: Int, val names: List<String>, val ids: List<Int>)
+data class RoomList(val status: Int = 0, val names: List<String> = listOf(), val ids: List<Int> = listOf())
 
 
 
@@ -37,7 +38,7 @@ class RoomsViewModel: ViewModel() {
 
     val roomName = mutableStateOf("")
 
-    lateinit var list: RoomList
+    val list = mutableStateOf(RoomList())
 
 
 
@@ -68,6 +69,17 @@ class RoomsViewModel: ViewModel() {
     }
 
 
+    fun getRoomList() {
+        viewModelScope.launch {
 
+            comms.sendMessage(comms.buildMessage(RequestCodes.GetRooms.code.toByte(), ""))
 
+            val buffer = comms.readMessage()
+
+            if(buffer[0].toInt() == ResponseCodes.GetRooms.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                list.value = Json.decodeFromString(res)
+            }
+        }
+    }
 }

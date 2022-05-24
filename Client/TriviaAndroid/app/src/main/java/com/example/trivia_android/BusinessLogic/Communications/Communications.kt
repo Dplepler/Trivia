@@ -21,7 +21,8 @@ enum class RequestCodes(val code: Int) {
     Signup(11),
     Login(12),
     Stats(17),
-    CreateRoom(13)
+    CreateRoom(13),
+    GetRooms(14)
 }
 
 
@@ -30,7 +31,8 @@ enum class ResponseCodes(val code: Int) {
     Login(22),
     Error(40),
     Stats(27),
-    CreateRoom(29)
+    CreateRoom(29),
+    GetRooms(24)
 }
 
 

@@ -216,33 +216,30 @@ void JsonResponsePacketSerializer::parseLength(Buffer& buffer, unsigned int leng
 /*
 parseRoomNameVec parses a vector consisting of room data to a name string that is separated with commas
 */
-std::string JsonResponsePacketSerializer::parseRoomNameVec(std::vector<RoomData> vec) {
+std::vector<std::string> JsonResponsePacketSerializer::parseRoomNameVec(std::vector<RoomData> vec) {
 
-	if (vec.empty()) { return ""; }
+	std::vector<std::string> names;
+
+	if (vec.empty()) { return names; }
 		
-	std::string result;
-	for (auto& it : vec) {
-		result += it.name;
-		result += ", ";
-	}
-
-	return result.substr(0, result.size() - strlen(", "));
+	
+	for (auto& it : vec) { names.push_back(it.name); }
+	
+	return names;
 }
 
 /*
 parseRoomIdVec parses a vector consisting of room data to an id string that is separated with commas
 */
-std::string JsonResponsePacketSerializer::parseRoomIdVec(std::vector<RoomData> vec) {
+std::vector<int> JsonResponsePacketSerializer::parseRoomIdVec(std::vector<RoomData> vec) {
 
-	if (vec.empty()) { return ""; }
+	std::vector<int> ids;
 
-	std::string result;
-	for (auto& it : vec) {
-		result += std::to_string(it.id);
-		result += ", ";
-	}
+	if (vec.empty()) { return ids; }
 
-	return result.substr(0, result.size() - strlen(", "));
+	for (auto& it : vec) { ids.push_back(it.id); }
+
+	return ids;
 }
 
 /*

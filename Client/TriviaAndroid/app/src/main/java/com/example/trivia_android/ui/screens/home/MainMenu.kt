@@ -51,7 +51,11 @@ fun MainMenu(
             startDestination = "Home"
         ) {
             composable("Home") {
-                HomeScreenContent(onClickCreate = onClickCreate)
+                HomeScreenContent(
+                    onClickCreate = onClickCreate,
+                    onClickJoin = { roomsViewModel.getRoomList() },
+                    roomList = roomsViewModel.list.value
+                )
             }
         }
     }
