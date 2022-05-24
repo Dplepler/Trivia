@@ -8,10 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.trivia_android.BusinessLogic.Communications.Communications
-import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
-import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
-import com.example.trivia_android.BusinessLogic.Communications.Status
+import com.example.trivia_android.BusinessLogic.Communications.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -36,6 +33,8 @@ data class PlayerList(val players: MutableList<String>)
 class RoomsViewModel: ViewModel() {
 
     val comms = Communications
+
+    val userInfo = UserInfo
 
     val playerAmount = mutableStateOf("")
 

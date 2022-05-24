@@ -1,19 +1,15 @@
 package com.example.trivia_android.BusinessLogic.ViewModels
 
 
-import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trivia_android.BusinessLogic.Communications.Communications
 import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
 import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
 import com.example.trivia_android.BusinessLogic.Communications.Status
+import com.example.trivia_android.BusinessLogic.Communications.UserInfo
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -30,6 +26,7 @@ data class SignupData(val username: String, val password: String, val mail: Stri
 class LoginViewModel: ViewModel() {
 
     val comms: Communications = Communications
+    private val userInfo = UserInfo
     var successStatus = mutableStateOf(0)
     val username = mutableStateOf("")
     val password = mutableStateOf("")
@@ -45,6 +42,8 @@ class LoginViewModel: ViewModel() {
 
 
     fun login() {
+        userInfo.userName = username.value
+        userInfo.password = password.value
         viewModelScope.launch {
             val data = Json.encodeToString(LoginData(username.value, password.value))
             comms.sendMessage(comms.buildMessage(RequestCodes.Login.code.toByte(), data))
@@ -61,6 +60,8 @@ class LoginViewModel: ViewModel() {
 
 
     fun signup() {
+        userInfo.userName = username.value
+        userInfo.password = password.value
         viewModelScope.launch {
             val data = Json.encodeToString(SignupData(username.value, password.value, email.value))
             comms.sendMessage(comms.buildMessage(RequestCodes.Signup.code.toByte(), data))
