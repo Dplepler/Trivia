@@ -27,8 +27,8 @@ enum class RequestCodes(val code: Int) {
 enum class ResponseCodes(val code: Int) {
     Signup(21),
     Login(22),
+    Stats(27),
     Error(40),
-    Stats(27)
 }
 
 

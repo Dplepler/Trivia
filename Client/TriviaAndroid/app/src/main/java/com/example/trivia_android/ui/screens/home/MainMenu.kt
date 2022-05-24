@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -41,7 +42,21 @@ fun MainMenu(
 
         topBar = { MainMenuTopBar(homeViewModel.curScreen) },
 
-        bottomBar = { MainMenuBotBar(homeViewModel.curScreen) },
+        bottomBar = {
+            MainMenuBotBar(
+                homeViewModel.curScreen,
+                onClickStats = {
+                    homeViewModel.curScreen = "Stats"
+                    homeViewModel.getStats()
+                    navController.navigate("Stats")
+                },
+                onClickHome = {
+                    homeViewModel.curScreen = "Home"
+                    navController.navigate("Home")
+                }
+
+            )
+        }
 
     ) {
         NavHost(
@@ -50,6 +65,10 @@ fun MainMenu(
         ) {
             composable("Home") {
                 HomeScreenContent(onClickCreate = onClickCreate)
+            }
+
+            composable("Stats") {
+                StatScreenContent(stats = homeViewModel.stats.value)
             }
         }
     }
@@ -82,14 +101,20 @@ fun MainMenuTopBar(
 
 @Composable
 fun MainMenuBotBar(
-    curScreen: String
+    curScreen: String,
+    onClickStats: () -> Unit = { },
+    onClickHome:  () -> Unit = { }
 ) {
     BottomAppBar(
         backgroundColor = MaterialTheme.colors.surface
     ) {
-        HomeButton(curScreen = curScreen, modifier = Modifier.padding(end = 180.dp))
+        HomeButton(
+            curScreen = curScreen,
+            modifier = Modifier.padding(end = 180.dp),
+            onClickButton = { onClickHome() }
+        )
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { onClickStats() }) {
             Icon(
                 if(curScreen == "Stats") Icons.Filled.AccountCircle else Icons.Outlined.AccountCircle,
                 "Personal stats button",
@@ -125,7 +150,7 @@ fun HomeButton(
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = { onClickButton },
+        onClick = { onClickButton() },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent
         ),
