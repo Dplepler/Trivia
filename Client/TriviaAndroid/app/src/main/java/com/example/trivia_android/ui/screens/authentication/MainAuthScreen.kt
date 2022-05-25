@@ -30,10 +30,8 @@ fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel(), onLogin: () -> 
             LoginScreenContent(
                 usernameText = loginViewModel.username,
                 passwordText = loginViewModel.password,
-                onClickLogin = { loginViewModel.login() },
+                onClickLogin = { loginViewModel.login(onLogin) },
                 onClickSwitch = { navController.navigate("Signup") },
-                onSuccessLogin = { onLogin() },
-                status = loginViewModel.successStatus
             )
         }
 
@@ -43,10 +41,8 @@ fun MainAuthScreen(loginViewModel: LoginViewModel = viewModel(), onLogin: () -> 
                 usernameText = loginViewModel.username,
                 passwordText = loginViewModel.password,
                 emailText = loginViewModel.email,
-                onClickSignup = { loginViewModel.signup() },
+                onClickSignup = { loginViewModel.signup(onLogin) },
                 onClickSwitch = { navController.navigate("Login") },
-                onSuccessSignup = { onLogin() },
-                status = loginViewModel.successStatus
             )
         }
 

@@ -30,12 +30,7 @@ fun SignupScreenContent(
     emailText: MutableState<String>,
     onClickSignup: () -> Unit = { },
     onClickSwitch: () -> Unit = { },
-    onSuccessSignup: () -> Unit = { },
-    status: MutableState<Int> = mutableStateOf(0)
 ) {
-
-    if(status.value == 1) { onSuccessSignup() }
-
     Scaffold(
 
         topBar = { TopAppBar(

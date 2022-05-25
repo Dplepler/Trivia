@@ -25,13 +25,15 @@ enum class RequestCodes(val code: Int) {
     GetRoomPlayers(15),
     JoinRoom(16),
     Stats(17),
-    HighScore(18)
+    HighScore(18),
+    Logout(19)
 }
 
 
 enum class ResponseCodes(val code: Int) {
     Signup(21),
     Login(22),
+    Logout(23),
     GetRooms(24),
     GetRoomPlayers(25),
     HighScore(26),
@@ -63,11 +65,21 @@ object Communications {
                 mSocket = Socket(addr, port)
                 input = BufferedReader(InputStreamReader(mSocket.inputStream))
                 output = mSocket.getOutputStream()
-            } catch (ex: Throwable) {
-
-            }
+            } catch (ex: Throwable) { /* skipped */ }
         }
     }
+
+
+
+    suspend fun closeSocket() {
+        withContext(Dispatchers.IO) {
+            try {
+                mSocket.close()
+            } catch(ex: Throwable) { /* skipped */ }
+        }
+    }
+
+
 
 
     suspend fun sendMessage(buffer: ByteArray) {

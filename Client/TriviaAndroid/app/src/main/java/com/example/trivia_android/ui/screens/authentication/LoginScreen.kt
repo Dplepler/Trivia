@@ -25,13 +25,8 @@ fun LoginScreenContent(
     usernameText: MutableState<String>,
     passwordText: MutableState<String>,
     onClickLogin: () -> Unit = { },
-    onClickSwitch: () -> Unit = { },
-    onSuccessLogin: () -> Unit = { },
-    status: MutableState<Int> = mutableStateOf(0)
+    onClickSwitch: () -> Unit = { }
 ) {
-
-    if(status.value == 1) { onSuccessLogin() }
-
     Scaffold(
 
         topBar = { TopAppBar(
