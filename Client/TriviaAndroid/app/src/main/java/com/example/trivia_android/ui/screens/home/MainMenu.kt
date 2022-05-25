@@ -26,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.trivia_android.BusinessLogic.ViewModels.HomeViewModel
+import com.example.trivia_android.BusinessLogic.ViewModels.RoomsViewModel
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 
 
@@ -33,7 +34,9 @@ import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 fun MainMenu(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
-    onClickCreate: () -> Unit = { }
+    roomsViewModel: RoomsViewModel = viewModel(),
+    onClickCreate: () -> Unit = { },
+    onClickRoom: () -> Unit = { }
 ) {
 
     val navController = rememberNavController()
@@ -64,7 +67,12 @@ fun MainMenu(
             startDestination = "Home"
         ) {
             composable("Home") {
-                HomeScreenContent(onClickCreate = onClickCreate)
+                HomeScreenContent(
+                    onClickCreate = onClickCreate,
+                    onClickJoin = { roomsViewModel.getRoomList() },
+                    onClickRoom = { roomsViewModel.joinRoom(it) { onClickRoom() } },
+                    roomList = roomsViewModel.roomList.value
+                )
             }
 
             composable("Stats") {

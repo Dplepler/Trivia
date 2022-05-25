@@ -19,8 +19,11 @@ void RoomManager::deleteRoom(unsigned int id) {
 unsigned int RoomManager::getRoomState(unsigned int id) {
 	
 	std::unique_lock<std::mutex> lock(this->m_roomLock);
+	unsigned int isActive = 0;
 	try {
-		return this->m_rooms.at(id).getData().isActive;
+		isActive = m_rooms.at(id).getData().isActive;
+		lock.unlock();
+		return isActive;
 	}
 	catch (...) {
 		throw std::exception("Invalid room ID");
@@ -28,8 +31,16 @@ unsigned int RoomManager::getRoomState(unsigned int id) {
 }
 
 Room RoomManager::getRoom(unsigned int id) {	
-	return this->m_rooms.at(id);
+	return this->m_rooms[id];
 }
+
+
+void RoomManager::addUser(unsigned int id, LoggedUser newUser) {
+	std::unique_lock<std::mutex> lock(this->m_roomLock);
+	m_rooms[id].addUser(newUser);
+	lock.unlock();
+}
+
 
 std::vector<RoomData> RoomManager::getRooms() {
 	

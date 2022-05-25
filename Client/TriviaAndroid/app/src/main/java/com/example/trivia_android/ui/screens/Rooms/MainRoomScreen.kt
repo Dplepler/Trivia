@@ -15,7 +15,7 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
 
     val roomNavController = rememberNavController()
 
-    NavHost(navController = roomNavController, startDestination = if(createOrJoin) "CreateRoom" else "JoinRoom") {
+    NavHost(navController = roomNavController, startDestination = if(createOrJoin) "CreateRoom" else "LobbyScreen") {
 
 
         composable("CreateRoom") {
@@ -24,10 +24,7 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
                 roomName = roomsViewModel.roomName,
                 playerVal = roomsViewModel.playerAmount,
                 ansTimeVal = roomsViewModel.ansTime,
-                onClickSubmit = { roomsViewModel.createRoom(roomNavController) },
-                onSuccessCreate = {
-                    roomNavController.navigate("LobbyScreen")
-                },
+                onClickSubmit = { roomsViewModel.createRoom() { roomNavController.navigate("LobbyScreen") } },
             )
         }
 
@@ -39,7 +36,8 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
                 playerAmount = roomsViewModel.playerAmount.value,
                 ansTime = roomsViewModel.ansTime.value,
                 questionAmount = "10",
-                playerList = roomsViewModel.playerList
+                playerList = roomsViewModel.playerList,
+                onRefresh = { roomsViewModel.getUserList() }
             )
         }
 

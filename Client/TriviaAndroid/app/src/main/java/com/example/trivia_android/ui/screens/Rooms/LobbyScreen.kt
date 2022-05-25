@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.trivia_android.BusinessLogic.Communications.UserInfo
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import kotlinx.coroutines.delay
 
@@ -28,6 +29,7 @@ import kotlinx.coroutines.delay
 fun PlayerList(
     modifier: Modifier = Modifier,
     playerList: List<String>,
+    userName: String
 ) {
 
     Card(modifier, elevation = 12.dp) {
@@ -56,7 +58,7 @@ fun PlayerList(
                                 .align(Alignment.CenterVertically)
                         )
 
-                        Text(if(index == 0) "$it (Admin)" else it, modifier = Modifier
+                        Text("$it ${if(userName == it) "(you)" else ""} ${if(index == 0) "(admin)" else ""}", modifier = Modifier
                             .padding(4.dp)
                             .align(Alignment.CenterVertically))
                     }
@@ -81,6 +83,7 @@ fun LobbyScreen(
     ansTime: String,
     questionAmount: String,
     playerList: List<String>,
+    userInfo: UserInfo = UserInfo,
     onRefresh: () -> Unit = { }
 ) {
 
@@ -94,24 +97,27 @@ fun LobbyScreen(
 
 
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {  },
-                backgroundColor = Color.Transparent,
-                modifier = Modifier.background(
-                    brush = Brush.horizontalGradient(
-                        listOf(
-                            MaterialTheme.colors.primary,
-                            MaterialTheme.colors.secondary
+
+            if(playerList.isEmpty() || userInfo.userName == playerList[0]) {
+                FloatingActionButton(
+                    onClick = { },
+                    backgroundColor = Color.Transparent,
+                    modifier = Modifier.background(
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                MaterialTheme.colors.primary,
+                                MaterialTheme.colors.secondary
+                            ),
                         ),
+                        shape = MaterialTheme.shapes.small,
+                        alpha = 0.9f
                     ),
-                    shape = MaterialTheme.shapes.small,
-                    alpha = 0.9f
-                ),
 
-            ) {
+                    ) {
 
-                Text("Start Game", modifier = Modifier.padding(4.dp))
+                    Text("Start Game", modifier = Modifier.padding(4.dp))
 
+                }
             }
         }
 
@@ -144,7 +150,8 @@ fun LobbyScreen(
                 Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxHeight(0.8f),
-                playerList
+                playerList,
+                userInfo.userName
             )
         }
 
@@ -152,7 +159,7 @@ fun LobbyScreen(
         LaunchedEffect(Unit) {
             while (true) {
                 onRefresh()
-                delay(60000)
+                delay(3000)
             }
         }
 
@@ -229,7 +236,9 @@ fun PlayerListPreview() {
                 "e",
                 "f",
                 "asgdshsdhdshsh"
-        ))
+            ),
+            "Gal"
+        )
 
     }
 }

@@ -35,15 +35,15 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info) {
 RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 	CreateRoomRequest request = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.buffer);
 
-	unsigned int id = this->m_roomManager->getRooms().size() ? this->m_roomManager->getRooms().end()->id + 1 : 0;	// Set new id
+	unsigned int id = this->m_roomManager->getRooms().size() ? this->m_roomManager->getRooms().back().id + 1 : 0;	// Set new id
 
 	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, true});
 
-	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{REQUEST_STATUS::SUCCESS}), this};
+	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{REQUEST_STATUS::SUCCESS}), nullptr};
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
-	return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{REQUEST_STATUS::SUCCESS, this->m_factory.getRoomManager()->getRooms()}), this};
+	return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{REQUEST_STATUS::SUCCESS, this->m_factory.getRoomManager()->getRooms()}), nullptr};
 }
 
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
@@ -51,7 +51,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
 	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(info.buffer);
 
 	try {
-		return {JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse{this->m_roomManager->getRoom(request.roomId).getAllUsers()}), this};
+		return {JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse{this->m_roomManager->getRoom(request.roomId).getAllUsers()}), nullptr};
 	}
 	catch(...) {
 		std::cerr << "Error occured while getting players in room";
@@ -62,8 +62,8 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {
 	JoinRoomRequest request = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
 
 	try {
-		this->m_roomManager->getRoom(request.roomId).addUser(this->m_user);
-		return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), this};
+		this->m_roomManager->addUser(request.roomId, m_user);
+		return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), nullptr};
 	}
 	catch(...) {
 		std::cerr << "Error occured while joining room";
@@ -74,7 +74,7 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info) {
 	
 	try {
 		return {JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse
-				{REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getUserStatistics(this->m_user.getUsername())}), this};
+				{REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getUserStatistics(this->m_user.getUsername())}), nullptr};
 	}
 	catch (...) {
 		std::cerr << "Error while getting personal statistics";
@@ -85,7 +85,7 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info) {
 
 	try {
 		return {JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse
-				{REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getHighScore()}), this};
+				{REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getHighScore()}), nullptr};
 	}
 	catch (...) {
 		std::cerr << "Error while getting high scores";
