@@ -66,7 +66,7 @@ fun LeaderboardScreenContent(
     Column() {
 
         Text(
-            text = "Leaderboard", // Should be bold
+            text = "Leaderboard",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold)
