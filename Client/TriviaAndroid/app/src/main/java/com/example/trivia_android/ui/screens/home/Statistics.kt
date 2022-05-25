@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,7 +76,7 @@ fun StatScreenContent(
             text = "Statistics",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.h4
+            style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold)
 
         )
 
