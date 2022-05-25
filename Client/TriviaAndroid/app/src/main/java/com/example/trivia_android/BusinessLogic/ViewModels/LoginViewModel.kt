@@ -27,21 +27,12 @@ class LoginViewModel: ViewModel() {
 
     val comms: Communications = Communications
     private val userInfo = UserInfo
-    var successStatus = mutableStateOf(0)
     val username = mutableStateOf("")
     val password = mutableStateOf("")
     val email = mutableStateOf("")
 
 
-    init {
-        viewModelScope.launch {
-            comms.connectSocket()
-        }
-    }
-
-
-
-    fun login() {
+    fun login(onSuccessLogin: () -> Unit = { }) {
         userInfo.userName = username.value
         userInfo.password = password.value
         viewModelScope.launch {
@@ -51,15 +42,17 @@ class LoginViewModel: ViewModel() {
             // checks that the response is relevant and not an error
             if(buffer[0].toInt() == ResponseCodes.Login.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                successStatus.value = Json.decodeFromString<Status>(res).status
+                if(Json.decodeFromString<Status>(res).status == 1) {
+                    userInfo.loggedIn = true
+                    onSuccessLogin()
+                }
             }
         }
         clearTexts()
     }
 
 
-
-    fun signup() {
+    fun signup(onSuccessLogin: () -> Unit = { }) {
         userInfo.userName = username.value
         userInfo.password = password.value
         viewModelScope.launch {
@@ -69,11 +62,35 @@ class LoginViewModel: ViewModel() {
             // checks that the response is relevant and not an error
             if(buffer[0].toInt() == ResponseCodes.Signup.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                successStatus.value = Json.decodeFromString<Status>(res).status
+                if(Json.decodeFromString<Status>(res).status == 1) {
+                    userInfo.loggedIn = true
+                    onSuccessLogin()
+                }
             }
         }
         clearTexts()
     }
+
+
+
+    fun logOut(onSuccessLogout: () -> Unit = { }) {
+        if(userInfo.loggedIn) {
+            viewModelScope.launch {
+                comms.sendMessage(comms.buildMessage(RequestCodes.Logout.code.toByte(), ""))
+                val buffer = comms.readMessage()
+                // checks that the response is relevant and not an error
+                if (buffer[0].toInt() == ResponseCodes.Logout.code) {
+                    val res = String(buffer).substring(comms.headerLen)
+                    if (Json.decodeFromString<Status>(res).status == 1) {
+                        userInfo.loggedIn = false
+                        onSuccessLogout()
+                    }
+                }
+            }
+        }
+    }
+
+
 
 
     // clears text after login/signup to make it easier to reenter a username or a password

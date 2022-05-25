@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.trivia_android.BusinessLogic.Communications.Communications
 import com.example.trivia_android.BusinessLogic.ViewModels.LoginViewModel
 import com.example.trivia_android.BusinessLogic.ViewModels.RoomsViewModel
 import com.example.trivia_android.ui.screens.Rooms.CreateRoom
@@ -29,11 +31,17 @@ import com.example.trivia_android.ui.screens.authentication.MainAuthScreen
 import com.example.trivia_android.ui.screens.home.MainMenu
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            LaunchedEffect(Unit) {
+                Communications.connectSocket()
+            }
+
             TriviaAndroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -53,7 +61,11 @@ class MainActivity : ComponentActivity() {
                         composable("MainMenu") {
                             MainMenu(
                                 onClickCreate = { mainNavController.navigate("Rooms/true") },
-                                onClickRoom = { mainNavController.navigate("Rooms/false") }
+                                onClickRoom = { mainNavController.navigate("Rooms/false") },
+                                onClickLogout = { mainNavController.navigate("Auth") {
+                                        popUpTo("MainMenu") { inclusive = true }
+                                    }
+                                }
                             )
                         }
 
