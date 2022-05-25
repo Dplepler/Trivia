@@ -53,6 +53,11 @@ fun MainMenu(
                     homeViewModel.getStats()
                     navController.navigate("Stats")
                 },
+                onClickPodium = {
+                    homeViewModel.curScreen = "Podium"
+                    homeViewModel.getLeaderboard()
+                    navController.navigate("Leaderboard")
+                },
                 onClickHome = {
                     homeViewModel.curScreen = "Home"
                     navController.navigate("Home")
@@ -77,6 +82,9 @@ fun MainMenu(
 
             composable("Stats") {
                 StatScreenContent(stats = homeViewModel.stats.value)
+            }
+            composable("Leaderboard") {
+                LeaderboardScreenContent(leaderboard = homeViewModel.leaderboard.value)
             }
         }
     }
@@ -111,7 +119,8 @@ fun MainMenuTopBar(
 fun MainMenuBotBar(
     curScreen: String,
     onClickStats: () -> Unit = { },
-    onClickHome:  () -> Unit = { }
+    onClickHome:  () -> Unit = { },
+    onClickPodium: () -> Unit = { }
 ) {
     BottomAppBar(
         backgroundColor = MaterialTheme.colors.surface
@@ -136,7 +145,7 @@ fun MainMenuBotBar(
         )
 
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { onClickPodium() }) {
             Icon(
                 if(curScreen == "Podium") Icons.Filled.Leaderboard else Icons.Outlined.Leaderboard,
                 "Global podium button",

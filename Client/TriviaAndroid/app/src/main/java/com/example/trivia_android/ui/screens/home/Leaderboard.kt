@@ -1,22 +1,23 @@
 package com.example.trivia_android.ui.screens.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ModeEdit
+import androidx.compose.material.icons.filled.QuestionAnswer
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.trivia_android.BusinessLogic.ViewModels.Leaderboard
 import com.example.trivia_android.BusinessLogic.ViewModels.StatIndex
 import com.example.trivia_android.BusinessLogic.ViewModels.Stats
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
@@ -25,11 +26,10 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 @Composable
-fun StatCard(
+fun LeaderboardCard(
     modifier: Modifier = Modifier,
     value: Float,
-    name: String,
-    statIcon: ImageVector
+    name: String
 ) {
 
     val otherSymbols = DecimalFormatSymbols(Locale.US)
@@ -38,22 +38,9 @@ fun StatCard(
     Card(modifier = modifier, elevation = 8.dp) {
 
         Row() {
-            Icon(
-                statIcon,
-                "Statistic's icon",
-                modifier = Modifier
-                    .size(45.dp)
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 3.dp)
-            )
 
             Column(modifier = Modifier.align(Alignment.CenterVertically).fillMaxWidth().padding(end = 8.dp)) {
-                Text(
-                    text = df.format(value),
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                    style = MaterialTheme.typography.h4
-                )
+
                 Text(
                     text = name,
                     modifier = Modifier
@@ -61,48 +48,79 @@ fun StatCard(
                         .align(Alignment.CenterHorizontally),
                     style = MaterialTheme.typography.h5
                 )
+                Text(
+                    text = df.format(value),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+                    style = MaterialTheme.typography.h4
+                )
             }
         }
     }
 }
 
 @Composable
-fun StatScreenContent(
-    stats: Stats = Stats()
+fun LeaderboardScreenContent(
+    leaderboard: Leaderboard = Leaderboard()
 ) {
     Column() {
 
         Text(
-            text = "Statistics",
+            text = "Leaderboard",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold)
 
         )
 
-        StatCard(value = stats.statistics[StatIndex.gamesPlayed.index].toFloat(), name = "Games played", statIcon = Icons.Filled.QuestionAnswer,
-            modifier = Modifier.padding(8.dp))
-        StatCard(value = stats.statistics[StatIndex.avgTime.index].toFloat(), name = "Average answer time", statIcon = Icons.Filled.Timer,
-            modifier = Modifier.padding(8.dp))
-        StatCard(value = stats.statistics[StatIndex.correctAns.index].toFloat(), name = "Correct answers", statIcon = Icons.Filled.CheckCircle,
-            modifier = Modifier.padding(8.dp))
-        StatCard(value = stats.statistics[StatIndex.totalAns.index].toFloat(), name = "Total answers", statIcon = Icons.Filled.ModeEdit,
-            modifier = Modifier.padding(8.dp))
+        LeaderboardCard(
+            value = 1f,
+            name = leaderboard.HighScores[0],
+            modifier = Modifier.padding(8.dp)
+        )
+
+        LeaderboardCard(
+            value = 2f,
+            name = leaderboard.HighScores[1],
+            modifier = Modifier.padding(8.dp)
+        )
+
+        LeaderboardCard(
+            value = 3f,
+            name = leaderboard.HighScores[2],
+            modifier = Modifier.padding(8.dp)
+        )
+
+        LeaderboardCard(
+            value = 4f,
+            name = leaderboard.HighScores[3],
+            modifier = Modifier.padding(8.dp)
+        )
+
+        LeaderboardCard(
+            value = 5f,
+            name = leaderboard.HighScores[4],
+            modifier = Modifier.padding(8.dp)
+        )
     }
 }
 
 @Composable
 @Preview
-fun StatisticsScreenInit() {
+fun LeaderboardScreenInit() {
 
 
     TriviaAndroidTheme() {
         Column() {
-            StatCard(value = 0f, name = "Games played", statIcon = Icons.Filled.QuestionAnswer,
+            LeaderboardCard(value = 300000f, name = "Ron Buzaglo",
                 modifier = Modifier.padding(8.dp))
-            StatCard(value = 0f, name = "Average answer time", statIcon = Icons.Filled.Timer,
+            LeaderboardCard(value = 200000f, name = "Ben Shapiro",
                 modifier = Modifier.padding(8.dp))
-            StatCard(value = 0f, name = "Total answers", statIcon = Icons.Filled.ModeEdit,
+            LeaderboardCard(value = 100000f, name = "Muhammad Ali",
+                modifier = Modifier.padding(8.dp))
+            LeaderboardCard(value = 10000f, name = "Shimi Tavori",
+                modifier = Modifier.padding(8.dp))
+            LeaderboardCard(value = 1000f, name = "Static & BenEL",
                 modifier = Modifier.padding(8.dp))
         }
 

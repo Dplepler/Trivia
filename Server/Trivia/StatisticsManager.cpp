@@ -6,15 +6,15 @@ float StatisticsManager::calcScore(std::string name) {
  return ((float)this->m_database->getNumOfCorrectAnswers(name) / (float)this->m_database->getNumOfTotalAnswers(name)) * SCORE_MULTIPLIER / this->m_database->getPlayerAverageAnswerTime(name);
 }
 
-
 std::string StatisticsManager::getHighestScoreName(std::vector<std::string> usernames) {
 	
-	float maxScore = 0;
-	float score = 0;
-	std::string username = "";
-	size_t usernameAmount = usernames.size();
+	if (!usernames.size()) { return ""; }
 
-	for (unsigned int i = 0; i < usernameAmount; i++) {
+	float maxScore = calcScore(usernames[0]);
+	std::string username = usernames[0];
+	float score = 0;
+
+	for (unsigned int i = 1; i < usernames.size(); i++) {
 		score = calcScore(usernames[i]);
 		if (score > maxScore) {
 			maxScore = score;
@@ -28,13 +28,13 @@ std::string StatisticsManager::getHighestScoreName(std::vector<std::string> user
 std::vector<std::string> StatisticsManager::getHighScore() { 
 
 	std::string username;
-	std::vector<std::string> topPlayers;
+	std::vector<std::string> topPlayers {"", "", "", "", ""};
 
 	std::vector<std::string> allUsernames = this->m_database->getAllUsernames();
 
 	for (uint8_t i = 0; i < TOP_PLAYERS_AMOUNT; i++) {
 		username = this->getHighestScoreName(allUsernames);
-		topPlayers.push_back(username);
+		topPlayers[i] = username;
 
 		std::vector<std::string>::iterator it = std::find(allUsernames.begin(), allUsernames.end(), username);
 		if (it != allUsernames.end()) { allUsernames.erase(it); }

@@ -29,6 +29,12 @@ enum class StatIndex(val index: Int) {
     avgTime(3)
 }
 
+@Serializable
+data class Leaderboard(
+    val status: Int = 0,
+    val HighScores: List<String> = listOf("Ron Buzaglo", "Ben Shapiro", "Gal Bachuch", "David Ple", "Moti luchim")
+)
+
 class HomeViewModel: ViewModel() {
 
     var curScreen by mutableStateOf("Home")
@@ -38,6 +44,10 @@ class HomeViewModel: ViewModel() {
     val stats
         get() = _stats
 
+    private var _leaderboard = mutableStateOf(Leaderboard())
+    val leaderboard
+        get() = _leaderboard
+
     fun getStats() {
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.Stats.code.toByte(), ""))
@@ -46,6 +56,18 @@ class HomeViewModel: ViewModel() {
             if(buffer[0].toInt() == ResponseCodes.Stats.code) {
                 val res = String(buffer).substring(comms.headerLen)
                 stats.value = Json.decodeFromString(res)
+            }
+        }
+    }
+
+    fun getLeaderboard() {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.HighScore.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            // checks that the response is relevant and not an error
+            if(buffer[0].toInt() == ResponseCodes.HighScore.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                leaderboard.value = Json.decodeFromString(res)
             }
         }
     }
