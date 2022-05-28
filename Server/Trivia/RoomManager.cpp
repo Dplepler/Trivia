@@ -37,7 +37,7 @@ Room RoomManager::getRoom(unsigned int id) {
 
 void RoomManager::addUser(unsigned int id, LoggedUser newUser) {
 	std::unique_lock<std::mutex> lock(this->m_roomLock);
-	m_rooms[id].addUser(newUser);
+	if(m_rooms[id].getAllUsers().size() < m_rooms[id].getData().maxPlayers) { m_rooms[id].addUser(newUser); }
 	lock.unlock();
 }
 
@@ -49,7 +49,9 @@ std::vector<RoomData> RoomManager::getRooms() {
 
 	std::unique_lock<std::mutex> lock(this->m_roomLock);
 	for (unsigned int i = 0; i < size; i++) {
-		rooms.push_back(this->m_rooms[i].getData());
+		if (m_rooms[i].getAllUsers().size() < m_rooms[i].getData().maxPlayers) {
+			rooms.push_back(this->m_rooms[i].getData());
+		}
 	}
 
 	lock.unlock();
