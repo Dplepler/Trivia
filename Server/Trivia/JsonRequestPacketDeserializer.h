@@ -47,9 +47,6 @@ typedef struct JoinRoomRequest {
 
 } JoinRoomRequest;
 
-
-
-
 typedef struct CreateRoomRequest {
 
 	std::string roomName;

@@ -49,9 +49,11 @@ RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
 RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
 	
 	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(info.buffer);
-
+	
 	try {
-		return {JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse{this->m_roomManager->getRoom(request.roomId).getAllUsers()}), nullptr};
+		Room room = this->m_roomManager->getRoom(request.roomId);
+		RoomData data = room.getData();
+		return {JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse{REQUEST_STATUS::SUCCESS, (bool)data.isActive, room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion}), nullptr};
 	}
 	catch(...) {
 		std::cerr << "Error occured while getting players in room";
