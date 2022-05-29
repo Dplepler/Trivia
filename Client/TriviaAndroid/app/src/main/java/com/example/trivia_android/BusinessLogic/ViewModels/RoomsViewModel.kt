@@ -1,13 +1,10 @@
 package com.example.trivia_android.BusinessLogic.ViewModels
 
-import android.util.Log
-import androidx.compose.runtime.getValue
+
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.trivia_android.BusinessLogic.Communications.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -111,7 +108,7 @@ class RoomsViewModel: ViewModel() {
     fun getUserList() {
         val data = Json.encodeToString(GetRoomDetails(id))
         viewModelScope.launch {
-            comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomPlayers.code.toByte(), data))
+            comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomState.code.toByte(), data))
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.GetRoomPlayers.code) {
                 val res = String(buffer).substring(comms.headerLen)
