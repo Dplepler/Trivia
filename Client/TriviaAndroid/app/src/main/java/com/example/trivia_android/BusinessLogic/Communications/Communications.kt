@@ -22,11 +22,14 @@ enum class RequestCodes(val code: Int) {
     Login(12),
     CreateRoom(13),
     GetRooms(14),
-    GetRoomPlayers(15),
+    GetRoomState(15),
     JoinRoom(16),
     Stats(17),
     HighScore(18),
-    Logout(19)
+    Logout(19),
+    StartGameCode(31),
+    CloseRoomCode(32),
+    LeaveRoomCode(33)
 }
 
 
