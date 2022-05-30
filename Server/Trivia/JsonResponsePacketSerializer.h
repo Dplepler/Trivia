@@ -18,11 +18,14 @@ public:
 	static Buffer serializeResponse(SignupResponse signupRes);
 	static Buffer serializeResponse(LogoutResponse logoutRes);
 	static Buffer serializeResponse(GetRoomsResponse getRoomsRes);
-	static Buffer serializeResponse(GetPlayersInRoomsResponse getPlayersRes);
 	static Buffer serializeResponse(JoinRoomResponse joinRoomRes);
 	static Buffer serializeResponse(CreateRoomResponse createRoomRes);
 	static Buffer serializeResponse(GetPersonalStatsResponse statsResponse);
 	static Buffer serializeResponse(GetHighScoreResponse highScoreRes);
+	static Buffer serializeResponse(CloseRoomResponse closeRoomRes);
+	static Buffer serializeResponse(StartGameResponse startGameRes);
+	static Buffer serializeResponse(GetRoomStateResponse getRoomStateRes);
+	static Buffer serializeResponse(LeaveRoomResponse leaveRoomRes);
 	
 
 private:

@@ -107,25 +107,6 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse getRooms
 	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
 
 	return buffer;
-
-}
-
-Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomsResponse getPlayersRes) {
-
-	Buffer buffer;
-	std::string jsonString;
-	json json;
-
-	buffer.push_back((char)RESPONSE::PLAYERS);
-	json["players"] = getPlayersRes.players;
-
-	jsonString = json.dump();
-
-	parseLength(buffer, jsonString.size());
-
-	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
-
-	return buffer;
 }
 
 Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse joinRoomRes) {
@@ -201,6 +182,82 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse high
 
 	return buffer;
 }
+
+Buffer JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse closeRoomRes) {
+
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::CLOSE);
+	json["status"] = closeRoomRes.status;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(StartGameResponse startGameRes) {
+
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::START);
+	json["status"] = startGameRes.status;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse getRoomStateRes) {
+
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::STATE);
+	json["status"] = getRoomStateRes.status;
+	json["begun"] = getRoomStateRes.isActive;
+	json["players"] = getRoomStateRes.players;
+	json["questionCount"] = getRoomStateRes.questionCount;
+	json["answerTimeout"] = getRoomStateRes.answerTimeout;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leaveRoomRes) {
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::LEAVE);
+	json["status"] = leaveRoomRes.status;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
 
 /*
 parseLength parses an integer value into a buffer, each digit becomes an index in the vector buffer
