@@ -27,9 +27,9 @@ enum class RequestCodes(val code: Int) {
     Stats(17),
     HighScore(18),
     Logout(19),
-    StartGameCode(31),
-    CloseRoomCode(32),
-    LeaveRoomCode(33)
+    StartGameCode(40),
+    CloseRoomCode(41),
+    LeaveRoomCode(42)
 }
 
 
@@ -38,12 +38,17 @@ enum class ResponseCodes(val code: Int) {
     Login(22),
     Logout(23),
     GetRooms(24),
-    GetRoomPlayers(25),
+    GetRoomState(25),
     HighScore(26),
     Stats(27),
     JoinRoom(28),
     CreateRoom(29),
-    Error(40)
+    CloseRoom(30),
+    StartGame(31),
+    LeaveGame(32),
+
+
+    Error(99)
 }
 
 
@@ -51,7 +56,7 @@ enum class ResponseCodes(val code: Int) {
 
 object Communications {
 
-    private const val addr = "10.0.2.2"
+    private const val addr = "192.168.1.233"
     private const val port = 8008
     private const val shiftStart = 24
     private const val shiftOffset = 8

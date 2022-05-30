@@ -91,8 +91,7 @@ fun CreateRoom(
     roomName: MutableState<String>,
     playerVal: MutableState<String>,
     ansTimeVal: MutableState<String>,
-    onClickSubmit: () -> Unit = { },
-    onSuccessCreate: () -> Unit = { },
+    onClickSubmit: () -> Unit = { }
 ) {
 
     val enabled = !roomName.value.isEmpty() && !playerVal.value.isEmpty() && !ansTimeVal.value.isEmpty()

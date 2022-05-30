@@ -105,7 +105,7 @@ fun RoomCard(
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     onClickCreate: () -> Unit = { },
-    onClickJoin: () -> Unit = { },
+    onJoinRefresh: () -> Unit = { },
     onClickRoom: (Int) -> Unit = { },
     roomList: RoomList
 ) {
@@ -161,10 +161,7 @@ fun HomeScreenContent(
             ),
             Icons.Filled.ArrowForward,
             MaterialTheme.colors.secondary,
-            onButtonClick = {
-                expanded = true
-                onClickJoin()
-            }
+            onButtonClick = { expanded = true }
         )
 
 
@@ -176,6 +173,7 @@ fun HomeScreenContent(
                         top.linkTo(parent.top, margin = 36.dp)
                         bottom.linkTo(parent.bottom, margin = 36.dp)
                     },
+                    onRefresh = onJoinRefresh,
                     roomList = roomList,
                     onDismissRequest = { expanded = false },
                     onClickRoom = onClickRoom,
