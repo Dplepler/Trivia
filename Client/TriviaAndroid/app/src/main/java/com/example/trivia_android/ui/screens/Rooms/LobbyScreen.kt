@@ -120,7 +120,7 @@ fun LobbyScreen(
 
     ) {
 
-        Column(modifier = modifier) {
+        Column(modifier = modifier.fillMaxWidth()) {
 
             Text(
                 "Room Info: ",

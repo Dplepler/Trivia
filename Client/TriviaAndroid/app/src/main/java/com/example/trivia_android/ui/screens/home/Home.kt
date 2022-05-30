@@ -113,19 +113,17 @@ fun HomeScreenContent(
     var expanded by remember { mutableStateOf(false) }
 
 
-    ConstraintLayout(modifier = modifier.padding(8.dp)) {
-
-        val (createRoom, joinRoom, popup) = createRefs()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.9f)
+            .padding(8.dp),
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
 
         RoomCard(
             Modifier
-                .padding(16.dp)
-                .constrainAs(createRoom) {
-                    top.linkTo(parent.top, margin = 4.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(joinRoom.top, margin = 16.dp)
-                },
+                .align(CenterHorizontally),
             "Create\nRoom",
             "Create a new game room!",
             painterResource(
@@ -144,11 +142,7 @@ fun HomeScreenContent(
 
         RoomCard(
             Modifier
-                .constrainAs(joinRoom) {
-                start.linkTo(parent.start, margin = 36.dp)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom, margin = 4.dp)
-            },
+                .align(CenterHorizontally),
             "Join\nRoom",
             "Join an existing game room!",
             painterResource(
@@ -163,27 +157,22 @@ fun HomeScreenContent(
             MaterialTheme.colors.secondary,
             onButtonClick = { expanded = true }
         )
-
-
-        AnimatedVisibility(expanded) {
-            Dialog(onDismissRequest = { expanded = false }) {
-                JoinRoomContent(
-                    modifier = Modifier.constrainAs(popup) {
-                        start.linkTo(parent.start, margin = 72.dp)
-                        top.linkTo(parent.top, margin = 36.dp)
-                        bottom.linkTo(parent.bottom, margin = 36.dp)
-                    },
-                    onRefresh = onJoinRefresh,
-                    roomList = roomList,
-                    onDismissRequest = { expanded = false },
-                    onClickRoom = onClickRoom,
-                    popupWidth = 299.dp,
-                    popupHeight = 479.dp
-                )
-            }
-        }
-
     }
+
+
+    AnimatedVisibility(expanded) {
+        Dialog(onDismissRequest = { expanded = false }) {
+            JoinRoomContent(
+                onRefresh = onJoinRefresh,
+                roomList = roomList,
+                onDismissRequest = { expanded = false },
+                onClickRoom = onClickRoom,
+                popupWidth = 299.dp,
+                popupHeight = 479.dp
+            )
+        }
+    }
+
 }
 
 
