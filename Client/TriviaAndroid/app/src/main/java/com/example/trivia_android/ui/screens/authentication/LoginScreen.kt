@@ -69,7 +69,8 @@ fun LoginScreenContent(
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 40.dp),
                 stringState = passwordText,
-                label = "Password"
+                label = "Password",
+                isPassword = true
             )
 
 

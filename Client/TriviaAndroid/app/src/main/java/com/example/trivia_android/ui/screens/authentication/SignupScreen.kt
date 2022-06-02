@@ -75,7 +75,8 @@ fun SignupScreenContent(
                     .padding(top = 40.dp),
                 color = MaterialTheme.colors.secondary,
                 stringState = passwordText,
-                label = "Password"
+                label = "Password",
+                isPassword = true
             )
 
 
