@@ -25,7 +25,9 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info) {
 }
 
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info) {
+    
     try {
+        this->m_room.setState(STATE::CLOSED);
         return { JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse
                 { REQUEST_STATUS::SUCCESS }), this->m_factory.createMenuRequestHandler(this->m_user) };
     }
@@ -36,6 +38,7 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info) {
 
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo info) {
     try {
+        this->m_room.setState(STATE::STARTED);
         return { JsonResponsePacketSerializer::serializeResponse(StartGameResponse
                 { REQUEST_STATUS::SUCCESS }), nullptr };
     }
@@ -49,7 +52,7 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info) {
     try {
         RoomData data = this->m_room.getData();
         return { JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
-                { REQUEST_STATUS::SUCCESS, data.isActive, this->m_room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion}), nullptr };
+                { REQUEST_STATUS::SUCCESS, data.isActive, this->m_room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion }), nullptr };
     }
     catch (...) {
         std::cerr << "Error getting room state";

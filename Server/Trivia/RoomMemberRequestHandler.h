@@ -7,24 +7,23 @@
 
 class RequestHandlerFactory;
 
-class RoomAdminRequestHandler : public IRequestHandler {
+class RoomMemberRequestHandler : public IRequestHandler {
 
 public:
 
-    RoomAdminRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room room);
+    RoomMemberRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room room);
     bool isRequestRelevant(RequestInfo info) const;
     RequestResult handleRequest(RequestInfo info);
 
 private:
 
     LoggedUser m_user;
-    Room& m_room;
+    Room m_room;
     RoomManager* m_roomManager;
     RequestHandlerFactory& m_factory;
 
-    std::mutex adminLock;
+    std::mutex MemberLock;
 
-    RequestResult closeRoom(RequestInfo info);
-    RequestResult startGame(RequestInfo info);
+    RequestResult leaveRoom(RequestInfo info);
     RequestResult getRoomState(RequestInfo info);
 };

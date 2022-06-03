@@ -35,9 +35,9 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 
 	unsigned int id = this->m_roomManager->getRooms().size() ? this->m_roomManager->getRooms().back().id + 1 : 0;	// Set new id
 
-	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, true});
+	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, STATE::OPEN});
 
-	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{REQUEST_STATUS::SUCCESS}), nullptr};
+	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{ REQUEST_STATUS::SUCCESS }), nullptr};
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {

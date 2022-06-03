@@ -10,7 +10,7 @@ public:
 	
 	void createRoom(LoggedUser user, RoomData data);
 	void deleteRoom(unsigned int id);
-	unsigned int getRoomState(unsigned int id);
+	STATE getRoomState(unsigned int id);
 
 	void addUser(unsigned int id, LoggedUser newUser);
 

@@ -16,10 +16,10 @@ void RoomManager::deleteRoom(unsigned int id) {
 	lock.unlock();
 }
 
-unsigned int RoomManager::getRoomState(unsigned int id) {
+STATE RoomManager::getRoomState(unsigned int id) {
 	
 	std::unique_lock<std::mutex> lock(this->m_roomLock);
-	unsigned int isActive = 0;
+	STATE isActive;
 	try {
 		isActive = m_rooms.at(id).getData().isActive;
 		lock.unlock();
