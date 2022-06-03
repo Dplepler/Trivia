@@ -32,11 +32,7 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
 
         composable("LobbyScreen") {
             LobbyScreen(
-                roomName = roomsViewModel.roomName.value,
-                playerAmount = roomsViewModel.playerAmount.value,
-                ansTime = roomsViewModel.ansTime.value,
-                questionAmount = "10",
-                playerList = roomsViewModel.playerList,
+                roomState = roomsViewModel.roomState.value,
                 onRefresh = { roomsViewModel.getUserList() }
             )
         }

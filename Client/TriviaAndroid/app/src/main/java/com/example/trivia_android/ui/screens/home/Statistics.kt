@@ -70,7 +70,7 @@ fun StatCard(
 fun StatScreenContent(
     stats: Stats = Stats()
 ) {
-    Column() {
+    Column(modifier = Modifier.fillMaxHeight(0.9f), verticalArrangement = Arrangement.SpaceEvenly) {
 
         Text(
             text = "Statistics",

@@ -77,7 +77,7 @@ fun MainMenu(
             composable("Home") {
                 HomeScreenContent(
                     onClickCreate = onClickCreate,
-                    onClickJoin = { roomsViewModel.getRoomList() },
+                    onJoinRefresh = { roomsViewModel.getRoomList() },
                     onClickRoom = { roomsViewModel.joinRoom(it) { onClickRoom() } },
                     roomList = roomsViewModel.roomList.value
                 )

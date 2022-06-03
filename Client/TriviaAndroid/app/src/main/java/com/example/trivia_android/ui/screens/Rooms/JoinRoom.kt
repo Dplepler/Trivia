@@ -14,10 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,9 +24,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.trivia_android.BusinessLogic.ViewModels.RoomList
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
+import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalAnimationApi::class)
+
 @Composable
 fun JoinRoomContent(
     modifier: Modifier = Modifier,
@@ -37,7 +35,8 @@ fun JoinRoomContent(
     onDismissRequest: () -> Unit = { },
     onClickRoom: (Int) -> Unit = { },
     popupWidth: Dp,
-    popupHeight: Dp
+    popupHeight: Dp,
+    onRefresh: () -> Unit = { }
 ) {
 
     Box(
@@ -118,8 +117,16 @@ fun JoinRoomContent(
             }
 
         }
-
     }
+
+
+    LaunchedEffect(Unit) {
+        while(true) {
+            onRefresh()
+            delay(3000)
+        }
+    }
+
 }
 
 
