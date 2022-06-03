@@ -9,7 +9,7 @@ typedef struct ROOM_DATA_STRUCT {
 	unsigned int maxPlayers;
 	unsigned int numOfQuestionsInGame;
 	unsigned int timePerQuestion;
-	unsigned int isActive;
+	bool isActive;
 
 } RoomData;
 

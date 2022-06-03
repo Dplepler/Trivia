@@ -9,7 +9,6 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser user, RequestHandlerFactory& f
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info) const { 
 	return info.id == CREATE_ROOM_CODE 
 		|| info.id == GET_ROOM_CODE 
-		|| info.id == GET_ROOM_PLAYERS_CODE 
 		|| info.id == JOIN_ROOM_CODE 
 		|| info.id == GET_STATISTICS_CODE 
 		|| info.id == GET_HIGH_SCORE_CODE
@@ -23,7 +22,6 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info) {
 
 	case CREATE_ROOM_CODE:			return createRoom(info);
 	case GET_ROOM_CODE:				return getRooms(info);
-	case GET_ROOM_PLAYERS_CODE:		return getPlayersInRoom(info);
 	case JOIN_ROOM_CODE:			return joinRoom(info);
 	case GET_STATISTICS_CODE:		return getPersonalStats(info);
 	case GET_HIGH_SCORE_CODE:		return getHighScore(info);
@@ -53,7 +51,7 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
 	try {
 		Room room = this->m_roomManager->getRoom(request.roomId);
 		RoomData data = room.getData();
-		return {JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse{REQUEST_STATUS::SUCCESS, (bool)data.isActive, room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion}), nullptr};
+		return {JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse{REQUEST_STATUS::SUCCESS, data.isActive, room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion}), nullptr};
 	}
 	catch(...) {
 		std::cerr << "Error occured while getting players in room";

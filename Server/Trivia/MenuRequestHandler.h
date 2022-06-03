@@ -7,7 +7,7 @@
 
 class RequestHandlerFactory;
 
-class MenuRequestHandler : IRequestHandler {
+class MenuRequestHandler : public IRequestHandler {
 
 public:
 
