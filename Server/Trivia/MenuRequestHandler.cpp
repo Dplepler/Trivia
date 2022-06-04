@@ -9,7 +9,6 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser user, RequestHandlerFactory& f
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info) const { 
 	return info.id == CREATE_ROOM_CODE 
 		|| info.id == GET_ROOM_CODE 
-		|| info.id == GET_ROOM_STATE_CODE
 		|| info.id == JOIN_ROOM_CODE 
 		|| info.id == GET_STATISTICS_CODE 
 		|| info.id == GET_HIGH_SCORE_CODE
@@ -23,7 +22,6 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info) {
 
 	case CREATE_ROOM_CODE:			return createRoom(info);
 	case GET_ROOM_CODE:				return getRooms(info);
-	case GET_ROOM_STATE_CODE:		return getPlayersInRoom(info);
 	case JOIN_ROOM_CODE:			return joinRoom(info);
 	case GET_STATISTICS_CODE:		return getPersonalStats(info);
 	case GET_HIGH_SCORE_CODE:		return getHighScore(info);
@@ -37,27 +35,13 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 
 	unsigned int id = this->m_roomManager->getRooms().size() ? this->m_roomManager->getRooms().back().id + 1 : 0;	// Set new id
 
-	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, true});
+	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, STATE::OPEN});
 
-	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{REQUEST_STATUS::SUCCESS}), nullptr};
+	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{ REQUEST_STATUS::SUCCESS }), this->m_factory.createRoomAdminRequestHandler(this->m_user, this->m_roomManager->getRoom(id)) };
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
 	return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{REQUEST_STATUS::SUCCESS, this->m_factory.getRoomManager()->getRooms()}), nullptr};
-}
-
-RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
-	
-	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(info.buffer);
-	
-	try {
-		Room room = this->m_roomManager->getRoom(request.roomId);
-		RoomData data = room.getData();
-		return {JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse{REQUEST_STATUS::SUCCESS, data.name, (bool)data.isActive, room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion, data.maxPlayers}), nullptr};
-	}
-	catch(...) {
-		std::cerr << "Error occured while getting players in room";
-	}
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {
