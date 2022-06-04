@@ -27,7 +27,11 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info) {
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info) {
     
     try {
+        
         this->m_room.setState(STATE::CLOSED);
+        std::unique_lock<std::mutex> lock(this->adminLock);
+        this->m_room.removeUser(this->m_user);
+        lock.unlock();
         return { JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse
                 { REQUEST_STATUS::SUCCESS }), this->m_factory.createMenuRequestHandler(this->m_user) };
     }

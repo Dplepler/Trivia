@@ -37,25 +37,11 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 
 	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, STATE::OPEN});
 
-	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{ REQUEST_STATUS::SUCCESS }), nullptr};
+	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{ REQUEST_STATUS::SUCCESS }), this->m_factory.createRoomAdminRequestHandler(this->m_user, this->m_roomManager->getRoom(id)) };
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
 	return {JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse{REQUEST_STATUS::SUCCESS, this->m_factory.getRoomManager()->getRooms()}), nullptr};
-}
-
-RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info) {
-	
-	GetPlayersInRoomRequest request = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(info.buffer);
-	
-	try {
-		Room room = this->m_roomManager->getRoom(request.roomId);
-		RoomData data = room.getData();
-		return {JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse{REQUEST_STATUS::SUCCESS, data.isActive, room.getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion}), nullptr};
-	}
-	catch(...) {
-		std::cerr << "Error occured while getting players in room";
-	}
 }
 
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {

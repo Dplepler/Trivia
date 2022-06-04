@@ -25,6 +25,9 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info) {
 RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info) {
 
     try {
+        std::unique_lock<std::mutex> lock(this->MemberLock);
+        this->m_room.removeUser(this->m_user);
+        lock.unlock();
         return { JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse
                 { REQUEST_STATUS::SUCCESS }), this->m_factory.createMenuRequestHandler(this->m_user) };
     }
