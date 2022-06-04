@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.trivia_android.BusinessLogic.Communications.UserInfo
+import com.example.trivia_android.BusinessLogic.ViewModels.RoomState
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import kotlinx.coroutines.delay
 
@@ -78,11 +79,7 @@ fun PlayerList(
 @Composable
 fun LobbyScreen(
     modifier: Modifier = Modifier,
-    roomName: String,
-    playerAmount: String,
-    ansTime: String,
-    questionAmount: String,
-    playerList: List<String>,
+    roomState: RoomState = RoomState(0, "", false, mutableListOf<String>(), 0, 0, 0f),
     userInfo: UserInfo = UserInfo,
     onRefresh: () -> Unit = { }
 ) {
@@ -91,14 +88,14 @@ fun LobbyScreen(
     Scaffold(
         topBar = {
             TopAppBar(backgroundColor = MaterialTheme.colors.surface) {
-                Text("Room: $roomName", style = MaterialTheme.typography.subtitle2)
+                Text("Room: ${roomState.name}", style = MaterialTheme.typography.subtitle2)
             }
         },
 
 
         floatingActionButton = {
 
-            if(playerList.isEmpty() || userInfo.userName == playerList[0]) {
+            if(roomState.players.isEmpty() || userInfo.userName == roomState.players[0]) {
                 FloatingActionButton(
                     onClick = { },
                     backgroundColor = Color.Transparent,
@@ -123,7 +120,7 @@ fun LobbyScreen(
 
     ) {
 
-        Column(modifier = modifier) {
+        Column(modifier = modifier.fillMaxWidth()) {
 
             Text(
                 "Room Info: ",
@@ -136,11 +133,11 @@ fun LobbyScreen(
                 .padding(bottom = 32.dp)
                 .align(Alignment.CenterHorizontally)) {
 
-                InfoField(field = "Time", value = "$ansTime S")
+                InfoField(field = "Time", value = "${roomState.answerTimeout} S")
 
-                InfoField(field = "Size", value = "$playerAmount P")
+                InfoField(field = "Size", value = "${roomState.maxPlayers} P")
 
-                InfoField(field = "Questions", value = "$questionAmount Q")
+                InfoField(field = "Questions", value = "${roomState.questionCount} Q")
 
             }
 
@@ -150,7 +147,7 @@ fun LobbyScreen(
                 Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxHeight(0.8f),
-                playerList,
+                roomState.players,
                 userInfo.userName
             )
         }
@@ -253,23 +250,7 @@ fun PlayerListPreview() {
 )
 fun LobbyScreenPreview() {
     TriviaAndroidTheme {
-        LobbyScreen(
-            Modifier,
-            "My Room",
-            "15",
-            "60",
-            "10",
-            listOf(
-                "Gal",
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "f",
-                "asgdshsdhdshsh"
-            )
-        )
+        LobbyScreen(Modifier)
     }
 }
 

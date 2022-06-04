@@ -227,10 +227,12 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse getR
 
 	buffer.push_back((char)RESPONSE::STATE);
 	json["status"] = getRoomStateRes.status;
+	json["name"] = getRoomStateRes.name;
 	json["begun"] = getRoomStateRes.isActive;
 	json["players"] = getRoomStateRes.players;
 	json["questionCount"] = getRoomStateRes.questionCount;
 	json["answerTimeout"] = getRoomStateRes.answerTimeout;
+	json["maxPlayers"] = getRoomStateRes.maxPlayers;
 
 	jsonString = json.dump();
 

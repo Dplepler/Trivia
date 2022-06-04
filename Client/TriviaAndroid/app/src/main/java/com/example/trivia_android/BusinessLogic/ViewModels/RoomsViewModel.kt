@@ -24,7 +24,15 @@ data class RoomList(val status: Int = 0, val names: List<String> = listOf(), val
 data class GetRoomDetails(val roomId: Int)
 
 @Serializable
-data class PlayerList(val players: MutableList<String>)
+data class RoomState(
+    val status: Int,
+    val name: String,
+    val begun: Boolean,
+    val players: MutableList<String>,
+    val questionCount: Int,
+    val maxPlayers: Int,
+    val answerTimeout: Float
+)
 
 
 class RoomsViewModel: ViewModel() {
@@ -47,9 +55,9 @@ class RoomsViewModel: ViewModel() {
 
 
 
-    private var _playerList = mutableStateListOf<String>()
-    val playerList
-        get() = _playerList
+    private var _roomState = mutableStateOf(RoomState(0, "", false, mutableListOf<String>(), 0, 0, 0f))
+    val roomState
+        get() = _roomState
 
 
 
@@ -110,11 +118,9 @@ class RoomsViewModel: ViewModel() {
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomState.code.toByte(), data))
             val buffer = comms.readMessage()
-            if(buffer[0].toInt() == ResponseCodes.GetRoomPlayers.code) {
+            if(buffer[0].toInt() == ResponseCodes.GetRoomState.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                val list = Json.decodeFromString<PlayerList>(res)
-                _playerList.clear()
-                _playerList.addAll(list.players)
+                _roomState.value = Json.decodeFromString(res)
             }
         }
     }

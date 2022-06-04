@@ -9,17 +9,16 @@ enum class RESPONSE {
 	LOGIN,
 	LOGOUT,
 	ROOMS,
-	PLAYERS,
+	STATE,
 	HIGH_SCORE,
 	STATS,
 	JOIN,
 	CREATE,
 	CLOSE,
 	START,
-	STATE,
 	LEAVE,
 	
-	ERROR_RES = 40,
+	ERROR_RES = 99,
 
 }; 
 
@@ -100,6 +99,7 @@ typedef struct GET_ROOM_STATE_RESPONSE_STRUCT {
 	std::vector<std::string> players;
 	unsigned int questionCount;
 	unsigned int answerTimeout;
+	unsigned int maxPlayers;
 
 } GetRoomStateResponse;
 
