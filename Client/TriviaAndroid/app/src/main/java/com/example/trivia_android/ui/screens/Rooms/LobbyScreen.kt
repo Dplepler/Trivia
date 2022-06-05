@@ -85,6 +85,7 @@ fun LobbyScreen(
     userInfo: UserInfo = UserInfo,
     onRefresh: () -> Unit = { },
     onClickLeave: () -> Unit = { },
+    onClickStart: () -> Unit = { }
 ) {
 
 
@@ -103,7 +104,7 @@ fun LobbyScreen(
 
             if(roomState.players.isEmpty() || userInfo.userName == roomState.players[0]) {
                 FloatingActionButton(
-                    onClick = { },
+                    onClick = onClickStart,
                     backgroundColor = Color.Transparent,
                     modifier = Modifier.background(
                         brush = Brush.horizontalGradient(

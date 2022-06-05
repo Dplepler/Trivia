@@ -45,7 +45,8 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
                         onGameStart = { Toast.makeText(curContext, "Game started!", Toast.LENGTH_SHORT).show() }
                     )
                 },
-                onClickLeave = if(createOrJoin) { {roomsViewModel.closeRoom(leaveToMenu)} } else { { roomsViewModel.leaveRoom(leaveToMenu) } }
+                onClickLeave = if(createOrJoin) { {roomsViewModel.closeRoom(leaveToMenu)} } else { { roomsViewModel.leaveRoom(leaveToMenu) } },
+                onClickStart = if(createOrJoin) { {roomsViewModel.startGame()} } else { { } }
             )
         }
     }

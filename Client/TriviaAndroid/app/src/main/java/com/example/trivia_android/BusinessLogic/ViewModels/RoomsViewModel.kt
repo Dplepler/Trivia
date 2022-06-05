@@ -120,7 +120,7 @@ class RoomsViewModel: ViewModel() {
     }
 
 
-    fun leaveRoom(onSuccessLeave: () -> Unit) {
+    fun leaveRoom(onSuccessLeave: () -> Unit = { }) {
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.LeaveRoom.code.toByte(), ""))
             val buffer = comms.readMessage()
@@ -133,7 +133,7 @@ class RoomsViewModel: ViewModel() {
 
 
 
-    fun closeRoom(onSuccessLeave: () -> Unit) {
+    fun closeRoom(onSuccessLeave: () -> Unit = { }) {
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.CloseRoom.code.toByte(), ""))
             val buffer = comms.readMessage()
@@ -143,6 +143,21 @@ class RoomsViewModel: ViewModel() {
             }
         }
     }
+
+
+
+    fun startGame(onSuccessStart: () -> Unit = { }) {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.StartGame.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.StartGame.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessStart() }
+            }
+        }
+    }
+
+
 
 
 
