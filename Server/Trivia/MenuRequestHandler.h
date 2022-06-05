@@ -25,7 +25,6 @@ private:
 
 	RequestResult signout(RequestInfo info);
 	RequestResult getRooms(RequestInfo info);
-	RequestResult getPlayersInRoom(RequestInfo info);
 	RequestResult getPersonalStats(RequestInfo info);
 	RequestResult getHighScore(RequestInfo info);
 	RequestResult joinRoom(RequestInfo info);

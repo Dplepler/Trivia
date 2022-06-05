@@ -1,6 +1,8 @@
 package com.example.trivia_android.ui.screens.Rooms
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +16,7 @@ import com.example.trivia_android.ui.screens.home.MainMenu
 fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: Boolean, leaveToMenu: () -> Unit = { }) {
 
     val roomNavController = rememberNavController()
+    val curContext = LocalContext.current
 
     NavHost(navController = roomNavController, startDestination = if(createOrJoin) "CreateRoom" else "LobbyScreen") {
 
@@ -33,12 +36,17 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
         composable("LobbyScreen") {
             LobbyScreen(
                 roomState = roomsViewModel.roomState.value,
-                onRefresh = { roomsViewModel.getRoomState(leaveToMenu) },
-                onClickLeave = if(createOrJoin) { {} } else { { roomsViewModel.leaveRoom(leaveToMenu) } }
+                onRefresh = {
+                    roomsViewModel.getRoomState(
+                        onRoomClosed = {
+                            Toast.makeText(curContext, "Room closed by admin!", Toast.LENGTH_LONG).show()
+                            roomsViewModel.leaveRoom(leaveToMenu)
+                        },
+                        onGameStart = { Toast.makeText(curContext, "Game started!", Toast.LENGTH_SHORT).show() }
+                    )
+                },
+                onClickLeave = if(createOrJoin) { {roomsViewModel.closeRoom(leaveToMenu)} } else { { roomsViewModel.leaveRoom(leaveToMenu) } }
             )
         }
-
-
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.trivia_android.ui.screens.Rooms
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.text.style.ClickableSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -83,7 +84,7 @@ fun LobbyScreen(
     roomState: RoomState = RoomState(0, "", 0, mutableListOf<String>(), 0, 0, 0f),
     userInfo: UserInfo = UserInfo,
     onRefresh: () -> Unit = { },
-    onClickLeave: () -> Unit = { }
+    onClickLeave: () -> Unit = { },
 ) {
 
 
