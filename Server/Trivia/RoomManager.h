@@ -15,7 +15,7 @@ public:
 	void addUser(unsigned int id, LoggedUser newUser);
 
 	std::vector<RoomData> getRooms();
-	Room getRoom(unsigned int id);
+	Room* getRoom(unsigned int id);
 
 private:
 

@@ -74,7 +74,14 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("createOrJoin") { type = NavType.BoolType })
                         ) {
 
-                            MainRoomScreen(createOrJoin = it.arguments!!.getBoolean("createOrJoin"))
+                            MainRoomScreen(
+                                createOrJoin = it.arguments!!.getBoolean("createOrJoin"),
+                                leaveToMenu = {
+                                    mainNavController.navigate("MainMenu") {
+                                        popUpTo("Rooms") { inclusive = true }
+                                    }
+                                }
+                            )
                         }
 
                     }

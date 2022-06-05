@@ -37,7 +37,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
 
 	this->m_factory.getRoomManager()->createRoom(this->m_user, {request.roomName, id, request.maxUsers, request.questionCount, request.answerTimeout, STATE::OPEN});
 
-	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{ REQUEST_STATUS::SUCCESS }), this->m_factory.createRoomAdminRequestHandler(this->m_user, this->m_roomManager->getRoom(id)) };
+	return RequestResult{JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse{ REQUEST_STATUS::SUCCESS }), this->m_factory.createRoomAdminRequestHandler(this->m_user, m_roomManager->getRoom(id)) };
 }
 
 RequestResult MenuRequestHandler::getRooms(RequestInfo info) {
@@ -49,7 +49,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {
 
 	try {
 		this->m_roomManager->addUser(request.roomId, m_user);
-		return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), nullptr};
+		return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), m_factory.createRoomMemberRequestHandler(m_user, m_roomManager->getRoom(request.roomId)) };
 	}
 	catch(...) {
 		std::cerr << "Error occured while joining room";

@@ -11,7 +11,7 @@ import com.example.trivia_android.ui.screens.home.MainMenu
 
 
 @Composable
-fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: Boolean) {
+fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: Boolean, leaveToMenu: () -> Unit = { }) {
 
     val roomNavController = rememberNavController()
 
@@ -33,7 +33,8 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
         composable("LobbyScreen") {
             LobbyScreen(
                 roomState = roomsViewModel.roomState.value,
-                onRefresh = { roomsViewModel.getUserList() }
+                onRefresh = { roomsViewModel.getRoomState(leaveToMenu) },
+                onClickLeave = if(createOrJoin) { {} } else { { roomsViewModel.leaveRoom(leaveToMenu) } }
             )
         }
 

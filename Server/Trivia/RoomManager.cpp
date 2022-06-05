@@ -30,8 +30,8 @@ STATE RoomManager::getRoomState(unsigned int id) {
 	}
 }
 
-Room RoomManager::getRoom(unsigned int id) {	
-	return this->m_rooms[id];
+Room* RoomManager::getRoom(unsigned int id) {	
+	return &m_rooms[id];
 }
 
 

@@ -11,14 +11,14 @@ class RoomMemberRequestHandler : public IRequestHandler {
 
 public:
 
-    RoomMemberRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room room);
+    RoomMemberRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room* room);
     bool isRequestRelevant(RequestInfo info) const;
     RequestResult handleRequest(RequestInfo info);
 
 private:
 
     LoggedUser m_user;
-    Room m_room;
+    Room* m_room;
     RoomManager* m_roomManager;
     RequestHandlerFactory& m_factory;
 

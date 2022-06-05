@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -79,15 +80,19 @@ fun PlayerList(
 @Composable
 fun LobbyScreen(
     modifier: Modifier = Modifier,
-    roomState: RoomState = RoomState(0, "", false, mutableListOf<String>(), 0, 0, 0f),
+    roomState: RoomState = RoomState(0, "", 0, mutableListOf<String>(), 0, 0, 0f),
     userInfo: UserInfo = UserInfo,
-    onRefresh: () -> Unit = { }
+    onRefresh: () -> Unit = { },
+    onClickLeave: () -> Unit = { }
 ) {
 
 
     Scaffold(
         topBar = {
             TopAppBar(backgroundColor = MaterialTheme.colors.surface) {
+
+                IconButton(onClick = onClickLeave) { Icon(Icons.Filled.ArrowBack, null) }
+
                 Text("Room: ${roomState.name}", style = MaterialTheme.typography.subtitle2)
             }
         },

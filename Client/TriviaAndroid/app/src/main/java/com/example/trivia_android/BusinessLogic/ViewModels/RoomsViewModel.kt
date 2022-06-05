@@ -27,7 +27,7 @@ data class GetRoomDetails(val roomId: Int)
 data class RoomState(
     val status: Int,
     val name: String,
-    val begun: Boolean,
+    val state: Int,
     val players: MutableList<String>,
     val questionCount: Int,
     val maxPlayers: Int,
@@ -35,11 +35,18 @@ data class RoomState(
 )
 
 
+enum class RoomStates(val state: Int) {
+    Open(0),
+    Closed(1),
+    Started(2)
+}
+
+
+
+
 class RoomsViewModel: ViewModel() {
 
     val comms = Communications
-
-    val userInfo = UserInfo
 
     val playerAmount = mutableStateOf("")
 
@@ -55,7 +62,7 @@ class RoomsViewModel: ViewModel() {
 
 
 
-    private var _roomState = mutableStateOf(RoomState(0, "", false, mutableListOf<String>(), 0, 0, 0f))
+    private var _roomState = mutableStateOf(RoomState(0, "", RoomStates.Open.state, mutableListOf<String>(), 0, 0, 0f))
     val roomState
         get() = _roomState
 
@@ -113,7 +120,33 @@ class RoomsViewModel: ViewModel() {
     }
 
 
-    fun getUserList() {
+    fun leaveRoom(onSuccessLeave: () -> Unit) {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.LeaveRoom.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.LeaveRoom.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessLeave() }
+            }
+        }
+    }
+
+
+
+    fun closeRoom(onSuccessLeave: () -> Unit) {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.CloseRoom.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.CloseRoom.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessLeave() }
+            }
+        }
+    }
+
+
+
+    fun getRoomState(onRoomClosed: () -> Unit = { }, onGameStart: () -> Unit = { }) {
         val data = Json.encodeToString(GetRoomDetails(id))
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomState.code.toByte(), data))
@@ -121,6 +154,8 @@ class RoomsViewModel: ViewModel() {
             if(buffer[0].toInt() == ResponseCodes.GetRoomState.code) {
                 val res = String(buffer).substring(comms.headerLen)
                 _roomState.value = Json.decodeFromString(res)
+                if(_roomState.value.state == RoomStates.Closed.state) { onRoomClosed() }
+                else if (_roomState.value.state == RoomStates.Started.state) { onGameStart() }
             }
         }
     }
