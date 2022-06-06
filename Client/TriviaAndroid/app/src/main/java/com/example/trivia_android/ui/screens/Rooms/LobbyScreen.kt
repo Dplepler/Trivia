@@ -1,6 +1,7 @@
 package com.example.trivia_android.ui.screens.Rooms
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.text.style.ClickableSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -79,15 +81,20 @@ fun PlayerList(
 @Composable
 fun LobbyScreen(
     modifier: Modifier = Modifier,
-    roomState: RoomState = RoomState(0, "", false, mutableListOf<String>(), 0, 0, 0f),
+    roomState: RoomState = RoomState(0, "", 0, mutableListOf<String>(), 0, 0, 0f),
     userInfo: UserInfo = UserInfo,
-    onRefresh: () -> Unit = { }
+    onRefresh: () -> Unit = { },
+    onClickLeave: () -> Unit = { },
+    onClickStart: () -> Unit = { }
 ) {
 
 
     Scaffold(
         topBar = {
             TopAppBar(backgroundColor = MaterialTheme.colors.surface) {
+
+                IconButton(onClick = onClickLeave) { Icon(Icons.Filled.ArrowBack, null) }
+
                 Text("Room: ${roomState.name}", style = MaterialTheme.typography.subtitle2)
             }
         },
@@ -97,7 +104,7 @@ fun LobbyScreen(
 
             if(roomState.players.isEmpty() || userInfo.userName == roomState.players[0]) {
                 FloatingActionButton(
-                    onClick = { },
+                    onClick = onClickStart,
                     backgroundColor = Color.Transparent,
                     modifier = Modifier.background(
                         brush = Brush.horizontalGradient(

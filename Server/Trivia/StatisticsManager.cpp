@@ -10,11 +10,11 @@ std::string StatisticsManager::getHighestScoreName(std::vector<std::string> user
 	
 	if (!usernames.size()) { return ""; }
 
-	float maxScore = calcScore(usernames[0]);
+	float maxScore = 0;
 	std::string username = usernames[0];
 	float score = 0;
 
-	for (unsigned int i = 1; i < usernames.size(); i++) {
+	for (unsigned int i = 0; i < usernames.size(); i++) {
 		score = calcScore(usernames[i]);
 		if (score > maxScore) {
 			maxScore = score;

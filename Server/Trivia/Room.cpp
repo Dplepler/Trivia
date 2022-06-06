@@ -12,6 +12,7 @@ void Room::removeUser(LoggedUser user) {
 	for (auto it = this->m_users.begin(); it != m_users.end(); it++) {
 		if (it->getUsername() == user.getUsername()) {
 			m_users.erase(it); 
+			return;
 		}
 	}
 }

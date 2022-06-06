@@ -95,6 +95,7 @@ typedef struct START_GAME_RESPONSE_STRUCT {
 typedef struct GET_ROOM_STATE_RESPONSE_STRUCT {
 
 	unsigned int status;
+	std::string name;
 	STATE isActive;
 	std::vector<std::string> players;
 	unsigned int questionCount;
