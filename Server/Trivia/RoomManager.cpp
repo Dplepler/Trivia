@@ -6,7 +6,7 @@ void RoomManager::createRoom(LoggedUser user, RoomData data) {
 	/* Insert a new room */
 	std::vector<LoggedUser> users;
 	users.push_back(user);
-	this->m_rooms.insert(std::pair<unsigned int, Room>(data.id, Room(data, users)));	
+	m_rooms[data.id] = Room(data, users);	
 	lock.unlock();
 }
 
@@ -16,10 +16,10 @@ void RoomManager::deleteRoom(unsigned int id) {
 	lock.unlock();
 }
 
-unsigned int RoomManager::getRoomState(unsigned int id) {
+STATE RoomManager::getRoomState(unsigned int id) {
 	
 	std::unique_lock<std::mutex> lock(this->m_roomLock);
-	unsigned int isActive = 0;
+	STATE isActive;
 	try {
 		isActive = m_rooms.at(id).getData().isActive;
 		lock.unlock();
@@ -30,8 +30,8 @@ unsigned int RoomManager::getRoomState(unsigned int id) {
 	}
 }
 
-Room RoomManager::getRoom(unsigned int id) {	
-	return this->m_rooms[id];
+Room* RoomManager::getRoom(unsigned int id) {	
+	return &m_rooms[id];
 }
 
 
@@ -49,7 +49,10 @@ std::vector<RoomData> RoomManager::getRooms() {
 
 	std::unique_lock<std::mutex> lock(this->m_roomLock);
 	for (unsigned int i = 0; i < size; i++) {
-		if (m_rooms[i].getAllUsers().size() < m_rooms[i].getData().maxPlayers) {
+		if (
+				(m_rooms[i].getAllUsers().size() < m_rooms[i].getData().maxPlayers) 
+				&& m_rooms[i].getData().isActive ==  STATE::OPEN
+			) {
 			rooms.push_back(this->m_rooms[i].getData());
 		}
 	}

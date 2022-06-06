@@ -1,6 +1,7 @@
 package com.example.trivia_android.ui.screens.Rooms
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.text.style.ClickableSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.trivia_android.BusinessLogic.Communications.UserInfo
+import com.example.trivia_android.BusinessLogic.ViewModels.RoomState
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import kotlinx.coroutines.delay
 
@@ -78,29 +81,30 @@ fun PlayerList(
 @Composable
 fun LobbyScreen(
     modifier: Modifier = Modifier,
-    roomName: String,
-    playerAmount: String,
-    ansTime: String,
-    questionAmount: String,
-    playerList: List<String>,
+    roomState: RoomState = RoomState(0, "", 0, mutableListOf<String>(), 0, 0, 0f),
     userInfo: UserInfo = UserInfo,
-    onRefresh: () -> Unit = { }
+    onRefresh: () -> Unit = { },
+    onClickLeave: () -> Unit = { },
+    onClickStart: () -> Unit = { }
 ) {
 
 
     Scaffold(
         topBar = {
             TopAppBar(backgroundColor = MaterialTheme.colors.surface) {
-                Text("Room: $roomName", style = MaterialTheme.typography.subtitle2)
+
+                IconButton(onClick = onClickLeave) { Icon(Icons.Filled.ArrowBack, null) }
+
+                Text("Room: ${roomState.name}", style = MaterialTheme.typography.subtitle2)
             }
         },
 
 
         floatingActionButton = {
 
-            if(playerList.isEmpty() || userInfo.userName == playerList[0]) {
+            if(roomState.players.isEmpty() || userInfo.userName == roomState.players[0]) {
                 FloatingActionButton(
-                    onClick = { },
+                    onClick = onClickStart,
                     backgroundColor = Color.Transparent,
                     modifier = Modifier.background(
                         brush = Brush.horizontalGradient(
@@ -123,7 +127,7 @@ fun LobbyScreen(
 
     ) {
 
-        Column(modifier = modifier) {
+        Column(modifier = modifier.fillMaxWidth()) {
 
             Text(
                 "Room Info: ",
@@ -136,11 +140,11 @@ fun LobbyScreen(
                 .padding(bottom = 32.dp)
                 .align(Alignment.CenterHorizontally)) {
 
-                InfoField(field = "Time", value = "$ansTime S")
+                InfoField(field = "Time", value = "${roomState.answerTimeout} S")
 
-                InfoField(field = "Size", value = "$playerAmount P")
+                InfoField(field = "Size", value = "${roomState.maxPlayers} P")
 
-                InfoField(field = "Questions", value = "$questionAmount Q")
+                InfoField(field = "Questions", value = "${roomState.questionCount} Q")
 
             }
 
@@ -150,7 +154,7 @@ fun LobbyScreen(
                 Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxHeight(0.8f),
-                playerList,
+                roomState.players,
                 userInfo.userName
             )
         }
@@ -253,23 +257,7 @@ fun PlayerListPreview() {
 )
 fun LobbyScreenPreview() {
     TriviaAndroidTheme {
-        LobbyScreen(
-            Modifier,
-            "My Room",
-            "15",
-            "60",
-            "10",
-            listOf(
-                "Gal",
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "f",
-                "asgdshsdhdshsh"
-            )
-        )
+        LobbyScreen(Modifier)
     }
 }
 

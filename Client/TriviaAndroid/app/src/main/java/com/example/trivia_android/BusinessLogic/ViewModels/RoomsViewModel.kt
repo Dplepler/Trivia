@@ -1,13 +1,10 @@
 package com.example.trivia_android.BusinessLogic.ViewModels
 
-import android.util.Log
-import androidx.compose.runtime.getValue
+
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.trivia_android.BusinessLogic.Communications.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -27,14 +24,29 @@ data class RoomList(val status: Int = 0, val names: List<String> = listOf(), val
 data class GetRoomDetails(val roomId: Int)
 
 @Serializable
-data class PlayerList(val players: MutableList<String>)
+data class RoomState(
+    val status: Int,
+    val name: String,
+    val state: Int,
+    val players: MutableList<String>,
+    val questionCount: Int,
+    val maxPlayers: Int,
+    val answerTimeout: Float
+)
+
+
+enum class RoomStates(val state: Int) {
+    Open(0),
+    Closed(1),
+    Started(2)
+}
+
+
 
 
 class RoomsViewModel: ViewModel() {
 
     val comms = Communications
-
-    val userInfo = UserInfo
 
     val playerAmount = mutableStateOf("")
 
@@ -50,9 +62,9 @@ class RoomsViewModel: ViewModel() {
 
 
 
-    private var _playerList = mutableStateListOf<String>()
-    val playerList
-        get() = _playerList
+    private var _roomState = mutableStateOf(RoomState(0, "", RoomStates.Open.state, mutableListOf<String>(), 0, 0, 0f))
+    val roomState
+        get() = _roomState
 
 
 
@@ -108,16 +120,57 @@ class RoomsViewModel: ViewModel() {
     }
 
 
-    fun getUserList() {
+    fun leaveRoom(onSuccessLeave: () -> Unit = { }) {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.LeaveRoom.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.LeaveRoom.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessLeave() }
+            }
+        }
+    }
+
+
+
+    fun closeRoom(onSuccessLeave: () -> Unit = { }) {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.CloseRoom.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.CloseRoom.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessLeave() }
+            }
+        }
+    }
+
+
+
+    fun startGame(onSuccessStart: () -> Unit = { }) {
+        viewModelScope.launch {
+            comms.sendMessage(comms.buildMessage(RequestCodes.StartGame.code.toByte(), ""))
+            val buffer = comms.readMessage()
+            if(buffer[0].toInt() == ResponseCodes.StartGame.code) {
+                val res = String(buffer).substring(comms.headerLen)
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessStart() }
+            }
+        }
+    }
+
+
+
+
+
+    fun getRoomState(onRoomClosed: () -> Unit = { }, onGameStart: () -> Unit = { }) {
         val data = Json.encodeToString(GetRoomDetails(id))
         viewModelScope.launch {
-            comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomPlayers.code.toByte(), data))
+            comms.sendMessage(comms.buildMessage(RequestCodes.GetRoomState.code.toByte(), data))
             val buffer = comms.readMessage()
-            if(buffer[0].toInt() == ResponseCodes.GetRoomPlayers.code) {
+            if(buffer[0].toInt() == ResponseCodes.GetRoomState.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                val list = Json.decodeFromString<PlayerList>(res)
-                _playerList.clear()
-                _playerList.addAll(list.players)
+                _roomState.value = Json.decodeFromString(res)
+                if(_roomState.value.state == RoomStates.Closed.state) { onRoomClosed() }
+                else if (_roomState.value.state == RoomStates.Started.state) { onGameStart() }
             }
         }
     }

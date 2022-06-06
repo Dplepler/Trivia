@@ -58,6 +58,12 @@
     <ClCompile Include="MenuRequestHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="RoomAdminRequestHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomMemberRequestHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -118,6 +124,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="MenuRequestHandler.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAdminRequestHandler.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomMemberRequestHandler.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

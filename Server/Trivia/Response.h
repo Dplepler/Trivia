@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Room.h"
+#include <list>
 
 enum class RESPONSE {
 
@@ -8,13 +9,16 @@ enum class RESPONSE {
 	LOGIN,
 	LOGOUT,
 	ROOMS,
-	PLAYERS,
+	STATE,
 	HIGH_SCORE,
 	STATS,
 	JOIN,
 	CREATE,
+	CLOSE,
+	START,
+	LEAVE,
 	
-	ERROR_RES = 40,
+	ERROR_RES = 99,
 
 }; 
 
@@ -32,7 +36,7 @@ typedef struct SIGNUP_RESPONSE_STRUCT {
 
 typedef struct LOGOUT_RESPONSE_STRUCT {
 	
-		unsigned int status;
+	unsigned int status;
 
 } LogoutResponse;
 
@@ -42,12 +46,6 @@ typedef struct GET_ROOMS_RESPONSE_STRUCT {
 	std::vector<RoomData> rooms;
 
 } GetRoomsResponse;
-
-typedef struct GET_PLAYERS_IN_ROOMS_RESPONSE_STRUCT {
-
-	std::vector<std::string> players;
-
-} GetPlayersInRoomsResponse;
 
 typedef struct GET_HIGH_SCORE_RESPONSE_STRUCT {
 	
@@ -81,3 +79,33 @@ typedef struct ERROR_RESPONSE_STRUCT {
 	std::string message;
 
 } ErrorResponse;
+
+typedef struct CLOSE_ROOM_RESPONSE_STRUCT {
+
+	unsigned int status;
+
+} CloseRoomResponse;
+
+typedef struct START_GAME_RESPONSE_STRUCT {
+
+	unsigned int status;
+
+}StartGameResponse;
+
+typedef struct GET_ROOM_STATE_RESPONSE_STRUCT {
+
+	unsigned int status;
+	std::string name;
+	STATE isActive;
+	std::vector<std::string> players;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+	unsigned int maxPlayers;
+
+} GetRoomStateResponse;
+
+typedef struct LEAVE_ROOM_RESPONSE_STRUCT {
+
+	unsigned int status;
+
+} LeaveRoomResponse;

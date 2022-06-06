@@ -2,12 +2,15 @@
 #include "SqliteDatabase.h"
 #include "LoginRequestHandler.h"
 #include "MenuRequestHandler.h"
+#include "RoomAdminRequestHandler.h"
+#include "RoomMemberRequestHandler.h"
 #include "LoginManager.h"
 #include "RoomManager.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;
-
+class RoomAdminRequestHandler;
+class RoomMemberRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -21,6 +24,10 @@ public:
 	LoginRequestHandler* createLoginRequestHandler();
 	
 	MenuRequestHandler* createMenuRequestHandler(LoggedUser user);
+
+	RoomAdminRequestHandler* createRoomAdminRequestHandler(LoggedUser user, Room* room);
+
+	RoomMemberRequestHandler* createRoomMemberRequestHandler(LoggedUser user, Room* room);
 
 	LoginManager* getLoginManager() const;
 

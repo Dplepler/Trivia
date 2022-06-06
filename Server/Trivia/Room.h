@@ -1,6 +1,14 @@
 #pragma once
 #include "LoginManager.h"
 
+enum class STATE {
+
+	OPEN,
+	CLOSED,
+	STARTED
+
+};
+
 typedef struct ROOM_DATA_STRUCT {
 
 	std::string name;
@@ -9,9 +17,11 @@ typedef struct ROOM_DATA_STRUCT {
 	unsigned int maxPlayers;
 	unsigned int numOfQuestionsInGame;
 	unsigned int timePerQuestion;
-	unsigned int isActive;
+	STATE isActive;
 
 } RoomData;
+
+
 
 class Room {
 
@@ -22,6 +32,8 @@ public:
 
 	void addUser(LoggedUser user);
 	void removeUser(LoggedUser user);
+
+	void setState(STATE state);
 
 	std::vector<std::string> getAllUsers() const;
 	RoomData getData() const;
