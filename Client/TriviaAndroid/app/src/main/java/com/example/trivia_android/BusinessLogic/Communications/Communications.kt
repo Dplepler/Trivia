@@ -56,7 +56,7 @@ enum class ResponseCodes(val code: Int) {
 
 object Communications {
 
-    private const val addr = "192.168.1.233"
+    private const val addr = "10.0.2.2"
     private const val port = 8008
     private const val shiftStart = 24
     private const val shiftOffset = 8
