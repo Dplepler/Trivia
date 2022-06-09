@@ -2,12 +2,13 @@
 #include "LoggedUser.h"
 #include "RoomManager.h"
 #include "MenuRequestHandler.h"
+#include "BaseRoomRequestHandler.h"
 #include "StatisticsManager.h"
 #include "RequestHandlerFactory.h"
 
 class RequestHandlerFactory;
 
-class RoomAdminRequestHandler : public IRequestHandler {
+class RoomAdminRequestHandler : public BaseRoomRequestHandler {
 
 public:
 
@@ -18,7 +19,6 @@ public:
 private:
 
     LoggedUser m_user;
-    Room* m_room;
     RoomManager* m_roomManager;
     RequestHandlerFactory& m_factory;
 
@@ -26,5 +26,4 @@ private:
 
     RequestResult closeRoom(RequestInfo info);
     RequestResult startGame(RequestInfo info);
-    RequestResult getRoomState(RequestInfo info);
 };
