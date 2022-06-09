@@ -10,6 +10,16 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 
 
+typedef enum REQUEST_STATUS {
+
+	FAILURE,
+	SUCCESS
+
+} REQUEST_STATUS;
+
+
+
+
 enum RequestCodes {
 
 	SIGNUP_REQUEST_CODE = 11, 

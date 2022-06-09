@@ -3,14 +3,15 @@
 StatisticsManager::StatisticsManager(IDatabase* database) : m_database(database) { }
 
 float StatisticsManager::calcScore(std::string name) {
- return ((float)this->m_database->getNumOfCorrectAnswers(name) / (float)this->m_database->getNumOfTotalAnswers(name)) * SCORE_MULTIPLIER / this->m_database->getPlayerAverageAnswerTime(name);
+	if (m_database->getNumOfTotalAnswers(name) == 0 || m_database->getPlayerAverageAnswerTime(name) == 0) { return 0; }
+	return ((float)this->m_database->getNumOfCorrectAnswers(name) / (float)this->m_database->getNumOfTotalAnswers(name)) * SCORE_MULTIPLIER / this->m_database->getPlayerAverageAnswerTime(name);
 }
 
 std::string StatisticsManager::getHighestScoreName(std::vector<std::string> usernames) {
 	
 	if (!usernames.size()) { return ""; }
 
-	float maxScore = 0;
+	float maxScore = calcScore(usernames[0]);
 	std::string username = usernames[0];
 	float score = 0;
 

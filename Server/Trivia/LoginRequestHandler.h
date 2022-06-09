@@ -7,15 +7,6 @@
 #include "JsonRequestPacketDeserializer.h"
 
 
-typedef enum REQUEST_STATUS {
-
-	FAILURE,
-	SUCCESS
-
-} REQUEST_STATUS;
-
-
-
 class RequestHandlerFactory;
 
 class LoginRequestHandler : public IRequestHandler

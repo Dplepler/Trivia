@@ -1,7 +1,7 @@
 #include "RoomAdminRequestHandler.h"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room* room)
-    : m_user(user), m_factory(factory), m_room(room) {
+    : m_user(user), m_factory(factory), BaseRoomRequestHandler(room) {
 
     this->m_roomManager = roomManager;
 }
@@ -48,17 +48,5 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info) {
     }
     catch (...) {
         std::cerr << "Error while starting game";
-    }
-}
-
-RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info) {
-
-    try {
-        RoomData data = m_room->getData();
-        return { JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
-                { REQUEST_STATUS::SUCCESS, data.name, data.isActive, m_room->getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion }), nullptr };
-    }
-    catch (...) {
-        std::cerr << "Error getting room state";
     }
 }
