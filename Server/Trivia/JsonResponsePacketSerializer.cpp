@@ -248,8 +248,90 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leaveRo
 	std::string jsonString;
 	json json;
 
-	buffer.push_back((char)RESPONSE::LEAVE);
+	buffer.push_back((char)RESPONSE::LEAVE_ROOM);
 	json["status"] = leaveRoomRes.status;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse submitAnswerRes) {
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::SUBMIT);
+	json["status"] = submitAnswerRes.status;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse leaveGameRes) {
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	buffer.push_back((char)RESPONSE::LEAVE_GAME);
+	json["status"] = leaveGameRes.status;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse gameResultsRes) {
+
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	std::vector<std::string> resJson;
+
+	buffer.push_back((char)RESPONSE::RESULTS);
+	json["status"] = gameResultsRes.status;
+
+	for (unsigned int i = 0; i < gameResultsRes.results.size(); i++) {
+		resJson.push_back(JsonResponsePacketSerializer::pasrseGameResults(gameResultsRes.results[i]));
+	}
+
+	json["results"] = resJson;
+
+	jsonString = json.dump();
+
+	parseLength(buffer, jsonString.size());
+
+	buffer.insert(buffer.end(), jsonString.begin(), jsonString.end());
+
+	return buffer;
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestionRes) {
+
+	Buffer buffer;
+	std::string jsonString;
+	json json;
+
+	std::vector<std::string> resJson;
+
+	buffer.push_back((char)RESPONSE::GET_QUESTIONS);
+	json["status"] = getQuestionRes.status;
+	json["question"] = getQuestionRes.question;
+	json["answers"] = getQuestionRes.answers;
 
 	jsonString = json.dump();
 
@@ -280,7 +362,6 @@ std::vector<std::string> JsonResponsePacketSerializer::parseRoomNameVec(std::vec
 	std::vector<std::string> names;
 
 	if (vec.empty()) { return names; }
-		
 	
 	for (auto& it : vec) { names.push_back(it.name); }
 	
@@ -315,6 +396,18 @@ std::string JsonResponsePacketSerializer::parseStringVec(std::vector<std::string
 	}
 
 	return result.substr(0, result.size() - strlen(", "));
+}
+
+std::string JsonResponsePacketSerializer::pasrseGameResults(PlayerResults res) {
+
+	json json;
+	
+	json["username"] = res.username;
+	json["averageTime"] = res.averageAnswerTime;
+	json["correctAns"] = res.correctAnswerCount;
+	json["wrongAns"] = res.wrongAnswerCount;
+
+	return json.dump();
 }
 
 

@@ -17,11 +17,24 @@ enum class RESPONSE {
 	CREATE,
 	CLOSE,
 	START,
-	LEAVE,
+	LEAVE_ROOM,
+	SUBMIT,
+	LEAVE_GAME,
+	RESULTS,
+	GET_QUESTIONS,
 	
 	ERROR_RES = 99,
 
-}; 
+};
+
+typedef struct PLAYER_RESULT_STRUCT {
+
+	std::string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+
+} PlayerResults;
 
 typedef struct LOGIN_RESPONSE_STRUCT {
 
@@ -131,15 +144,6 @@ typedef struct SUBMIT_ANSWER_RESPONSE {
 	unsigned int correctAnswerId;
 	
 } SubmitAnswerResponse;
-
-typedef struct PLAYER_RESULT_STRUCT {
-
-	std::string username;
-	unsigned int correctAnswerCount;
-	unsigned int wrongAnswerCount;
-	unsigned int averageAnswerTime;
-
-} PlayerResults;
 
 typedef struct GET_GAME_RESULTS_RESPONSE_STRUCT {
 

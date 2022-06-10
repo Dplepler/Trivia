@@ -4,6 +4,7 @@ MenuRequestHandler::MenuRequestHandler(LoggedUser user, RequestHandlerFactory& f
 	: m_user(user), m_factory(factory) {
 
 	this->m_roomManager = roomManager;
+
  }
 
 bool MenuRequestHandler::isRequestRelevant(RequestInfo info) const { 
