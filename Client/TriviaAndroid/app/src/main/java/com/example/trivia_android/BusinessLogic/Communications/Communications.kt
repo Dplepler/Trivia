@@ -29,7 +29,11 @@ enum class RequestCodes(val code: Int) {
     Logout(19),
     StartGame(40),
     CloseRoom(41),
-    LeaveRoom(42)
+    LeaveRoom(42),
+    LeaveGame(43),
+    GetQuestion(44),
+    SubmitAnswer(45),
+    GameResult(46)
 }
 
 

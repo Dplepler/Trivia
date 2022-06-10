@@ -86,3 +86,16 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(Bu
 	};
 
 }
+
+
+/*
+deserializeSubmitAnswerRequest deserializes a submit answer request and returns it's structure
+Input: Buffer to deserialize
+Output: Deserialized buffer as a submit answer request struct
+*/
+SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(Buffer clientMsg)
+{
+	json j = json::parse(clientMsg);
+
+	return SubmitAnswerRequest{ j["answerId"].get<unsigned int>() };
+}
