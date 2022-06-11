@@ -1,18 +1,21 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "SqliteDatabase.h"
 
 class Question {
 
 public:
 
+	Question(QuestionDescriptor question);
+	~Question() = default;
+
 	std::string getQuestion() const;
 	std::vector<std::string> getPossibleAnswers() const;
-	int getCorrectAnswerId() const;
+	uint8_t getCorrectAnswerId() const;
 	
 private:
 
-	std::string m_question;
-	std::vector<std::string> m_possibleAnswers;
+	QuestionDescriptor m_questionData;
 
 };
