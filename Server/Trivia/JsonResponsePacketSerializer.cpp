@@ -267,6 +267,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse subm
 
 	buffer.push_back((char)RESPONSE::SUBMIT);
 	json["status"] = submitAnswerRes.status;
+	json["correctAns"] = submitAnswerRes.correctAnswerId;
 
 	jsonString = json.dump();
 
