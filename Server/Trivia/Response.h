@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Room.h"
 #include <list>
+#include <map>
 
 enum class RESPONSE {
 
@@ -16,11 +17,24 @@ enum class RESPONSE {
 	CREATE,
 	CLOSE,
 	START,
-	LEAVE,
+	LEAVE_ROOM,
+	SUBMIT,
+	LEAVE_GAME,
+	RESULTS,
+	GET_QUESTIONS,
 	
 	ERROR_RES = 99,
 
-}; 
+};
+
+typedef struct PLAYER_RESULT_STRUCT {
+
+	std::string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+
+} PlayerResults;
 
 typedef struct LOGIN_RESPONSE_STRUCT {
 
@@ -109,3 +123,32 @@ typedef struct LEAVE_ROOM_RESPONSE_STRUCT {
 	unsigned int status;
 
 } LeaveRoomResponse;
+
+typedef struct LEAVE_GAME_RESPONSE_STRUCT {
+
+	unsigned int status;
+
+} LeaveGameResponse;
+
+typedef struct GET_QUESTION_RESPONSE_STRUCT {
+
+	unsigned int status;
+	std::string question;
+	std::map<unsigned int, std::string> answers;
+
+} GetQuestionResponse;
+
+typedef struct SUBMIT_ANSWER_RESPONSE {
+
+	unsigned int status;
+	unsigned int correctAnswerId;
+	
+} SubmitAnswerResponse;
+
+typedef struct GET_GAME_RESULTS_RESPONSE_STRUCT {
+
+	unsigned int status;
+	std::vector<PlayerResults> results;
+	
+} GetGameResultsResponse;
+

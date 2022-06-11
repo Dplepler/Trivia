@@ -129,6 +129,7 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 	RequestResult result;
 
+
 	try {
 
 		for (;;) {

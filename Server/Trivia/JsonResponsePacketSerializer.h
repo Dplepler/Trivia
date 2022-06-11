@@ -26,6 +26,10 @@ public:
 	static Buffer serializeResponse(StartGameResponse startGameRes);
 	static Buffer serializeResponse(GetRoomStateResponse getRoomStateRes);
 	static Buffer serializeResponse(LeaveRoomResponse leaveRoomRes);
+	static Buffer serializeResponse(SubmitAnswerResponse submitAnswerRes);
+	static Buffer serializeResponse(LeaveGameResponse leaveGameRes);
+	static Buffer serializeResponse(GetGameResultsResponse gameResultsRes);
+	static Buffer serializeResponse(GetQuestionResponse getQuestionRes);
 	
 
 private:
@@ -34,6 +38,7 @@ private:
 	static std::vector<std::string> parseRoomNameVec(std::vector<RoomData> vec);
 	static std::vector<int> parseRoomIdVec(std::vector<RoomData> vec);
 	static std::string parseStringVec(std::vector<std::string> vec);
+	static std::string pasrseGameResults(PlayerResults res);
 
 };
 
