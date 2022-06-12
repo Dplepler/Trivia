@@ -23,6 +23,7 @@
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameRequestHandler.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameRequestHandler.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
