@@ -73,6 +73,9 @@
     <ClCompile Include="Question.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Communicator.h">
@@ -148,6 +151,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Question.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

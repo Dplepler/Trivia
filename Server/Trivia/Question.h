@@ -8,6 +8,7 @@ class Question {
 public:
 
 	Question(QuestionDescriptor question);
+	Question() = default;
 	~Question() = default;
 
 	std::string getQuestion() const;

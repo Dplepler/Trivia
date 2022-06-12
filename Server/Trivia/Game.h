@@ -23,6 +23,8 @@ public:
 	void submitAnswer(LoggedUser user, uint8_t answerId);
 	void removePlayer(LoggedUser user);
 
+	unsigned int getId();
+
 private:
 
 	std::vector<Question> m_questions;

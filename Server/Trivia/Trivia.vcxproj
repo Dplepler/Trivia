@@ -22,6 +22,7 @@
     <ClCompile Include="BaseRoomRequestHandler.cpp" />
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
     <ClCompile Include="JsonResponsePacketSerializer.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="BaseRoomRequestHandler.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />

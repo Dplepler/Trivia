@@ -37,3 +37,7 @@ void Game::submitAnswer(LoggedUser user, uint8_t answerId) {
 void Game::removePlayer(LoggedUser user) {
 	this->m_players.erase(user);
 }
+
+unsigned int Game::getId() {
+	return this->m_gameId;
+}
