@@ -36,7 +36,8 @@ RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info) {
                 { REQUEST_STATUS::SUCCESS }), this->m_factory.createMenuRequestHandler(this->m_user) };
     }
     catch (...) {
-        std::cerr << "Error while closing room";
+        return { JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse
+                { REQUEST_STATUS::FAILURE }), nullptr };
     }
 }
 
@@ -44,9 +45,10 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info) {
     try {
         m_room->setState(STATE::STARTED);
         return { JsonResponsePacketSerializer::serializeResponse(StartGameResponse
-                { REQUEST_STATUS::SUCCESS }), nullptr };
+                { REQUEST_STATUS::SUCCESS }), this->m_factory.createGameRequestHandler(this->m_user, *this->m_room) };
     }
     catch (...) {
-        std::cerr << "Error while starting game";
+        return { JsonResponsePacketSerializer::serializeResponse(StartGameResponse
+                   { REQUEST_STATUS::FAILURE }), nullptr };
     }
 }

@@ -2,6 +2,7 @@
 #include "LoggedUser.h"
 #include "RoomManager.h"
 #include "MenuRequestHandler.h"
+#include "GameRequestHandler.h"
 #include "BaseRoomRequestHandler.h"
 #include "StatisticsManager.h"
 #include "RequestHandlerFactory.h"
@@ -13,8 +14,8 @@ class RoomAdminRequestHandler : public BaseRoomRequestHandler {
 public:
 
     RoomAdminRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room* room);
-    bool isRequestRelevant(RequestInfo info) const;
-    RequestResult handleRequest(RequestInfo info);
+    bool isRequestRelevant(RequestInfo info) const override;
+    RequestResult handleRequest(RequestInfo info) override;
 
 private:
 

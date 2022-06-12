@@ -22,6 +22,9 @@ public:
 	Question getQuestionForUser(LoggedUser user);
 	void submitAnswer(LoggedUser user, uint8_t answerId);
 	void removePlayer(LoggedUser user);
+	
+	std::map<LoggedUser, GameData> getPlayers() const;
+	GameData getGameData(LoggedUser user) const;
 
 	unsigned int getId();
 
@@ -30,7 +33,5 @@ private:
 	std::vector<Question> m_questions;
 	std::map<LoggedUser, GameData> m_players;
 	unsigned int m_gameId;
-
-
 
 };

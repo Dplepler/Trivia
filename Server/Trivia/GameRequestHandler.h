@@ -2,20 +2,27 @@
 #include "IRequestHandler.h"
 #include "GameManager.h"
 #include "RequestHandlerFactory.h"
+#include "JsonRequestPacketDeserializer.h"
 
-class GameRequestHandler : IRequestHandler {
+#define ANSWERS_PER_QUESTION 4
+
+class RequestHandlerFactory;
+
+class GameRequestHandler : public IRequestHandler {
 
 public:
 
-	bool isRequestRelevant(RequestInfo info);
-	RequestResult handleRequest(RequestInfo info);
+	GameRequestHandler(LoggedUser user, Game game, GameManager* manager, RequestHandlerFactory& factory);
+
+	bool isRequestRelevant(RequestInfo info) const override;
+	RequestResult handleRequest(RequestInfo info) override;
 
 private:
 
-	Game* m_game;
+	Game m_game;
 	LoggedUser m_user;
 	GameManager* m_gameManager;
-	RequestHandlerFactory* factory;
+	RequestHandlerFactory& m_factory;
 
 	RequestResult getQuestion(RequestInfo info);
 	RequestResult submitAnswer(RequestInfo info);

@@ -13,8 +13,8 @@ class RoomMemberRequestHandler : public BaseRoomRequestHandler {
 public:
 
     RoomMemberRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room* room);
-    bool isRequestRelevant(RequestInfo info) const;
-    RequestResult handleRequest(RequestInfo info);
+    bool isRequestRelevant(RequestInfo info) const override;
+    RequestResult handleRequest(RequestInfo info) override;
 
 private:
 

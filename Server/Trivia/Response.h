@@ -32,7 +32,7 @@ typedef struct PLAYER_RESULT_STRUCT {
 	std::string username;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
-	unsigned int averageAnswerTime;
+	float averageAnswerTime;
 
 } PlayerResults;
 

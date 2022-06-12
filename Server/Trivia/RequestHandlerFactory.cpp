@@ -4,6 +4,7 @@
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) : m_database(db) { 
 	this->m_loginManager = new LoginManager(db);
 	this->m_roomManager = new RoomManager();
+	this->m_gameManager = new GameManager(db);
 	this->m_statisticsManager = new StatisticsManager(db);
 }
 
@@ -29,6 +30,10 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 	return new RoomMemberRequestHandler(user, *this, this->m_roomManager, room);
 }
 
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser user, Room room) {
+	return new GameRequestHandler(user, this->m_gameManager->createGame(room), this->m_gameManager, *this);
+}
+
 LoginManager* RequestHandlerFactory::getLoginManager() const {
 	return m_loginManager;
 }
@@ -39,6 +44,10 @@ RoomManager* RequestHandlerFactory::getRoomManager() const {
 
 IDatabase* RequestHandlerFactory::getDatabase() const {
 	return this->m_database;
+}
+
+GameManager* RequestHandlerFactory::getGameManager() const {
+	return this->m_gameManager;
 }
 
 StatisticsManager* RequestHandlerFactory::getStatisticsManager() const {

@@ -11,6 +11,7 @@ Game GameManager::createGame(Room room) {
 	for (unsigned int i = 0; i < room.getAllUsers().size(); i++) {
 		players.insert(std::pair<LoggedUser, GameData>(room.getAllUsers()[i], GameData{0, 0, 0, 0}));
 	}
+
 	std::list<QuestionDescriptor> questionDescs = this->m_database->getQuestions(room.getData().numOfQuestionsInGame);
 
 	std::vector<Question> questions;

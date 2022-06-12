@@ -32,7 +32,8 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info) {
                 { REQUEST_STATUS::SUCCESS }), this->m_factory.createMenuRequestHandler(this->m_user) };
     }
     catch (...) {
-        std::cerr << "Error while leaving room";
+        return { JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse
+               { REQUEST_STATUS::FAILURE }), nullptr };
     }
 }
 
