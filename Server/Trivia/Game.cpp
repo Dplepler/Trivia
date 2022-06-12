@@ -6,23 +6,17 @@ Game::Game(std::vector<Question> questions, std::map<LoggedUser, GameData> playe
 Question Game::getQuestionForUser(LoggedUser user) {
 
 	try {
-		unsigned int index = rand() % this->m_questions.size();
-		this->m_players.at(user).currentQuestion = this->m_questions[index];
-
-		this->m_questions.erase(std::next(this->m_questions.begin(), index));
-
-		return this->m_players.at(user).currentQuestion;
+		return this->m_questions[this->m_players.at(user).questionIndex++];
 	}
 	catch (...) {
 		std::cerr << "No user named" << user.getUsername() << std::endl;
 	}
-	return Question(QuestionDescriptor{});
 }
 
 void Game::submitAnswer(LoggedUser user, uint8_t answerId) {
 	
 	try {
-		if (this->m_players.at(user).currentQuestion.getCorrectAnswerId() == answerId) {
+		if (this->m_questions[this->m_players.at(user).questionIndex].getCorrectAnswerId() == answerId) {
 			this->m_players.at(user).correctAnswerCount++;
 		}
 		else {

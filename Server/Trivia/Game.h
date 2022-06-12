@@ -6,7 +6,7 @@
 
 typedef struct GAME_DATA_STRUCT {
 
-	Question currentQuestion;
+	unsigned int questionIndex;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	float averageAnswerTime;
