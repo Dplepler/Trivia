@@ -21,6 +21,8 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo info) {
 	case GAME_RES_CODE:			return getGameResult(info);	
 
 	}
+
+	return RequestResult { };
 }
 
 	

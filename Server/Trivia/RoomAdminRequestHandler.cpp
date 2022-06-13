@@ -23,7 +23,7 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info) {
 
     }
 
-    return RequestResult{};
+    return RequestResult { };
 }
 
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info) {

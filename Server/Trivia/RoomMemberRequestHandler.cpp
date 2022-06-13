@@ -18,6 +18,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info) {
 
     case LEAVE_ROOM_CODE:     return leaveRoom(info);
     case GET_ROOM_STATE_CODE: return getRoomState(info);
+
     }
 
     return RequestResult {};

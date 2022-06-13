@@ -29,6 +29,8 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info) {
 	case LOGOUT_REQUEST_CODE:		return signout(info);
 	
 	}
+
+	return RequestResult{ };
 }
 
 RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
