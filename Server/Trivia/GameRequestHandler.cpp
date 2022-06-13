@@ -1,6 +1,6 @@
 #include "GameRequestHandler.h"
 
-GameRequestHandler::GameRequestHandler(LoggedUser user, Game game, GameManager* manager, RequestHandlerFactory& factory) 
+GameRequestHandler::GameRequestHandler(LoggedUser user, Game* game, GameManager* manager, RequestHandlerFactory& factory) 
 	: m_user(user), m_game(game), m_gameManager(manager), m_factory(factory) { }
 
 bool GameRequestHandler::isRequestRelevant(RequestInfo info) const { 
@@ -28,14 +28,14 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo info) {
 RequestResult GameRequestHandler::getQuestion(RequestInfo info) { 
 
 	try {
-		std::vector<std::string> answers = this->m_game.getQuestionForUser(this->m_user).getPossibleAnswers();
+		std::vector<std::string> answers = this->m_game->getQuestionForUser(this->m_user).getPossibleAnswers();
 		std::map<unsigned int, std::string> ansMap;
 		for (uint8_t i = 1; i < ANSWERS_PER_QUESTION + 1; i++) {
 			ansMap.insert(std::pair<unsigned int, std::string>(i, answers[i - 1]));
 		}
 
 		return { JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse
-				{ REQUEST_STATUS::SUCCESS, this->m_game.getQuestionForUser(this->m_user).getQuestion(), ansMap }), nullptr };
+				{ REQUEST_STATUS::SUCCESS, this->m_game->getQuestionForUser(this->m_user).getQuestion(), ansMap }), nullptr };
 	}
 	catch (...) {
 		return { JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse
@@ -62,11 +62,11 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo info) {
 	
 	try {
 		std::vector<PlayerResults> players;
-		std::map<LoggedUser, GameData> playerMap = this->m_game.getPlayers();
+		std::map<LoggedUser, GameData> playerMap = this->m_game->getPlayers();
 		for (auto& it : playerMap) {
 			players.push_back(PlayerResults{ it.first.getUsername() , it.second.correctAnswerCount, it.second.wrongAnswerCount, it.second.averageAnswerTime });
 		}
-		GameData data = this->m_game.getGameData(this->m_user);
+		GameData data = this->m_game->getGameData(this->m_user);
 		return { JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse
 				{ REQUEST_STATUS::SUCCESS, players }), nullptr };
 

@@ -1,14 +1,14 @@
 #pragma once
 #include "LoggedUser.h"
+#include "IRequestHandler.h"
 #include "RoomManager.h"
 #include "MenuRequestHandler.h"
-#include "BaseRoomRequestHandler.h"
 #include "StatisticsManager.h"
-#include "RequestHandlerFactory.h"
 
 class RequestHandlerFactory;
 
-class RoomMemberRequestHandler : public BaseRoomRequestHandler {
+
+class RoomMemberRequestHandler : public IRequestHandler {
 
 public:
 
@@ -18,11 +18,17 @@ public:
 
 private:
 
-    LoggedUser m_user;
     RoomManager* m_roomManager;
+
+    LoggedUser m_user;
+
+    Room* m_room;
+
     RequestHandlerFactory& m_factory;
 
     std::mutex MemberLock;
+
+    RequestResult getRoomState(RequestInfo info);
 
     RequestResult leaveRoom(RequestInfo info);
 };

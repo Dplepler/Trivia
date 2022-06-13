@@ -1,7 +1,7 @@
 #include "RoomAdminRequestHandler.h"
 
 RoomAdminRequestHandler::RoomAdminRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room* room)
-    : m_user(user), m_factory(factory), BaseRoomRequestHandler(room) {
+    : m_user(user), m_factory(factory), m_room(room) {
 
     this->m_roomManager = roomManager;
 }
@@ -22,6 +22,8 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info) {
     case GET_ROOM_STATE_CODE: return getRoomState(info);
 
     }
+
+    return RequestResult{};
 }
 
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info) {
@@ -45,10 +47,24 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info) {
     try {
         m_room->setState(STATE::STARTED);
         return { JsonResponsePacketSerializer::serializeResponse(StartGameResponse
-                { REQUEST_STATUS::SUCCESS }), this->m_factory.createGameRequestHandler(this->m_user, *this->m_room) };
+                { REQUEST_STATUS::SUCCESS }), this->m_factory.createGameRequestHandler(this->m_user, this->m_factory.getGameManager()->createGame(*this->m_room)) };
     }
     catch (...) {
         return { JsonResponsePacketSerializer::serializeResponse(StartGameResponse
                    { REQUEST_STATUS::FAILURE }), nullptr };
+    }
+}
+
+RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info) {
+
+    try {
+
+        RoomData data = m_room->getData();
+        return { JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
+                { REQUEST_STATUS::SUCCESS, data.name, data.isActive, m_room->getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion, data.maxPlayers }), nullptr };
+    }
+    catch (...) {
+        return { JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
+                { REQUEST_STATUS::FAILURE }), nullptr };
     }
 }

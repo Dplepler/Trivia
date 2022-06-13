@@ -64,9 +64,6 @@
     <ClCompile Include="RoomMemberRequestHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="BaseRoomRequestHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -145,9 +142,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="RoomMemberRequestHandler.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseRoomRequestHandler.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
