@@ -4,13 +4,14 @@ GameManager::GameManager(IDatabase* database) {
 	this->m_database = database;
 }
 
-Game GameManager::createGame(Room room) {
+Game* GameManager::createGame(Room room) {
 
 	std::map<LoggedUser, GameData> players;
 
 	for (unsigned int i = 0; i < room.getAllUsers().size(); i++) {
-		players.insert(std::pair<LoggedUser, GameData>(room.getAllUsers()[i], GameData{0, 0, 0, 0}));
+		players.insert(std::pair<LoggedUser, GameData>(room.getAllUsers()[i], GameData{ 0, 0, 0, 0 }));
 	}
+
 	std::list<QuestionDescriptor> questionDescs = this->m_database->getQuestions(room.getData().numOfQuestionsInGame);
 
 	std::vector<Question> questions;
@@ -19,7 +20,16 @@ Game GameManager::createGame(Room room) {
 
 	this->m_games.push_back(Game(questions, players, room.getData().id));
 
-	return this->m_games.back();
+	return &this->m_games.back();
+}
+
+Game* GameManager::getGame(unsigned int gameId) {
+
+	for (auto& it : this->m_games) {
+		if (it.getId() == gameId) { return &it; }
+	}
+
+	return nullptr;
 }
 
 void GameManager::deleteGame(unsigned int gameId) {

@@ -1,7 +1,7 @@
 #include "RoomMemberRequestHandler.h"
 
 RoomMemberRequestHandler::RoomMemberRequestHandler(LoggedUser user, RequestHandlerFactory& factory, RoomManager* roomManager, Room* room)
-    : m_user(user), m_factory(factory), BaseRoomRequestHandler(room) {
+    : m_user(user), m_factory(factory), m_room(room) {
 
     this->m_roomManager = roomManager;
 }
@@ -20,6 +20,8 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info) {
     case GET_ROOM_STATE_CODE: return getRoomState(info);
 
     }
+
+    return RequestResult {};
 }
 
 RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info) {
@@ -32,7 +34,29 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info) {
                 { REQUEST_STATUS::SUCCESS }), this->m_factory.createMenuRequestHandler(this->m_user) };
     }
     catch (...) {
-        std::cerr << "Error while leaving room";
+        return { JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse
+               { REQUEST_STATUS::FAILURE }), nullptr };
+    }
+}
+
+
+RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info) {
+
+    try {
+        IRequestHandler* handler = nullptr;
+        RoomData data = m_room->getData();
+        if (data.isActive == STATE::STARTED) {
+            Game* game = this->m_factory.getGameManager()->getGame(data.id);
+            if (nullptr != game) {
+                handler = this->m_factory.createGameRequestHandler(this->m_user, game);
+            }
+        }
+        return { JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
+                { REQUEST_STATUS::SUCCESS, data.name, data.isActive, m_room->getAllUsers(), data.numOfQuestionsInGame, data.timePerQuestion, data.maxPlayers }), handler };
+    }
+    catch (...) {
+        return { JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse
+                { REQUEST_STATUS::FAILURE }), nullptr };
     }
 }
 

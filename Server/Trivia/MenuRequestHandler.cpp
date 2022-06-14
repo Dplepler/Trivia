@@ -29,6 +29,8 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info) {
 	case LOGOUT_REQUEST_CODE:		return signout(info);
 	
 	}
+
+	return RequestResult{ };
 }
 
 RequestResult MenuRequestHandler::createRoom(RequestInfo info) {
@@ -53,7 +55,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info) {
 		return {JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::SUCCESS}), m_factory.createRoomMemberRequestHandler(m_user, m_roomManager->getRoom(request.roomId)) };
 	}
 	catch(...) {
-		std::cerr << "Error occured while joining room";
+		return { JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{REQUEST_STATUS::FAILURE}), nullptr };
 	}
 }
 
@@ -64,7 +66,8 @@ RequestResult MenuRequestHandler::getPersonalStats(RequestInfo info) {
 				{REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getUserStatistics(this->m_user.getUsername())}), nullptr};
 	}
 	catch (...) {
-		std::cerr << "Error while getting personal statistics";
+		return { JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse
+				{REQUEST_STATUS::FAILURE}), nullptr };
 	}
 }
 
@@ -75,7 +78,8 @@ RequestResult MenuRequestHandler::getHighScore(RequestInfo info) {
 				{REQUEST_STATUS::SUCCESS, this->m_factory.getStatisticsManager()->getHighScore()}), nullptr};
 	}
 	catch (...) {
-		std::cerr << "Error while getting high scores";
+		return { JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse
+				{REQUEST_STATUS::FAILURE}), nullptr };
 	}
 	
 }
@@ -86,7 +90,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo info) {
 		return {JsonResponsePacketSerializer::serializeResponse(LogoutResponse{REQUEST_STATUS::SUCCESS}), this->m_factory.createLoginRequestHandler()};
 	}
 	catch (...) {
-		std::cerr << "Error logging out";
+		return { JsonResponsePacketSerializer::serializeResponse(LogoutResponse{REQUEST_STATUS::FAILURE}), nullptr };
 	}
 }
 

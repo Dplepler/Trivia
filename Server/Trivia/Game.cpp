@@ -28,6 +28,18 @@ void Game::submitAnswer(LoggedUser user, uint8_t answerId) {
 	}
 }
 
+GameData Game::getGameData(LoggedUser user) const {
+	return this->m_players.at(user);
+}
+
+uint8_t Game::getCorrectAnswerIndex(LoggedUser user) const {
+	return this->m_questions[this->m_players.at(user).questionIndex].getCorrectAnswerId();
+}
+
+std::map<LoggedUser, GameData> Game::getPlayers() const {
+	return this->m_players;
+}
+
 void Game::removePlayer(LoggedUser user) {
 	this->m_players.erase(user);
 }

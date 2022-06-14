@@ -12,8 +12,10 @@ public:
 	
 	GameManager(IDatabase* database);
 
-	Game createGame(Room room);
+	Game* createGame(Room room);
 	void deleteGame(unsigned int gameId);
+
+	Game* getGame(unsigned int gameId);
 
 private:
 
