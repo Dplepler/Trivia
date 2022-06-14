@@ -24,6 +24,8 @@ private:
 	GameManager* m_gameManager;
 	RequestHandlerFactory& m_factory;
 
+	std::mutex gameLock;
+
 	RequestResult getQuestion(RequestInfo info);
 	RequestResult submitAnswer(RequestInfo info);
 	RequestResult getGameResult(RequestInfo info);

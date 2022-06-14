@@ -32,6 +32,10 @@ GameData Game::getGameData(LoggedUser user) const {
 	return this->m_players.at(user);
 }
 
+uint8_t Game::getCorrectAnswerIndex(LoggedUser user) const {
+	return this->m_questions[this->m_players.at(user).questionIndex].getCorrectAnswerId();
+}
+
 std::map<LoggedUser, GameData> Game::getPlayers() const {
 	return this->m_players;
 }

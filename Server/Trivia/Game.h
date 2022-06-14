@@ -25,6 +25,7 @@ public:
 	
 	std::map<LoggedUser, GameData> getPlayers() const;
 	GameData getGameData(LoggedUser user) const;
+	uint8_t getCorrectAnswerIndex(LoggedUser user) const;
 
 	unsigned int getId();
 
