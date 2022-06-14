@@ -50,6 +50,10 @@ enum class ResponseCodes(val code: Int) {
     CloseRoom(30),
     StartGame(31),
     LeaveRoom(32),
+    SubmitAns(33),
+    LeaveGame(34),
+    GetResults(35),
+    GetQuestion(36),
 
 
     Error(99)
