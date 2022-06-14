@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.trivia_android.BusinessLogic.Communications.Communications
 import com.example.trivia_android.BusinessLogic.Communications.RequestCodes
 import com.example.trivia_android.BusinessLogic.Communications.ResponseCodes
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -17,7 +18,7 @@ import kotlinx.serialization.json.Json
 data class Question(
     val status: Int,
     val question: String,
-    val answers: Map<Int, String>
+    val answers: List<String>
 )
 
 
@@ -38,17 +39,17 @@ class GameViewModel: ViewModel() {
 
     val gameInfo = GameInfo
 
-    val curQuestion = mutableStateOf( Question(0, "", mapOf<Int, String>(1 to " ", 2 to " ", 3 to " ", 4 to " ")))
+    val curQuestion = mutableStateOf( Question(0, "", listOf(" ", " ", " ", " ")))
 
     val correctAnswerId = mutableStateOf( -1 )
 
-    val chosenAnswer = mutableStateOf( -1 )
+    val chosenAnswer = mutableStateOf( 1 )
 
     val questionNumber = mutableStateOf( 0 )
 
     val curTime = mutableStateOf( 0 )
 
-    
+
     fun getQuestion() {
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.GetQuestion.code.toByte(), ""))
@@ -59,7 +60,7 @@ class GameViewModel: ViewModel() {
                 chosenAnswer.value = -1
                 correctAnswerId.value = -1
                 questionNumber.value++
-                curTime.value = 60
+                curTime.value = gameInfo.answerTimeout.toInt()
             }
         }
     }
@@ -72,8 +73,29 @@ class GameViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.SubmitAns.code) {
                 val res = String(buffer).substring(comms.headerLen)
+                correctAnswerId.value = Json.decodeFromString<CorrectAnswer>(res).correctAns
+                chosenAnswer.value = answerId
             }
         }
+    }
+
+
+
+    fun decreaseTime(onGameEnd: () -> Unit = { }) {
+        curTime.value = (curTime.value - 1)
+        if(curTime.value <= 0) {
+            if(questionNumber.value == gameInfo.questionCount) {
+                onGameEnd()
+                curTime.value = 0
+            }
+            else {
+                if (chosenAnswer.value == -1) {
+                    submitQuestion(-1)
+                }
+                getQuestion()
+            }
+        }
+
     }
 
 

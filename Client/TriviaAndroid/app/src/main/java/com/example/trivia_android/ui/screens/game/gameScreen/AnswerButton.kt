@@ -26,12 +26,13 @@ fun AnswerButton(
     answerText: String = "Wrench",
     buttonIcon: ImageVector = Icons.Filled.Circle,
     backgroundColor: Color = MaterialTheme.colors.primary,
+    enabled: Boolean = true,
     onClick: () -> Unit = { },
     modifier: Modifier = Modifier
 ) {
 
     Button(
-        onClick = onClick,
+        onClick = if(enabled) { onClick }  else { { } },
         colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor),
         modifier = modifier
             .border(
@@ -68,16 +69,15 @@ fun AnswerButton(
 
 
 @Composable
-fun CorrectAnswer(
+fun CorrectButton(
     answerText: String = "Wrench",
-    onClick: () -> Unit = { },
     modifier: Modifier = Modifier
 ) {
     AnswerButton(
         answerText = answerText,
         buttonIcon = Icons.Filled.CheckCircle,
         backgroundColor = Green200,
-        onClick = onClick,
+        enabled = false,
         modifier = Modifier
     )
 }
@@ -85,16 +85,15 @@ fun CorrectAnswer(
 
 
 @Composable
-fun IncorrectAnswer(
+fun IncorrectButton(
     answerText: String = "Wrench",
-    onClick: () -> Unit = { },
     modifier: Modifier = Modifier
 ) {
     AnswerButton(
         answerText = answerText,
         buttonIcon = Icons.Filled.Cancel,
         backgroundColor = Red200,
-        onClick = onClick,
+        enabled = false,
         modifier = Modifier
     )
 }
@@ -113,9 +112,9 @@ fun AnswerButtonPreview() {
         Column(modifier = Modifier.fillMaxSize()) {
             AnswerButton()
 
-            CorrectAnswer(answerText = "Hammer")
+            CorrectButton(answerText = "Hammer")
 
-            IncorrectAnswer(answerText = "Drill")
+            IncorrectButton(answerText = "Drill")
         }
 
         

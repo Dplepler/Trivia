@@ -5,22 +5,33 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.trivia_android.BusinessLogic.ViewModels.CorrectAnswer
+import com.example.trivia_android.BusinessLogic.ViewModels.Question
 import com.example.trivia_android.ui.screens.game.AnswerButton
+import com.example.trivia_android.ui.screens.game.CorrectButton
+import com.example.trivia_android.ui.screens.game.IncorrectButton
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
-
-
+import kotlinx.coroutines.delay
 
 
 @Composable
 fun GameScreen(
-    curQuestion: Int,
+    curQuestion: Question,
+    questionNumber: Int,
     totalQuestions: Int,
-    questionText: String
+    curTime: Int = 90,
+    correctAnswer: Int = -1,
+    chosenAnswer: Int = -1,
+    submitted: Boolean = false,
+    decreaseTime: () -> Unit = { },
+    submitAnswer: (Int) -> Unit = { }
 ) {
 
     Scaffold(
@@ -28,7 +39,7 @@ fun GameScreen(
         topBar = {
             TopAppBar(backgroundColor = MaterialTheme.colors.background) {
                 Text(
-                    "Q $curQuestion/$totalQuestions",
+                    "Q $questionNumber/$totalQuestions",
                     color = MaterialTheme.colors.onBackground.copy(0.4f),
                     modifier = Modifier
                         .padding(start = 4.dp)
@@ -45,7 +56,7 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    GameTimer()
+                    GameTimer(curTime)
                 }
             }
         }
@@ -53,23 +64,39 @@ fun GameScreen(
     ) {
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(bottom = 60.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 60.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(questionText, style = MaterialTheme.typography.h5)
+            Text(curQuestion.question, style = MaterialTheme.typography.h5)
 
-            AnswerButton()
-
-            AnswerButton()
-
-            AnswerButton()
-
-            AnswerButton()
+            for(i in 0..3) {
+                if(correctAnswer == i) {
+                    CorrectButton(answerText = curQuestion.answers[i])
+                }
+                else if (chosenAnswer == i) {
+                    IncorrectButton(answerText = curQuestion.answers[i])
+                }
+                else {
+                    AnswerButton(
+                        answerText = curQuestion.answers[i],
+                        enabled = !submitted,
+                        onClick = { submitAnswer(i) }
+                    )
+                }
+            }
         }
     }
 
+    LaunchedEffect(Unit) {
+        while(true) {
+            decreaseTime()
+            delay(1000)
+        }
+    }
 }
 
 
@@ -142,9 +169,11 @@ fun TimerPreview() {
 fun gameScreenPreview() {
     TriviaAndroidTheme {
         GameScreen(
-            curQuestion = 2,
+            curQuestion = Question(0, "sugoma", listOf(" ", " ", " ", " ")),
+            questionNumber = 2,
             totalQuestions = 6,
-            questionText = "sugoma"
+            chosenAnswer = 2,
+            correctAnswer = 2
         )
     }
 }

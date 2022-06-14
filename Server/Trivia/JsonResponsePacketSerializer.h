@@ -39,6 +39,8 @@ private:
 	static std::vector<int> parseRoomIdVec(std::vector<RoomData> vec);
 	static std::string parseStringVec(std::vector<std::string> vec);
 	static std::string pasrseGameResults(PlayerResults res);
+	static std::vector<std::string> parseAnswers(std::map<unsigned int, std::string> ansMap);
+	
 
 };
 

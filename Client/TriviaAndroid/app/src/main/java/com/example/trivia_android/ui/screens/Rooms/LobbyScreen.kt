@@ -85,7 +85,7 @@ fun LobbyScreen(
     userInfo: UserInfo = UserInfo,
     onRefresh: () -> Unit = { },
     onClickLeave: () -> Unit = { },
-    onClickStart: () -> Unit = { }
+    onClickStart: () -> Unit = { },
 ) {
 
 
