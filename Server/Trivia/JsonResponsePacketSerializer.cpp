@@ -301,16 +301,26 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse ga
 	std::string jsonString;
 	json json;
 
-	std::vector<std::string> resJson;
+	std::vector<std::string> nameVec;
+	std::vector<int> correctVec;
+	std::vector<int> wrongVec;
+	std::vector<int> timeVec;
 
 	buffer.push_back((char)RESPONSE::RESULTS);
+	
 	json["status"] = gameResultsRes.status;
 
 	for (unsigned int i = 0; i < gameResultsRes.results.size(); i++) {
-		resJson.push_back(JsonResponsePacketSerializer::pasrseGameResults(gameResultsRes.results[i]));
+		nameVec.push_back(gameResultsRes.results[i].username);
+		correctVec.push_back(gameResultsRes.results[i].correctAnswerCount);
+		wrongVec.push_back(gameResultsRes.results[i].wrongAnswerCount);
+		timeVec.push_back(gameResultsRes.results[i].averageAnswerTime);
 	}
 
-	json["results"] = resJson;
+	json["names"] = nameVec;
+	json["correct"] = correctVec;
+	json["wrong"] = wrongVec;
+	json["time"] = timeVec;
 
 	jsonString = json.dump();
 

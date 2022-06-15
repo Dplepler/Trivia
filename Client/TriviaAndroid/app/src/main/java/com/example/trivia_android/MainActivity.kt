@@ -52,9 +52,10 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = mainNavController, startDestination = "Auth") {
 
                         composable("Auth") {
-                            MainAuthScreen(onLogin = { mainNavController.navigate("MainMenu") {
-                                popUpTo("Auth") { inclusive = true }
-                            }
+                            MainAuthScreen(onLogin = {
+                                mainNavController.navigate("MainMenu") {
+                                    popUpTo("Auth") { inclusive = true }
+                                }
                             })
                         }
 
@@ -63,7 +64,8 @@ class MainActivity : ComponentActivity() {
                             MainMenu(
                                 onClickCreate = { mainNavController.navigate("Rooms/true") },
                                 onClickRoom = { mainNavController.navigate("Rooms/false") },
-                                onClickLogout = { mainNavController.navigate("Auth") {
+                                onClickLogout = {
+                                    mainNavController.navigate("Auth") {
                                         popUpTo("MainMenu") { inclusive = true }
                                     }
                                 }
@@ -72,7 +74,9 @@ class MainActivity : ComponentActivity() {
 
                         composable(
                             "Rooms/{createOrJoin}",
-                            arguments = listOf(navArgument("createOrJoin") { type = NavType.BoolType })
+                            arguments = listOf(navArgument("createOrJoin") {
+                                type = NavType.BoolType
+                            })
                         ) {
 
                             MainRoomScreen(
@@ -93,7 +97,11 @@ class MainActivity : ComponentActivity() {
 
                         composable("Game") {
 
-                            MainGameScreen()
+                            MainGameScreen(onSuccessLeave = {
+                                mainNavController.navigate("MainMenu") {
+                                    popUpTo("Game") { inclusive = true }
+                                }
+                            })
 
                         }
 

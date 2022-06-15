@@ -5,12 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trivia_android.BusinessLogic.Communications.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.*
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.json.*
 
 
 @Serializable
@@ -32,10 +30,10 @@ data class CorrectAnswer (
 data class AnswerSubmition(val answerId: Int)
 
 
-@Serializable
+
 data class UserResults(
     val username: String,
-    val averageTime: Float,
+    val averageTime: Int,
     val correctAns: Int,
     val wrongAns: Int
 )
@@ -45,8 +43,18 @@ data class UserResults(
 @Serializable
 data class GameResults (
     val status: Int,
-    val results: List<UserResults>
+    val names: List<String>,
+    val correct: List<Int>,
+    val wrong: List<Int>,
+    val time: List<Int>
 )
+
+
+
+
+
+
+
 
 
 data class UserScore(val username: String, val score: Int)
@@ -73,7 +81,7 @@ class GameViewModel: ViewModel() {
 
     val userScores = mutableStateListOf<UserScore>()
 
-    val userStats = mutableStateOf(UserResults(" ", 0f, 0, 0))
+    val userStats = mutableStateOf(UserResults(" ", 0, 0, 0))
 
     companion object {
         const val SCORE_MULTIPLIER = 10000
@@ -117,8 +125,18 @@ class GameViewModel: ViewModel() {
             comms.sendMessage(comms.buildMessage(RequestCodes.GameResult.code.toByte(), ""))
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.GetResults.code) {
-                val res = String(buffer).substring(comms.headerLen)
-                val resList = Json.decodeFromString<GameResults>(res).results
+                var res = String(buffer).substring(comms.headerLen)
+                val resObj = Json.decodeFromString<GameResults>(res)
+                val resList = mutableListOf<UserResults>()
+                for(i in 0..resObj.names.lastIndex) {
+                    resList.add(
+                        UserResults(
+                            resObj.names[i],
+                            resObj.time[i],
+                            resObj.correct[i],
+                            resObj.wrong[i]
+                    ))
+                }
                 createScores(resList)
             }
         }
@@ -126,7 +144,7 @@ class GameViewModel: ViewModel() {
 
 
 
-    fun createScores(userResults: List<UserResults>) {
+    private fun createScores(userResults: List<UserResults>) {
 
         userScores.clear()
 
@@ -140,13 +158,13 @@ class GameViewModel: ViewModel() {
     }
 
 
-    fun calcScore(userResults: UserResults): Float =
-        if(userResults.averageTime == 0f) 0f
-        else userResults.correctAns / (userResults.correctAns + userResults.wrongAns) * SCORE_MULTIPLIER / userResults.averageTime
+    private fun calcScore(userResults: UserResults): Float =
+        if(userResults.averageTime == 0) 0f
+        else userResults.correctAns / (userResults.correctAns + userResults.wrongAns) * SCORE_MULTIPLIER / userResults.averageTime.toFloat()
 
 
 
-    fun leaveGame(onSuccessLeave: () -> Unit) {
+    fun leaveGame(onSuccessLeave: () -> Unit = { }) {
         viewModelScope.launch {
             comms.sendMessage(comms.buildMessage(RequestCodes.LeaveGame.code.toByte(), ""))
             val buffer = comms.readMessage()
