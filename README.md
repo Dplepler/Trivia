@@ -1,6 +1,6 @@
 # Trivia
 
-## A trivia game featuring an app and a server that communicate with each oter.
+## A trivia game featuring an app and a server that communicate with each other.
 
 ### - The App is written in Kotlin using Jetpack Compose
 ### - The server is written in C++.
