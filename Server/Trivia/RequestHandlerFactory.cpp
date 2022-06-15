@@ -12,6 +12,8 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) : m_database(db) {
 RequestHandlerFactory::~RequestHandlerFactory() {
 	delete this->m_loginManager;
 	delete this->m_roomManager;
+	delete this->m_gameManager;
+	delete m_statisticsManager;
 }
 
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler() {
