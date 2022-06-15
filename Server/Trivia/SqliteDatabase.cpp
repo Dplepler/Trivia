@@ -2,7 +2,7 @@
 
 
 
-
+/* Constructor */
 SqliteDatabase::SqliteDatabase() {
 
 	
@@ -93,8 +93,6 @@ void SqliteDatabase::addNewUser(std::string newUsername, std::string newPassword
 }
 
 
-
-
 bool SqliteDatabase::doesUserExist(std::string username) const {
 	std::string selectQuery = "SELECT * FROM Users\nWHERE Username = '" + username + "';";
 	char* errMsg = nullptr;
@@ -111,9 +109,6 @@ bool SqliteDatabase::doesUserExist(std::string username) const {
 
 	return (userInfo.username == username);
 }
-
-
-
 
 bool SqliteDatabase::doesPasswordMatch(std::string username, std::string password) const {
 	std::string selectQuery = "SELECT * FROM Users\nWHERE Username = '" + username + "';";
@@ -132,15 +127,12 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 	return (userInfo.password == password);
 }
 
-
-
-
-std::list<Question> SqliteDatabase::getQuestions(int numOfQuestions) const{
+std::list<QuestionDescriptor> SqliteDatabase::getQuestions(int numOfQuestions) const{
 	int res = 0;
 	char* errMsg = nullptr;
 	// uses ORDER BY RANDOM() to get a random result for the answers every time, making the game more replayable
 	std::string selectQuery = "SELECT * FROM Questions\nORDER BY RANDOM()\nLIMIT " + std::to_string(numOfQuestions) + ";";
-	std::list<Question> questions;
+	std::list<QuestionDescriptor> questions;
 
 	res = sqlite3_exec(db, selectQuery.c_str(), questionCallback, &questions, &errMsg);
 	if (res != SQLITE_OK) {
@@ -253,7 +245,7 @@ int userCallback(void* data, int argc, char** argv, char** azColName) {
 
 // Gets the question info, randomizes the answer order and puts it in the list
 int questionCallback(void* data, int argc, char** argv, char** azColName) {
-	Question curQuestion;
+	QuestionDescriptor curQuestion;
 	std::string correctAns = "";
 	for (int i = 0; i < argc; i++) {
 		if (std::string(azColName[i]) == "Question") {
@@ -277,7 +269,7 @@ int questionCallback(void* data, int argc, char** argv, char** azColName) {
 		curQuestion.correctIndex = (curQuestion.answers[i] == correctAns ? i : curQuestion.correctIndex);
 	}
 
-	((std::list<Question>*)data)->push_back(curQuestion);
+	((std::list<QuestionDescriptor>*)data)->push_back(curQuestion);
 	return 0;
 }
 
@@ -310,9 +302,7 @@ int nameCallback(void* data, int argc, char** argv, char** azColName) {
 	return 0;
 }
 
-
-
-
+/* Destructor */
 SqliteDatabase::~SqliteDatabase() {
 
 	sqlite3_close(db);

@@ -129,8 +129,9 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 
 	RequestResult result;
 
-	try {
 
+	try {
+		/* For as long as the client runs, parse it's requests and handle them */
 		for (;;) {
 
 			req.buffer.clear();
@@ -163,6 +164,7 @@ void Communicator::handleNewClient(SOCKET clientSock) {
 			Helper::sendData(clientSock, std::string(result.response.begin(), result.response.end()));
 		}
 	}
+	/* Handle client disconnection */
 	catch (...) { 
 
 		std::unique_lock<std::mutex> lock(this->m_clientLock);

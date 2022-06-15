@@ -34,6 +34,7 @@ typedef struct SignupRequest {
 } SignupRequest;
 
 
+
 typedef struct GetPlayersInRoomRequest {
 
 	unsigned int roomId;
@@ -41,11 +42,14 @@ typedef struct GetPlayersInRoomRequest {
 } GetPlayersInRoomRequest;
 
 
+
 typedef struct JoinRoomRequest {
 
 	unsigned int roomId;
 
 } JoinRoomRequest;
+
+
 
 typedef struct CreateRoomRequest {
 
@@ -60,6 +64,16 @@ typedef struct CreateRoomRequest {
 
 } CreateRoomRequest;
 
+
+
+
+typedef struct SubmitAnswerRequest {
+
+	unsigned int answerId;
+
+	unsigned int time;
+
+} SubmitAnswerRequest;
 
 
 
@@ -80,6 +94,8 @@ public:
 	static JoinRoomRequest deserializeJoinRoomRequest(Buffer clientMsg);
 
 	static CreateRoomRequest deserializeCreateRoomRequest(Buffer clientMsg);
+
+	static SubmitAnswerRequest deserializeSubmitAnswerRequest(Buffer clientMsg);
 
 
 };

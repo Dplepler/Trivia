@@ -28,6 +28,7 @@ import com.example.trivia_android.ui.screens.Rooms.CreateRoom
 import com.example.trivia_android.ui.screens.Rooms.MainRoomScreen
 import com.example.trivia_android.ui.screens.authentication.LoginScreenContent
 import com.example.trivia_android.ui.screens.authentication.MainAuthScreen
+import com.example.trivia_android.ui.screens.game.MainGameScreen
 import com.example.trivia_android.ui.screens.home.MainMenu
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -51,9 +52,10 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = mainNavController, startDestination = "Auth") {
 
                         composable("Auth") {
-                            MainAuthScreen(onLogin = { mainNavController.navigate("MainMenu") {
-                                popUpTo("Auth") { inclusive = true }
-                            }
+                            MainAuthScreen(onLogin = {
+                                mainNavController.navigate("MainMenu") {
+                                    popUpTo("Auth") { inclusive = true }
+                                }
                             })
                         }
 
@@ -62,7 +64,8 @@ class MainActivity : ComponentActivity() {
                             MainMenu(
                                 onClickCreate = { mainNavController.navigate("Rooms/true") },
                                 onClickRoom = { mainNavController.navigate("Rooms/false") },
-                                onClickLogout = { mainNavController.navigate("Auth") {
+                                onClickLogout = {
+                                    mainNavController.navigate("Auth") {
                                         popUpTo("MainMenu") { inclusive = true }
                                     }
                                 }
@@ -71,7 +74,9 @@ class MainActivity : ComponentActivity() {
 
                         composable(
                             "Rooms/{createOrJoin}",
-                            arguments = listOf(navArgument("createOrJoin") { type = NavType.BoolType })
+                            arguments = listOf(navArgument("createOrJoin") {
+                                type = NavType.BoolType
+                            })
                         ) {
 
                             MainRoomScreen(
@@ -80,8 +85,24 @@ class MainActivity : ComponentActivity() {
                                     mainNavController.navigate("MainMenu") {
                                         popUpTo("Rooms") { inclusive = true }
                                     }
+                                },
+                                getInGame = {
+                                    mainNavController.navigate("Game") {
+                                        popUpTo("Rooms/{createOrJoin}") { inclusive = true }
+                                    }
                                 }
                             )
+                        }
+
+
+                        composable("Game") {
+
+                            MainGameScreen(onSuccessLeave = {
+                                mainNavController.navigate("MainMenu") {
+                                    popUpTo("Game") { inclusive = true }
+                                }
+                            })
+
                         }
 
                     }

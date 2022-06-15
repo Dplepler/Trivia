@@ -2,12 +2,9 @@
 #include "WSAInitializer.h"
 #include "Server.h"
 
-
 int main() {
 
 	try {
-		
-
 		WSAInitializer wsaInit;
 		Server server;
 		server.run();
@@ -16,6 +13,5 @@ int main() {
 		std::cout << "Error: " << e.what() << std::endl;
 	}
 	
-
 	return 0;
 }

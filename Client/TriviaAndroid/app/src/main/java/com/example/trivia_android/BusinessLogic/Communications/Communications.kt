@@ -29,7 +29,11 @@ enum class RequestCodes(val code: Int) {
     Logout(19),
     StartGame(40),
     CloseRoom(41),
-    LeaveRoom(42)
+    LeaveRoom(42),
+    LeaveGame(43),
+    GetQuestion(44),
+    SubmitAnswer(45),
+    GameResult(46)
 }
 
 
@@ -46,6 +50,10 @@ enum class ResponseCodes(val code: Int) {
     CloseRoom(30),
     StartGame(31),
     LeaveRoom(32),
+    SubmitAns(33),
+    LeaveGame(34),
+    GetResults(35),
+    GetQuestion(36),
 
 
     Error(99)
@@ -56,7 +64,7 @@ enum class ResponseCodes(val code: Int) {
 
 object Communications {
 
-    private const val addr = "192.168.1.233"
+    private const val addr = "10.0.2.2" // To test with your own phone, use ipconfig to get computer ip and replace it here.
     private const val port = 8008
     private const val shiftStart = 24
     private const val shiftOffset = 8

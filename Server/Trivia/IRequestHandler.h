@@ -10,6 +10,16 @@ typedef struct REQUEST_INFO_STRUCT  RequestInfo;
 
 
 
+typedef enum REQUEST_STATUS {
+
+	FAILURE,
+	SUCCESS
+
+} REQUEST_STATUS;
+
+
+
+
 enum RequestCodes {
 
 	SIGNUP_REQUEST_CODE = 11, 
@@ -23,7 +33,11 @@ enum RequestCodes {
 	LOGOUT_REQUEST_CODE = 19,
 	START_GAME_CODE = 40,
 	CLOSE_ROOM_CODE = 41,
-	LEAVE_ROOM_CODE = 42
+	LEAVE_ROOM_CODE = 42,
+	LEAVE_GAME_CODE = 43,
+	GET_QUESTION_CODE = 44,
+	SUBMIT_ANSWER_CODE = 45,
+	GAME_RES_CODE = 46
 };
 
 

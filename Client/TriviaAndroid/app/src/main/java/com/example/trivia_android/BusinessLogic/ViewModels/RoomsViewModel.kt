@@ -48,6 +48,8 @@ class RoomsViewModel: ViewModel() {
 
     val comms = Communications
 
+    val gameInfo: GameInfo = GameInfo
+
     val playerAmount = mutableStateOf("")
 
     val ansTime = mutableStateOf("")
@@ -152,7 +154,13 @@ class RoomsViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.StartGame.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessStart() }
+                if(Json.decodeFromString<Status>(res).status == 1) {
+                    gameInfo.answerTimeout = _roomState.value.answerTimeout
+                    gameInfo.maxPlayers = _roomState.value.maxPlayers
+                    gameInfo.questionCount = _roomState.value.questionCount
+                    gameInfo.gameName = _roomState.value.name
+                    onSuccessStart()
+                }
             }
         }
     }
@@ -170,7 +178,13 @@ class RoomsViewModel: ViewModel() {
                 val res = String(buffer).substring(comms.headerLen)
                 _roomState.value = Json.decodeFromString(res)
                 if(_roomState.value.state == RoomStates.Closed.state) { onRoomClosed() }
-                else if (_roomState.value.state == RoomStates.Started.state) { onGameStart() }
+                else if (_roomState.value.state == RoomStates.Started.state) {
+                    gameInfo.answerTimeout = _roomState.value.answerTimeout
+                    gameInfo.maxPlayers = _roomState.value.maxPlayers
+                    gameInfo.questionCount = _roomState.value.questionCount
+                    gameInfo.gameName = _roomState.value.name
+                    onGameStart()
+                }
             }
         }
     }
