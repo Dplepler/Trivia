@@ -332,7 +332,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQu
 	buffer.push_back((char)RESPONSE::GET_QUESTIONS);
 	json["status"] = getQuestionRes.status;
 	json["question"] = getQuestionRes.question;
-	json["answers"] = getQuestionRes.answers;
+	json["answers"] = parseAnswers(getQuestionRes.answers);
 
 	jsonString = json.dump();
 
@@ -409,6 +409,24 @@ std::string JsonResponsePacketSerializer::pasrseGameResults(PlayerResults res) {
 	json["wrongAns"] = res.wrongAnswerCount;
 
 	return json.dump();
+}
+
+
+std::vector<std::string> JsonResponsePacketSerializer::parseAnswers(std::map<unsigned int, std::string> ansMap) {
+	
+	if (ansMap.empty()) { return std::vector<std::string> { " ", " ", " ", " " }; }
+
+	std::vector<std::string> answers;
+	
+	answers.push_back(ansMap[1]);
+
+	answers.push_back(ansMap[2]);
+
+	answers.push_back(ansMap[3]);
+
+	answers.push_back(ansMap[4]);
+
+	return answers;
 }
 
 

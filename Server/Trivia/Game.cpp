@@ -6,7 +6,7 @@ Game::Game(std::vector<Question> questions, std::map<LoggedUser, GameData> playe
 Question Game::getQuestionForUser(LoggedUser user) {
 
 	try {
-		return this->m_questions[this->m_players.at(user).questionIndex++];
+		return this->m_questions[++this->m_players.at(user).questionIndex - 1];
 	}
 	catch (...) {
 		std::cerr << "No user named" << user.getUsername() << std::endl;
@@ -16,7 +16,7 @@ Question Game::getQuestionForUser(LoggedUser user) {
 void Game::submitAnswer(LoggedUser user, uint8_t answerId) {
 	
 	try {
-		if (this->m_questions[this->m_players.at(user).questionIndex].getCorrectAnswerId() == answerId) {
+		if (this->m_questions[this->m_players.at(user).questionIndex - 1].getCorrectAnswerId() == answerId) {
 			this->m_players.at(user).correctAnswerCount++;
 		}
 		else {
@@ -33,7 +33,7 @@ GameData Game::getGameData(LoggedUser user) const {
 }
 
 uint8_t Game::getCorrectAnswerIndex(LoggedUser user) const {
-	return this->m_questions[this->m_players.at(user).questionIndex].getCorrectAnswerId();
+	return this->m_questions[this->m_players.at(user).questionIndex - 1].getCorrectAnswerId();
 }
 
 std::map<LoggedUser, GameData> Game::getPlayers() const {

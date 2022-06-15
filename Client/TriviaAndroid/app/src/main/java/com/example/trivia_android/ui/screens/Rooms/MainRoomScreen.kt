@@ -13,7 +13,12 @@ import com.example.trivia_android.ui.screens.home.MainMenu
 
 
 @Composable
-fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: Boolean, leaveToMenu: () -> Unit = { }) {
+fun MainRoomScreen(
+    roomsViewModel: RoomsViewModel = viewModel(),
+    createOrJoin: Boolean,
+    leaveToMenu: () -> Unit = { },
+    getInGame: () -> Unit = { }
+) {
 
     val roomNavController = rememberNavController()
     val curContext = LocalContext.current
@@ -42,11 +47,11 @@ fun MainRoomScreen(roomsViewModel: RoomsViewModel = viewModel(), createOrJoin: B
                             Toast.makeText(curContext, "Room closed by admin!", Toast.LENGTH_LONG).show()
                             roomsViewModel.leaveRoom(leaveToMenu)
                         },
-                        onGameStart = { Toast.makeText(curContext, "Game started!", Toast.LENGTH_SHORT).show() }
+                        onGameStart = getInGame
                     )
                 },
                 onClickLeave = if(createOrJoin) { {roomsViewModel.closeRoom(leaveToMenu)} } else { { roomsViewModel.leaveRoom(leaveToMenu) } },
-                onClickStart = if(createOrJoin) { {roomsViewModel.startGame()} } else { { } }
+                onClickStart = if(createOrJoin) { {roomsViewModel.startGame(onSuccessStart = getInGame)} } else { { } },
             )
         }
     }

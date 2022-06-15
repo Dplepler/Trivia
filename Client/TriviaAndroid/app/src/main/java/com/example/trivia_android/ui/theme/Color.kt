@@ -2,9 +2,11 @@ package com.example.trivia_android.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Orange200 = Color(0xFFFFE289)
-val Orange500 = Color(0xFFD3B24E)
-val Green200 = Color(0xFFCCF79C)
-val Green500 = Color(0xFF94C957)
+val Blue200 = Color(0xFFB2D6FB)
+val Blue500 = Color(0xFF92C5F9)
+val Marine200 = Color(0xFFB0B8D4)
+val Marine500 = Color(0xFF5869A5)
+val Green200 = Color(0xFF7AF687)
+val Red200 = Color(0xFFF95151)
 
 

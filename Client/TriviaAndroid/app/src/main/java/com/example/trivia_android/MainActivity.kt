@@ -28,6 +28,7 @@ import com.example.trivia_android.ui.screens.Rooms.CreateRoom
 import com.example.trivia_android.ui.screens.Rooms.MainRoomScreen
 import com.example.trivia_android.ui.screens.authentication.LoginScreenContent
 import com.example.trivia_android.ui.screens.authentication.MainAuthScreen
+import com.example.trivia_android.ui.screens.game.MainGameScreen
 import com.example.trivia_android.ui.screens.home.MainMenu
 import com.example.trivia_android.ui.theme.TriviaAndroidTheme
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -80,8 +81,20 @@ class MainActivity : ComponentActivity() {
                                     mainNavController.navigate("MainMenu") {
                                         popUpTo("Rooms") { inclusive = true }
                                     }
+                                },
+                                getInGame = {
+                                    mainNavController.navigate("Game") {
+                                        popUpTo("Rooms") { inclusive = true }
+                                    }
                                 }
                             )
+                        }
+
+
+                        composable("Game") {
+
+                            MainGameScreen()
+
                         }
 
                     }
