@@ -158,6 +158,7 @@ class RoomsViewModel: ViewModel() {
                     gameInfo.answerTimeout = _roomState.value.answerTimeout
                     gameInfo.maxPlayers = _roomState.value.maxPlayers
                     gameInfo.questionCount = _roomState.value.questionCount
+                    gameInfo.gameName = _roomState.value.name
                     onSuccessStart()
                 }
             }
@@ -181,6 +182,7 @@ class RoomsViewModel: ViewModel() {
                     gameInfo.answerTimeout = _roomState.value.answerTimeout
                     gameInfo.maxPlayers = _roomState.value.maxPlayers
                     gameInfo.questionCount = _roomState.value.questionCount
+                    gameInfo.gameName = _roomState.value.name
                     onGameStart()
                 }
             }
