@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.trivia_android.BusinessLogic.Communications.*
 import kotlinx.coroutines.launch
 import kotlinx.serialization.*
-import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.json.*
 
 
@@ -27,7 +26,7 @@ data class CorrectAnswer (
 
 
 @Serializable
-data class AnswerSubmition(val answerId: Int, val ansTime: Int)
+data class AnswerSubmission(val answerId: Int, val ansTime: Int)
 
 
 
@@ -106,7 +105,7 @@ class GameViewModel: ViewModel() {
 
     fun submitQuestion(answerId: Int) {
         viewModelScope.launch {
-            val data = Json.encodeToString(AnswerSubmition(answerId, (gameInfo.answerTimeout - curTime.value).toInt()))
+            val data = Json.encodeToString(AnswerSubmission(answerId, (gameInfo.answerTimeout - curTime.value).toInt()))
             comms.sendMessage(comms.buildMessage(RequestCodes.SubmitAnswer.code.toByte(), data))
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.SubmitAns.code) {

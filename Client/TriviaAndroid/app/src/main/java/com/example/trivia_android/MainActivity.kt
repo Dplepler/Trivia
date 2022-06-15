@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
                                 },
                                 getInGame = {
                                     mainNavController.navigate("Game") {
-                                        popUpTo("Rooms") { inclusive = true }
+                                        popUpTo("Rooms/{createOrJoin}") { inclusive = true }
                                     }
                                 }
                             )

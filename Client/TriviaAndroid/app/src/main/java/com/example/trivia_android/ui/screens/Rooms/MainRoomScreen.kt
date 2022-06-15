@@ -32,7 +32,10 @@ fun MainRoomScreen(
                 roomName = roomsViewModel.roomName,
                 playerVal = roomsViewModel.playerAmount,
                 ansTimeVal = roomsViewModel.ansTime,
-                onClickSubmit = { roomsViewModel.createRoom() { roomNavController.navigate("LobbyScreen") } },
+                onClickLeave = leaveToMenu,
+                onClickSubmit = { roomsViewModel.createRoom() { roomNavController.navigate("LobbyScreen") {
+                    popUpTo("CreateRoom") { inclusive = true }
+                } } },
             )
         }
 
