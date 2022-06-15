@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
@@ -91,6 +92,7 @@ fun CreateRoom(
     roomName: MutableState<String>,
     playerVal: MutableState<String>,
     ansTimeVal: MutableState<String>,
+    onClickLeave: () -> Unit = { },
     onClickSubmit: () -> Unit = { }
 ) {
 
@@ -103,6 +105,11 @@ fun CreateRoom(
             backgroundColor = MaterialTheme.colors.primarySurface,
             modifier = modifier.clip(RoundedCornerShape(bottomStart = 4.dp, bottomEnd = 4.dp))
         ) {
+
+            IconButton(onClick = onClickLeave) {
+                Icon(Icons.Filled.ArrowBack, null)
+            }
+
             Text("Create a room!", style = MaterialTheme.typography.subtitle2)
         } },
         

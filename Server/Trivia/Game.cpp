@@ -17,9 +17,13 @@ Question Game::getQuestionForUser(LoggedUser user) {
 }
 
 /* Submit a user's answer, if the answer was correct we increase the user's correct answers data, otherwise we increase their wrong answer data */
-void Game::submitAnswer(LoggedUser user, uint8_t answerId) {
-	
+void Game::submitAnswer(LoggedUser user, uint8_t answerId, int ansTime) {	
 	try {
+
+	
+		m_players.at(user).averageAnswerTime += ansTime;
+		if (m_players.at(user).averageAnswerTime != ansTime) { m_players.at(user).averageAnswerTime /= 2; }
+
 		if (this->m_questions[this->m_players.at(user).questionIndex - 1].getCorrectAnswerId() == answerId) {
 			this->m_players.at(user).correctAnswerCount++;
 		}

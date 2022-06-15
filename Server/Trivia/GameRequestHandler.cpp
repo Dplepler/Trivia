@@ -56,7 +56,7 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo info) {
 	try {
 		/* Deserialize the client's request and serialize a response containing the correct answer index */
 		SubmitAnswerRequest request = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(info.buffer);
-		this->m_game->submitAnswer(this->m_user, request.answerId);
+		this->m_game->submitAnswer(this->m_user, request.answerId, request.time);
 
 		return { JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse
 				{ REQUEST_STATUS::SUCCESS, this->m_game->getCorrectAnswerIndex(this->m_user) }), nullptr };

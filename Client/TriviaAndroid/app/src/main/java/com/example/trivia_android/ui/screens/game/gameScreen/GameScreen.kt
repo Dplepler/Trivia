@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,10 @@ fun GameScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(curQuestion.question, style = MaterialTheme.typography.h5)
+            Text(
+                curQuestion.question,
+                style = MaterialTheme.typography.h5.copy(textAlign = TextAlign.Center)
+            )
 
             for(i in 0..3) {
                 if(correctAnswer == i) {
@@ -98,15 +102,6 @@ fun GameScreen(
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 @Composable
