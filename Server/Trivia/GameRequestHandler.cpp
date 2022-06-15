@@ -1,8 +1,10 @@
 #include "GameRequestHandler.h"
 
+/* Constructor */
 GameRequestHandler::GameRequestHandler(LoggedUser user, Game* game, GameManager* manager, RequestHandlerFactory& factory) 
 	: m_user(user), m_game(game), m_gameManager(manager), m_factory(factory) { }
 
+/* Check if the request is of one of the correct enum types */
 bool GameRequestHandler::isRequestRelevant(RequestInfo info) const { 
 
 	return info.id == LEAVE_GAME_CODE ||
@@ -11,6 +13,7 @@ bool GameRequestHandler::isRequestRelevant(RequestInfo info) const {
 			info.id == GAME_RES_CODE;
 }
 
+/* Check for any request that is relevant to a game */
 RequestResult GameRequestHandler::handleRequest(RequestInfo info) { 
 
 	switch (info.id) {
@@ -22,14 +25,15 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo info) {
 
 	}
 
-	return RequestResult { };
+	return RequestResult { };	// Should never be reached (but the compiler still complains)
 }
 
-	
-
+/* Client request to get a new question after previous question ended */
 RequestResult GameRequestHandler::getQuestion(RequestInfo info) { 
 
 	try {
+
+		/* Serialize the question and the possible answers to send to user */
 		Question question = this->m_game->getQuestionForUser(this->m_user);
 		std::vector<std::string> answers = question.getPossibleAnswers();
 		std::map<unsigned int, std::string> ansMap;
@@ -46,9 +50,11 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo info) {
 	}
 }
 
+/* Client request to submit an answer for a given question */
 RequestResult GameRequestHandler::submitAnswer(RequestInfo info) { 
 
 	try {
+		/* Deserialize the client's request and serialize a response containing the correct answer index */
 		SubmitAnswerRequest request = JsonRequestPacketDeserializer::deserializeSubmitAnswerRequest(info.buffer);
 		this->m_game->submitAnswer(this->m_user, request.answerId, request.time);
 
@@ -62,9 +68,11 @@ RequestResult GameRequestHandler::submitAnswer(RequestInfo info) {
 	}
 }
 
+/* Client request to get the game results */
 RequestResult GameRequestHandler::getGameResult(RequestInfo info) { 
 	
 	try {
+		/* Serialize the player results into a vector */
 		std::vector<PlayerResults> players;
 		std::map<LoggedUser, GameData> playerMap = this->m_game->getPlayers();
 		for (auto& it : playerMap) {
@@ -82,9 +90,11 @@ RequestResult GameRequestHandler::getGameResult(RequestInfo info) {
 
 }
 
+/* Client request to leave a game */
 RequestResult GameRequestHandler::leaveGame(RequestInfo info) {
 
 	try {
+		/* Remove the player from the game and serialize a success message */
 		std::unique_lock<std::mutex> lock(this->gameLock);
 		this->m_game->removePlayer(this->m_user);
 		lock.unlock();
