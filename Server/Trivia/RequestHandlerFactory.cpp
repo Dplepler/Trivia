@@ -1,6 +1,6 @@
 #include "RequestHandlerFactory.h"
 
-
+/* Constructor */
 RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) : m_database(db) { 
 	this->m_loginManager = new LoginManager(db);
 	this->m_roomManager = new RoomManager();
@@ -8,7 +8,7 @@ RequestHandlerFactory::RequestHandlerFactory(IDatabase* db) : m_database(db) {
 	this->m_statisticsManager = new StatisticsManager(db);
 }
 
-
+/* Destructor */
 RequestHandlerFactory::~RequestHandlerFactory() {
 	delete this->m_loginManager;
 	delete this->m_roomManager;
@@ -34,6 +34,8 @@ GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(LoggedUser u
 	return new GameRequestHandler(user, game, this->m_gameManager, *this);
 }
 
+/*		    Getters          */
+/*---------------------------*/
 LoginManager* RequestHandlerFactory::getLoginManager() const {
 	return m_loginManager;
 }
@@ -53,6 +55,7 @@ GameManager* RequestHandlerFactory::getGameManager() const {
 StatisticsManager* RequestHandlerFactory::getStatisticsManager() const {
 	return this->m_statisticsManager;
 }
+/*---------------------------*/
 
 
 

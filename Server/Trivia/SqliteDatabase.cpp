@@ -2,7 +2,7 @@
 
 
 
-
+/* Constructor */
 SqliteDatabase::SqliteDatabase() {
 
 	
@@ -93,8 +93,6 @@ void SqliteDatabase::addNewUser(std::string newUsername, std::string newPassword
 }
 
 
-
-
 bool SqliteDatabase::doesUserExist(std::string username) const {
 	std::string selectQuery = "SELECT * FROM Users\nWHERE Username = '" + username + "';";
 	char* errMsg = nullptr;
@@ -112,9 +110,6 @@ bool SqliteDatabase::doesUserExist(std::string username) const {
 	return (userInfo.username == username);
 }
 
-
-
-
 bool SqliteDatabase::doesPasswordMatch(std::string username, std::string password) const {
 	std::string selectQuery = "SELECT * FROM Users\nWHERE Username = '" + username + "';";
 	char* errMsg = nullptr;
@@ -131,9 +126,6 @@ bool SqliteDatabase::doesPasswordMatch(std::string username, std::string passwor
 
 	return (userInfo.password == password);
 }
-
-
-
 
 std::list<QuestionDescriptor> SqliteDatabase::getQuestions(int numOfQuestions) const{
 	int res = 0;
@@ -310,9 +302,7 @@ int nameCallback(void* data, int argc, char** argv, char** azColName) {
 	return 0;
 }
 
-
-
-
+/* Destructor */
 SqliteDatabase::~SqliteDatabase() {
 
 	sqlite3_close(db);

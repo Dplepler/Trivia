@@ -3,9 +3,7 @@
 using json = nlohmann::json;
 
 /*
-This instance of serializeResponse takes a login response and parses it into a buffer
-Input: Login response
-Output: Buffer containing response as a char vector
+Serialize a login response
 */
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 
@@ -26,9 +24,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse loginRes) {
 }
 
 /*
-This instance of serializeResponse takes a sign up response and parses it into a buffer
-Input: Sign up response
-Output: Buffer containing response as a char vector
+Serialize a signup response
 */
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse signupRes) {
 
@@ -49,9 +45,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse signupRes)
 }
 
 /*
-This instance of serializeResponse takes an error response and parses it into a buffer
-Input: Error response
-Output: Buffer containing response as a char vector
+Serialize an error response
 */
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 
@@ -71,6 +65,9 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse errorRes) {
 	return buffer;
 }
 
+/*
+Serialize a logout response
+*/
 Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse logoutRes) {
 
 	Buffer buffer;
@@ -89,11 +86,14 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse logoutRes)
 	return buffer;
 }
 
+/* Serialize a "get rooms" response */
 Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse getRoomsRes) {
 
 	Buffer buffer;
 	std::string jsonString;
 	json json;
+
+	/* Serialize the id's of the rooms and their names */
 
 	buffer.push_back((char)RESPONSE::ROOMS);
 	json["status"] = getRoomsRes.status;
@@ -109,6 +109,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse getRooms
 	return buffer;
 }
 
+/* Serialize a join rooms response */
 Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse joinRoomRes) {
 
 	Buffer buffer;
@@ -127,6 +128,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse joinRoom
 	return buffer;
 }
 
+/* Serialize a create room response */
 Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse createRoomRes) {
 
 	Buffer buffer;
@@ -145,11 +147,14 @@ Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse create
 	return buffer;
 }
 
+/* Serialize a get statistics response */
 Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse statsResponse) {
 
 	Buffer buffer;
 	std::string jsonString;
 	json json;
+
+	/* Serialize the statistics vector as is */
 
 	buffer.push_back((char)RESPONSE::STATS);
 	json["status"] = statsResponse.status;
@@ -164,11 +169,14 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetPersonalStatsResponse 
 	return buffer;
 }
 
+/* Serialize a high score response */
 Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse highScoreRes) {
 
 	Buffer buffer;
 	std::string jsonString;
 	json json;
+
+	/* Serialize the high score statistics vector */
 
 	buffer.push_back((char)RESPONSE::HIGH_SCORE);
 	json["status"] = highScoreRes.status;
@@ -183,6 +191,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetHighScoreResponse high
 	return buffer;
 }
 
+/* Serialize a close room response */
 Buffer JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse closeRoomRes) {
 
 	Buffer buffer;
@@ -201,6 +210,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(CloseRoomResponse closeRo
 	return buffer;
 }
 
+/* Serialize a game start response */
 Buffer JsonResponsePacketSerializer::serializeResponse(StartGameResponse startGameRes) {
 
 	Buffer buffer;
@@ -219,11 +229,15 @@ Buffer JsonResponsePacketSerializer::serializeResponse(StartGameResponse startGa
 	return buffer;
 }
 
+/* Serialize a get room state response */
 Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse getRoomStateRes) {
 
 	Buffer buffer;
 	std::string jsonString;
 	json json;
+
+	/* Serialize the room name, it's state (started, closed, open), the amount of players,
+	 the amount of questions, answer timeout and max players */
 
 	buffer.push_back((char)RESPONSE::STATE);
 	json["status"] = getRoomStateRes.status;
@@ -243,6 +257,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomStateResponse getR
 	return buffer;
 }
 
+/* Serialize a leave room response */
 Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leaveRoomRes) {
 	Buffer buffer;
 	std::string jsonString;
@@ -260,10 +275,13 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leaveRo
 	return buffer;
 }
 
+/* Serialize a submit answer response */
 Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse submitAnswerRes) {
 	Buffer buffer;
 	std::string jsonString;
 	json json;
+
+	/* Serialize the correct answer's Id */
 
 	buffer.push_back((char)RESPONSE::SUBMIT);
 	json["status"] = submitAnswerRes.status;
@@ -278,6 +296,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse subm
 	return buffer;
 }
 
+/* Serialize a leave game response */
 Buffer JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse leaveGameRes) {
 	Buffer buffer;
 	std::string jsonString;
@@ -295,6 +314,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse leaveGa
 	return buffer;
 }
 
+/* Serialize a game results response */
 Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse gameResultsRes) {
 
 	Buffer buffer;
@@ -306,8 +326,10 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse ga
 	buffer.push_back((char)RESPONSE::RESULTS);
 	json["status"] = gameResultsRes.status;
 
+	/* Serialize the game results string vector */
+
 	for (unsigned int i = 0; i < gameResultsRes.results.size(); i++) {
-		resJson.push_back(JsonResponsePacketSerializer::pasrseGameResults(gameResultsRes.results[i]));
+		resJson.push_back(JsonResponsePacketSerializer::parseGameResults(gameResultsRes.results[i]));
 	}
 
 	json["results"] = resJson;
@@ -321,6 +343,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse ga
 	return buffer;
 }
 
+/* Serialize a get question response */
 Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestionRes) {
 
 	Buffer buffer;
@@ -328,6 +351,8 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQu
 	json json;
 
 	std::vector<std::string> resJson;
+
+	/* Serialize the question and it's possible answer */
 
 	buffer.push_back((char)RESPONSE::GET_QUESTIONS);
 	json["status"] = getQuestionRes.status;
@@ -355,9 +380,7 @@ void JsonResponsePacketSerializer::parseLength(Buffer& buffer, unsigned int leng
 	}
 }
 
-/*
-parseRoomNameVec parses a vector consisting of room data to a name string that is separated with commas
-*/
+/* parseRoomNameVec parses a vector consisting of room data to a name string that is separated with commas */
 std::vector<std::string> JsonResponsePacketSerializer::parseRoomNameVec(std::vector<RoomData> vec) {
 
 	std::vector<std::string> names;
@@ -369,9 +392,7 @@ std::vector<std::string> JsonResponsePacketSerializer::parseRoomNameVec(std::vec
 	return names;
 }
 
-/*
-parseRoomIdVec parses a vector consisting of room data to an id string that is separated with commas
-*/
+/* parseRoomIdVec parses a vector consisting of room data to an id string that is separated with commas */
 std::vector<int> JsonResponsePacketSerializer::parseRoomIdVec(std::vector<RoomData> vec) {
 
 	std::vector<int> ids;
@@ -383,9 +404,7 @@ std::vector<int> JsonResponsePacketSerializer::parseRoomIdVec(std::vector<RoomDa
 	return ids;
 }
 
-/*
-parseStringVec parses a vector containing strings into one string where the elements are separated with commas
-*/
+/* parseStringVec parses a vector containing strings into one string where the elements are separated with commas */
 std::string JsonResponsePacketSerializer::parseStringVec(std::vector<std::string> vec) {
 
 	if (vec.empty()) { return ""; }
@@ -399,7 +418,8 @@ std::string JsonResponsePacketSerializer::parseStringVec(std::vector<std::string
 	return result.substr(0, result.size() - strlen(", "));
 }
 
-std::string JsonResponsePacketSerializer::pasrseGameResults(PlayerResults res) {
+/* parses the game result struct into a json */
+std::string JsonResponsePacketSerializer::parseGameResults(PlayerResults res) {
 
 	json json;
 	
@@ -411,7 +431,7 @@ std::string JsonResponsePacketSerializer::pasrseGameResults(PlayerResults res) {
 	return json.dump();
 }
 
-
+/* parses an answer map into a string vector */
 std::vector<std::string> JsonResponsePacketSerializer::parseAnswers(std::map<unsigned int, std::string> ansMap) {
 	
 	if (ansMap.empty()) { return std::vector<std::string> { " ", " ", " ", " " }; }

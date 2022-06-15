@@ -13,9 +13,6 @@
     <ClCompile Include="Helper.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="IRequestHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="JsonRequestPacketDeserializer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -32,9 +29,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="RequestHandlerFactory.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Response.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Server.cpp">
