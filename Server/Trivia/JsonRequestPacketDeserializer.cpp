@@ -97,5 +97,8 @@ SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeSubmitAnswerReques
 {
 	json j = json::parse(clientMsg);
 
-	return SubmitAnswerRequest{ j["answerId"].get<unsigned int>() };
+	return SubmitAnswerRequest{ 
+		j["answerId"].get<unsigned int>(),
+		j["ansTime"].get<unsigned int>()
+	};
 }

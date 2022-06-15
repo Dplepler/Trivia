@@ -71,6 +71,8 @@ typedef struct SubmitAnswerRequest {
 
 	unsigned int answerId;
 
+	unsigned int time;
+
 } SubmitAnswerRequest;
 
 

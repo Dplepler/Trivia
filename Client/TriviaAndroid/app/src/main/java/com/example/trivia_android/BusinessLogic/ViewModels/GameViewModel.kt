@@ -27,7 +27,7 @@ data class CorrectAnswer (
 
 
 @Serializable
-data class AnswerSubmition(val answerId: Int)
+data class AnswerSubmition(val answerId: Int, val ansTime: Int)
 
 
 
@@ -106,7 +106,7 @@ class GameViewModel: ViewModel() {
 
     fun submitQuestion(answerId: Int) {
         viewModelScope.launch {
-            val data = Json.encodeToString(AnswerSubmition(answerId))
+            val data = Json.encodeToString(AnswerSubmition(answerId, (gameInfo.answerTimeout - curTime.value).toInt()))
             comms.sendMessage(comms.buildMessage(RequestCodes.SubmitAnswer.code.toByte(), data))
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.SubmitAns.code) {
@@ -154,13 +154,11 @@ class GameViewModel: ViewModel() {
             userScores.add(UserScore(it.username, calcScore(it).toInt()))
         }
 
-        userScores.sortBy { it.score }
+        userScores.sortByDescending { it.score }
     }
 
 
-    private fun calcScore(userResults: UserResults): Float =
-        if(userResults.averageTime == 0) 0f
-        else userResults.correctAns / (userResults.correctAns + userResults.wrongAns) * SCORE_MULTIPLIER / userResults.averageTime.toFloat()
+    private fun calcScore(userResults: UserResults): Float = (userResults.correctAns.toFloat() / (userResults.correctAns + userResults.wrongAns))* SCORE_MULTIPLIER / if(userResults.averageTime == 0) { 1 } else { userResults.averageTime }
 
 
 
@@ -170,7 +168,7 @@ class GameViewModel: ViewModel() {
             val buffer = comms.readMessage()
             if(buffer[0].toInt() == ResponseCodes.LeaveGame.code) {
                 val res = String(buffer).substring(comms.headerLen)
-                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessLeave }
+                if(Json.decodeFromString<Status>(res).status == 1) { onSuccessLeave() }
             }
         }
     }
