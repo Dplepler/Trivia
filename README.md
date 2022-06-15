@@ -1,7 +1,8 @@
 # Trivia
 
-backend board:  https://trello.com/b/Ai3WKl65/backend \
-frontend board: https://trello.com/b/tuJ9Gtmu/frontend
+## backend board:  https://trello.com/b/Ai3WKl65/backend 
+## frontend board: https://trello.com/b/tuJ9Gtmu/frontend
+## Figma Design link: https://www.figma.com/file/yY5tb64iZnaUoEcMPLqB7O/TriviaAppDesign?node-id=0%3A1
 
 ## Getting started
 
