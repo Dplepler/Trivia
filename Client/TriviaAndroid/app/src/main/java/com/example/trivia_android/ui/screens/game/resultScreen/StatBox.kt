@@ -50,10 +50,10 @@ fun StatBox(
             Icon(
                 statIcon,
                 null,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.size(40.dp).padding(bottom = 4.dp)
             )
 
-            Text(df.format(statValue))
+            Text(df.format(statValue), style = MaterialTheme.typography.h5)
 
         }
     }
